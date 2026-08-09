@@ -1,60 +1,102 @@
 # Install — StallVix Kilo Executor Pack
 
-Install this Granaide pack into a local StallVix checkout so Kilo loads the agents, skills, and Context7 MCP.
+Plain English first, then commands.
 
-**Do not** put secrets in these files. **Do not** treat install as StallVix product “Kilo integration” (that remains parked until ordinary graph population).
+## What “install” means (and what it does *not*)
+
+**Install = copy config into your StallVix folder so Kilo reads it.**
+
+You are **not**:
+- merging into StallVix `main`
+- changing Supabase / auth / RLS
+- “turning on Kilo inside the StallVix web app”
+- deploying anything
+
+Think of it like copying a **recipe card** into the kitchen where Kilo cooks. StallVix the product stays the restaurant OS; this pack only tells the Kilo chef how to behave in that kitchen.
+
+```text
+Granaide repo                          StallVix repo
+products/stallvix-kilo-pack/   --->    .kilo/ + skills  (copy)
+     (product you sell/own)            (consumer install, local)
+```
+
+After copy, when you open **StallVix** in Kilo, you pick agent `stallvix-investigator` (read-only) or `stallvix-implementer` (allowed-path edits).
 
 ## Prerequisites
 
-- StallVix clone (e.g. `E:\Plan M\Projects\Cube 10\StallVix`)
-- Kilo Code (desktop or CLI) that reads project `kilo.json` / `kilo.jsonc` and Agent Skills
-- Node/npm available for Context7 MCP (`npx -y @upstash/context7-mcp`)
+- StallVix clone on disk (e.g. `E:\Plan M\Projects\Cube 10\StallVix`)
+- Kilo Code app/CLI that loads project `kilo.json` / `kilo.jsonc` and skills under `.kilo/skills/`
+- Node/npm (Context7 MCP uses `npx`)
 
-## Steps
+## Step-by-step (Windows-friendly)
 
-1. From the StallVix repo root, ensure `.kilo/` exists (create if missing).
+Set paths once (PowerShell):
 
-2. Copy pack config (merge carefully if StallVix already has `.kilo/kilo.json`):
-
-```bash
-# From Granaide repo
-PACK="products/stallvix-kilo-pack"
-SVX="/path/to/StallVix"
-
-cp "$PACK/kilo.jsonc" "$SVX/.kilo/kilo.jsonc"
-# Or merge agents + mcp.context7 into existing kilo.json / kilo.jsonc manually.
+```powershell
+$PACK = "E:\Plan M\Projects\Cube 10\Granaide\products\stallvix-kilo-pack"
+$SVX  = "E:\Plan M\Projects\Cube 10\StallVix"
 ```
 
-3. Copy skills into StallVix `.kilo/skills/` (or project skills path Kilo discovers):
+### 1) Ensure StallVix has a `.kilo` folder
 
-```bash
-mkdir -p "$SVX/.kilo/skills"
-cp -R "$PACK/skills/stallvix-authority" "$SVX/.kilo/skills/"
-cp -R "$PACK/skills/stallvix-receipt" "$SVX/.kilo/skills/"
-cp -R "$PACK/skills/stallvix-safe-change" "$SVX/.kilo/skills/"
+```powershell
+New-Item -ItemType Directory -Force -Path "$SVX\.kilo\skills" | Out-Null
 ```
 
-4. Place the distilled worker contract where Kilo will load it (project root preferred):
+### 2) Copy the agent config
 
-```bash
-cp "$PACK/AGENTS.md" "$SVX/AGENTS.granaide-kilo.md"
-# Keep StallVix AGENTS.md as canonical. Use AGENTS.granaide-kilo.md as Kilo supplement,
-# or paste the Hard rules section into a Kilo-only rules file — do not silently overwrite AGENTS.md.
+If StallVix has **no** `kilo.json` / `kilo.jsonc` yet:
+
+```powershell
+Copy-Item "$PACK\kilo.jsonc" "$SVX\.kilo\kilo.jsonc"
 ```
 
-5. Open StallVix in Kilo. Confirm agents appear: `stallvix-implementer`, `stallvix-investigator`.
+If StallVix **already** has `.kilo\kilo.json` (Context7 may already be there):
 
-6. Run **Test A** before any write job: see [`PROOF-TEST-A.md`](./PROOF-TEST-A.md).
+- Do **not** blind-overwrite if you customized it.
+- Open both files and **merge**: keep one `context7` MCP block; add the two agents (`stallvix-implementer`, `stallvix-investigator`) from the pack.
+- Session junk like `agent-manager.json` stays; leave it alone.
 
-## Merge notes (existing StallVix `.kilo/kilo.json`)
+### 3) Copy the three skills
 
-StallVix may already define Context7 MCP. Prefer **one** Context7 entry. Keep Granaide agents as additive. Do not delete operator session files such as `agent-manager.json`.
+```powershell
+Copy-Item -Recurse "$PACK\skills\stallvix-authority"   "$SVX\.kilo\skills\"
+Copy-Item -Recurse "$PACK\skills\stallvix-receipt"     "$SVX\.kilo\skills\"
+Copy-Item -Recurse "$PACK\skills\stallvix-safe-change" "$SVX\.kilo\skills\"
+```
+
+Skills = on-demand playbooks (authority, receipts, safe-change). Same idea as Sanity’s agent-skills folders.
+
+### 4) Add the Kilo worker contract (do not overwrite StallVix AGENTS.md)
+
+StallVix already has the real `AGENTS.md`. This pack ships a **Kilo supplement**:
+
+```powershell
+Copy-Item "$PACK\AGENTS.md" "$SVX\AGENTS.granaide-kilo.md"
+```
+
+Never silently replace StallVix `AGENTS.md`.
+
+### 5) Open StallVix in Kilo and smoke-check
+
+1. Open the **StallVix** folder in Kilo (not Granaide).
+2. Confirm agents appear: `stallvix-implementer`, `stallvix-investigator`.
+3. Run **Test A** with investigator only — see [`PROOF-TEST-A.md`](./PROOF-TEST-A.md).
+4. Only after Test A looks good, use implementer for small `src/**` / `docs/**` jobs.
+
+## Done vs not done
+
+| Done after install | Still NOT done |
+|--------------------|----------------|
+| Kilo can load StallVix-specific agents locally | StallVix control plane / embedded Kilo server |
+| Skills teach authority + receipts | Graph Context Resolver |
+| You can run read-only Test A | Any merge to StallVix `main` without owner OK |
 
 ## Uninstall
 
-Remove copied skills, `kilo.jsonc` agents block (or file), and `AGENTS.granaide-kilo.md`. Leave StallVix product code untouched.
+Delete the copied skills, remove pack agents from `.kilo` config (or delete `kilo.jsonc` if it was only from this pack), delete `AGENTS.granaide-kilo.md`. StallVix app code untouched.
 
-## After install (owner decision)
+## Owner decisions later
 
-- Consumer PR into StallVix: optional, owner-approved, docs/config only.
-- Embedded control plane / job dispatch: still PARKED per OBS PR #35 packet 003.
+1. **Consumer PR** — optional: commit the installed `.kilo` bits on a StallVix branch (owner-approved).
+2. **Embed** — still PARKED until ordinary graph population (Topics/Workstreams/receipts) is real.
