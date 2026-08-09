@@ -27,10 +27,15 @@ Granaide enables businesses to:
 - They build custom agents
 - StallVix tracks their agents internally
 
+### First product (spike)
+
+**StallVix Kilo Executor Pack** — Granaide’s first shippable artifact lives at [`products/stallvix-kilo-pack/`](products/stallvix-kilo-pack/). It configures Kilo Code as a capability-gated Level-C executor for StallVix (not StallVix’s brain). Full SaaS agent-builder UI remains on the roadmap below; this pack is the near-term product proof.
+
 ## Roadmap
 
 ### Phase 1: Foundation (Week 1-2)
 - [x] Initialize Next.js + TypeScript project
+- [x] First product spike: StallVix Kilo Executor Pack (`products/stallvix-kilo-pack/`)
 - [ ] Set up Supabase
 - [ ] Set up authentication
 - [ ] Create database schema

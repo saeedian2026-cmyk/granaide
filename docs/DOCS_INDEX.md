@@ -10,6 +10,8 @@ Granaide/
 │       ├── page.tsx      # Home page
 │       └── globals.css   # Global styles
 ├── public/               # Static assets
+├── products/             # Shippable product artifacts
+│   └── stallvix-kilo-pack/  # First product: Kilo executor pack for StallVix
 ├── docs/                 # Documentation
 │   ├── SCHEMA_DESIGN.md # Database schema
 │   └── DOCS_INDEX.md    # This file
@@ -27,6 +29,7 @@ Granaide/
 - **OBSERVATORY.md** - Research lane for suggestions and exploration
 - **AGENTS.md** - Operating rules for AI agents working on this repo
 - **CLAUDE.md** - Guidance for Claude Code
+- **products/stallvix-kilo-pack/** - First product spike: StallVix Kilo Executor Pack
 
 ### Technical Documentation
 - **docs/SCHEMA_DESIGN.md** - Complete database schema with tables, RLS policies, functions, and migrations

@@ -4,6 +4,89 @@ Research & suggestions lane. Never merged, never a PR. Suggestions here have zer
 
 Newest entries on top, dated.
 
+## 2026-08-09 — StallVix OBS PR #35 digest + Granaide Kilo pack spike
+
+Digest of [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35) (`research/SVX-KILO-CONTROL-PLANE-20260807` → `codex/observatory`) and the decision to ship Granaide’s first product as a **StallVix Kilo Executor Pack**. **Zero StallVix implementation authority** from this entry or from PR #35.
+
+### Packets digested
+
+1. `OBS-SVX-AI-CONTROL-PLANE-001` — capability-gated AI control plane; three levels (AI READ / REPO OPS / AGENT WORK); Kilo = Level-C executor candidate, not identity/RBAC.
+2. `OBS-SVX-GRAPH-CONTEXT-AGENT-002` — StallVix owns authority + evidence + context assembly; Kilo/Cursor/Codex are replaceable workers returning receipts; Graph Context Resolver (read-only) before fuzzy retrieval.
+3. `OBS-SVX-ORDINARY-GRAPH-POPULATION-003` — ordinary Topic/Workstream/receipt writers before any agent/MCP/Kilo **product** embed; park Context Resolver / Kilo integration until graph rows exist from normal use.
+4. `OBS-SVX-UI-OVERHAUL-SEQUENCING-004` — proof-grade UI now; production overhaul after Stage A contract freeze (not Granaide scope).
+5. `OBS-SVX-CLAUDE-AUG08-FOUR-TASK-AUDIT-005` — independent audit of graph/QA/amendment/Stage A (StallVix lane).
+
+### Kilo’s real role (locked for Granaide)
+
+```text
+StallVix = identity / role / project scope / capability grants / evidence / graph
+     |
+  A AI READ     → OpenRouter + StallVix tools
+  B REPO OPS    → GitHub narrow mutations
+  C AGENT WORK  → Kilo-class live workspace (shell / tests / iterative edits)
+```
+
+- Role ≠ capability. Never put Supabase service-role or permanent high-power GitHub creds in Kilo.
+- Emit Work Receipts; do not invent a parallel orchestration brain.
+- StallVix-**embedded** Kilo stays PARKED until ordinary graph population proves useful.
+- Granaide **desktop/CLI config pack** that runs *against* the StallVix repo is allowed as product #1 (does not claim StallVix embed authority).
+
+### Granaide spike artifact
+
+Ship path: `products/stallvix-kilo-pack/` — agent + skills + Context7 MCP stub + install recipe + Test A proof checklist.
+
+**Status:** Spike implementation authorized in Granaide only. StallVix install = separate owner-approved consumer step later.
+
+## 2026-08-09 — Instagram Agentic Market Audit (5 posts)
+
+Curious audit of five Instagram posts against Granaide’s agentic-business thesis. **Zero product authority** — marketing/research signal only. Do not expand Phase 1 scope from this.
+
+### Sources examined
+
+1. [@alassafi.ai /p/DbdtyloN-0F](https://www.instagram.com/p/DbdtyloN-0F/) — “137 AI agents / 7 departments” live company map; CTA comment **MAP**
+2. [@glovejones /p/DYVc_9qSUdH](https://www.instagram.com/p/DYVc_9qSUdH/) — **Polsia**: 1 founder, ops for ~7,000 companies via agents; CTA comment **polsia** → polsia.com/live
+3. [@atlasberry008 /p/Da5zmVEpFXm](https://www.instagram.com/p/Da5zmVEpFXm/) — **BenchmarkList** AI Human Work Map (job × AI capability); gaps = businesses; CTA comment **MAP**
+4. [@repl.it /p/DbwQhO4iGls](https://www.instagram.com/p/DbwQhO4iGls/) — “Self-driving company”; agents in eng/support/sales; blog: https://replit.com/blog/self-driving-company
+5. [@glovejones /p/Dbvseg6NH60](https://www.instagram.com/p/Dbvseg6NH60/) — **Base Power** home-battery network / $13B valuation — **not agentic product** (energy/infra news)
+
+### How these posts are made (craft pattern)
+
+- One hard claim in first seconds (“137 agents,” “7,000 companies,” “self-driving company”)
+- One visual metaphor (org map, magazine cover, live dashboard) — not a feature dump
+- Comment-keyword → DM lead magnet (MAP / polsia)
+- Soft proof: live map, blog graphs, “click and run”
+- Honest framing when present (Replit): people set destination; agents do steps
+
+### Competitive read vs Granaide
+
+| Player | What they sell | Vs Granaide |
+|--------|----------------|-------------|
+| Alassafi MAP | Packaged agent team + map UI | Template/swarm story; Granaide = **maker** so any business configures its own |
+| Polsia | Ops-as-service (“we run it”) | Service model; Granaide = **platform** customers own |
+| BenchmarkList | Where AI can replace/augment jobs | Research/map; Granaide = **execution** |
+| Replit | Code platform + internal self-driving | Dev/infra; Granaide = **business agents without code** |
+| Base Power | Energy hardware network | Irrelevant to product |
+
+### Verdict
+
+- Market narrative **validates** Granaide’s thesis (configure → generate → deploy agentic companies). Nothing here makes the product obsolete.
+- Risk if we drift: chasing 137-agent spectacle before one boring niche agent that does real work.
+- Stay on **Phase 1 foundation**. Treat this as a marketing inspiration queue, not a rebuild brief.
+
+### Useful steal later (not now)
+
+1. Positioning language: “self-driving company” + department map > “low-code AI platform” in feeds (landing/messaging later).
+2. Autonomy ladder (manual → assisted → autonomous) for future agent config honesty.
+3. Show a live map of *our* agents (StallVix internal first) as proof.
+4. Don’t compete with Replit on coding agents; compete on non-dev businesses running agents.
+5. Optional metaphor only: many small coordinated agents > one giant bot (from Base Power network idea — messaging only).
+
+### Suggested first niche (when Phase 2 starts — not authorized yet)
+
+Pick one job Granaide’s studio already feels from Alassafi’s department list, e.g. client onboarding, status reporting, or proposal writing — ship one real agent before any “137” story.
+
+**Status:** Parked in observatory. Ready for owner to pull into a task packet if desired.
+
 ## 2026-08-08 — Database Schema Design Completed
 
 Comprehensive database schema design completed and committed to docs/SCHEMA_DESIGN.md.
