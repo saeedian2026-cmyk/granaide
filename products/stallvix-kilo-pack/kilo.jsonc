@@ -1,9 +1,10 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01 hardened)
+  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01C containment gaps)
   // Install into StallVix checkout per INSTALL.md — do not commit secrets.
   // Permission rule order: last matching rule wins (Kilo Agent Permissions docs).
   // Put catch-all first; specific allow/deny exceptions after.
+  // Tool boundaries are distinct: read ≠ grep ≠ glob ≠ external_directory ≠ bash ≠ edit.
   "default_agent": "stallvix-investigator",
   "mcp": {
     "context7": {
@@ -33,10 +34,10 @@
   },
   "agent": {
     "stallvix-investigator": {
-      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no deploy.",
+      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no outside-worktree access.",
       "mode": "primary",
       "color": "#64748B",
-      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read the repository, summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
+      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read and search the repository (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
       "permission": {
         "read": {
           "*": "allow",
@@ -50,9 +51,23 @@
           "*.env.example": "allow",
           "**/.env.example": "allow"
         },
+        // Grep is a separate tool from read. Sensitive-path denies must be explicit.
+        "grep": {
+          "*": "allow",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          "**/credentials.json": "deny",
+          "**/*.pem": "deny",
+          "**/*.key": "deny",
+          "*.env.example": "allow",
+          "**/.env.example": "allow"
+        },
+        // Glob may still reveal filenames; that is name discovery, not content confidentiality.
         "edit": "deny",
         "bash": "deny",
-        "external_directory": "ask",
+        "external_directory": "deny",
         "task": "deny"
       }
     },
@@ -63,6 +78,19 @@
       "prompt": "You are the Granaide StallVix implementer — a replaceable Level-C executor, not StallVix's brain.\n\nAuthority order (read before acting):\n1. SPEC.md — durable product truth\n2. SCOPE.md — what is authorized NOW (if present)\n3. BACKLOG.md — candidates only, not authorization\n4. AGENTS.md (repo + this pack) — how workers behave\n\nHard rules:\n- One modifying owner at a time. Inspect before edit.\n- Never apply migrations, change auth/RLS, edit wrangler.toml, deploy, or push to main.\n- Never use or request Supabase service-role keys.\n- Prefer smallest complete change. No unrelated cleanup.\n- After material work, emit a Work Receipt using the stallvix-receipt skill.\n- If scope is unclear or blocked twice on the same issue, STOP and escalate to the owner.\n- Use Context7 MCP for current library docs (Vite, React, Supabase client, Kilo) instead of guessing APIs.\n\nAllowed edit focus: src/** and docs/** unless the job packet narrows further.\nVerification: npm run typecheck, npm run lint, npm test as appropriate — do not invent deploy proof.",
       "permission": {
         "read": {
+          "*": "allow",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          "**/credentials.json": "deny",
+          "**/*.pem": "deny",
+          "**/*.key": "deny",
+          "*.env.example": "allow",
+          "**/.env.example": "allow"
+        },
+        // Mechanical equivalent of investigator grep confidentiality for the same sensitive paths.
+        "grep": {
           "*": "allow",
           "*.env": "deny",
           "*.env.*": "deny",

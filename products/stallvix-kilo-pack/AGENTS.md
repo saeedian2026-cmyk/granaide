@@ -34,11 +34,16 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 
 | Capability | Investigator | Implementer |
 |------------|--------------|-------------|
-| repo.read | allow (`.env*` / credentials hard-deny) | allow (same secret-path denies) |
+| `read` | allow; sensitive paths hard-deny | allow; same sensitive-path denies |
+| `grep` | allow; **same sensitive-path hard-denies** (separate from `read`) | allow; same sensitive-path denies |
+| `glob` | may reveal filenames; **not** a content-confidentiality control | same |
+| `external_directory` | **deny** (no outside-worktree access) | ask |
 | edit `src/**`, `docs/**` | deny | allow; catch-all ask first; migrations/env/wrangler deny last |
 | bash typecheck/lint/test | deny | ask |
 | migration.apply / deploy / `git push` | deny | deny (runtime bash patterns, not prose only) |
 | db.service_role | deny | deny |
+
+**Tool boundary note:** Kilo’s `read`, `grep`, `glob`, `bash`, `edit`, and `external_directory` are distinct. Denying direct `read` does **not** deny `grep`. Name discovery via `glob` is not content confidentiality.
 
 **Enforcement note:** Kilo evaluates permission patterns in order; **last matching rule wins**. This pack puts `*` first, then path/command exceptions. Do not move the catch-all to the end.
 

@@ -46,10 +46,12 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 ## Agents
 
-1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. Edit deny, bash deny.
-2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`task`/`external_directory` deny; sensitive-path denies on both `read` and `grep`.
+2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution; same sensitive `read`/`grep` path denies.
 
-Safe default is investigator. Pick implementer only after a real Kilo containment proof (KILO-01), not after the Cursor stand-in Test A receipt.
+Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
+
+**Proof lesson (KILO-01R):** config deny on `read` is not enough — `grep` and `external_directory` must be proven separately.
 
 ## Non-goals
 
