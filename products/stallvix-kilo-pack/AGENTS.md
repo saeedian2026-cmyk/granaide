@@ -30,13 +30,19 @@ Observatory research (including StallVix PR #35) has **zero** implementation aut
 
 ## Capability envelope (default)
 
+Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable). Implementer is primary but opt-in.
+
 | Capability | Investigator | Implementer |
 |------------|--------------|-------------|
-| repo.read | allow | allow |
-| edit `src/**`, `docs/**` | deny | allow (ask outside) |
+| repo.read | allow (`.env*` / credentials hard-deny) | allow (same secret-path denies) |
+| edit `src/**`, `docs/**` | deny | allow; catch-all ask first; migrations/env/wrangler deny last |
 | bash typecheck/lint/test | deny | ask |
-| migration.apply / deploy / main.push | deny | deny |
+| migration.apply / deploy / `git push` | deny | deny (runtime bash patterns, not prose only) |
 | db.service_role | deny | deny |
+
+**Enforcement note:** Kilo evaluates permission patterns in order; **last matching rule wins**. This pack puts `*` first, then path/command exceptions. Do not move the catch-all to the end.
+
+**Windows gap:** bash denies match parsed command patterns. PowerShell aliases, encoded commands, or odd path forms may evade pattern lists — prompts and operator discipline remain defense-in-depth. Reload Kilo after editing project `kilo.jsonc`.
 
 ## Sequencing note
 

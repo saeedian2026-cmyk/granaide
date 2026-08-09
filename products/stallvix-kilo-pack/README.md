@@ -46,8 +46,10 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 ## Agents
 
-1. **`stallvix-implementer`** (primary) — constrained Level-C worker. Edits only allowed paths; denies migrations/auth/deploy/`main`.
-2. **`stallvix-investigator`** (subagent) — read-only investigation for Test A and audits.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. Edit deny, bash deny.
+2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution.
+
+Safe default is investigator. Pick implementer only after a real Kilo containment proof (KILO-01), not after the Cursor stand-in Test A receipt.
 
 ## Non-goals
 

@@ -20,7 +20,7 @@ products/stallvix-kilo-pack/   --->    .kilo/ + skills  (copy)
      (product you sell/own)            (consumer install, local)
 ```
 
-After copy, when you open **StallVix** in Kilo, you pick agent `stallvix-investigator` (read-only) or `stallvix-implementer` (allowed-path edits).
+After copy, when you open **StallVix** in Kilo, the **default agent is `stallvix-investigator`** (read-only, primary). You can also select `stallvix-implementer` (allowed-path edits) from the agent picker — do that only after Gate B / KILO-01.
 
 ## Prerequisites
 
@@ -79,10 +79,10 @@ Never silently replace StallVix `AGENTS.md`.
 
 ### 5) Open StallVix in Kilo and smoke-check
 
-1. Open the **StallVix** folder in Kilo (not Granaide).
-2. Confirm agents appear: `stallvix-implementer`, `stallvix-investigator`.
-3. Run **Test A** with investigator only — see [`PROOF-TEST-A.md`](./PROOF-TEST-A.md).
-4. Only after Test A looks good, use implementer for small `src/**` / `docs/**` jobs.
+1. Open the **StallVix** folder in Kilo (not Granaide). Reload the window if config was already cached.
+2. Confirm **both** agents appear in the picker as primary: `stallvix-investigator` (default) and `stallvix-implementer`.
+3. Run real containment / Test A with investigator only — see [`PROOF-TEST-A.md`](./PROOF-TEST-A.md). The Cursor stand-in receipt is **not** a PASS.
+4. Only after GPT audits a real Kilo KILO-01 PASS, use implementer for small `src/**` / `docs/**` jobs.
 
 ## Done vs not done
 
