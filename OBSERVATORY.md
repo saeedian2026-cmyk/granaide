@@ -4,6 +4,39 @@ Research & suggestions lane. Never merged, never a PR. Suggestions here have zer
 
 Newest entries on top, dated.
 
+## 2026-08-09 — StallVix OBS PR #35 digest + Granaide Kilo pack spike
+
+Digest of [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35) (`research/SVX-KILO-CONTROL-PLANE-20260807` → `codex/observatory`) and the decision to ship Granaide’s first product as a **StallVix Kilo Executor Pack**. **Zero StallVix implementation authority** from this entry or from PR #35.
+
+### Packets digested
+
+1. `OBS-SVX-AI-CONTROL-PLANE-001` — capability-gated AI control plane; three levels (AI READ / REPO OPS / AGENT WORK); Kilo = Level-C executor candidate, not identity/RBAC.
+2. `OBS-SVX-GRAPH-CONTEXT-AGENT-002` — StallVix owns authority + evidence + context assembly; Kilo/Cursor/Codex are replaceable workers returning receipts; Graph Context Resolver (read-only) before fuzzy retrieval.
+3. `OBS-SVX-ORDINARY-GRAPH-POPULATION-003` — ordinary Topic/Workstream/receipt writers before any agent/MCP/Kilo **product** embed; park Context Resolver / Kilo integration until graph rows exist from normal use.
+4. `OBS-SVX-UI-OVERHAUL-SEQUENCING-004` — proof-grade UI now; production overhaul after Stage A contract freeze (not Granaide scope).
+5. `OBS-SVX-CLAUDE-AUG08-FOUR-TASK-AUDIT-005` — independent audit of graph/QA/amendment/Stage A (StallVix lane).
+
+### Kilo’s real role (locked for Granaide)
+
+```text
+StallVix = identity / role / project scope / capability grants / evidence / graph
+     |
+  A AI READ     → OpenRouter + StallVix tools
+  B REPO OPS    → GitHub narrow mutations
+  C AGENT WORK  → Kilo-class live workspace (shell / tests / iterative edits)
+```
+
+- Role ≠ capability. Never put Supabase service-role or permanent high-power GitHub creds in Kilo.
+- Emit Work Receipts; do not invent a parallel orchestration brain.
+- StallVix-**embedded** Kilo stays PARKED until ordinary graph population proves useful.
+- Granaide **desktop/CLI config pack** that runs *against* the StallVix repo is allowed as product #1 (does not claim StallVix embed authority).
+
+### Granaide spike artifact
+
+Ship path: `products/stallvix-kilo-pack/` — agent + skills + Context7 MCP stub + install recipe + Test A proof checklist.
+
+**Status:** Spike implementation authorized in Granaide only. StallVix install = separate owner-approved consumer step later.
+
 ## 2026-08-09 — Instagram Agentic Market Audit (5 posts)
 
 Curious audit of five Instagram posts against Granaide’s agentic-business thesis. **Zero product authority** — marketing/research signal only. Do not expand Phase 1 scope from this.

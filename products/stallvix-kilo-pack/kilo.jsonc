@@ -1,0 +1,56 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  // Granaide StallVix Kilo Executor Pack v0
+  // Install into StallVix checkout per INSTALL.md — do not commit secrets.
+  "default_agent": "stallvix-implementer",
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"],
+      "environment": {
+        "DEFAULT_MINIMUM_TOKENS": "5000"
+      }
+    }
+  },
+  "permission": {
+    "read": "allow",
+    "edit": "ask",
+    "bash": "ask"
+  },
+  "agent": {
+    "stallvix-implementer": {
+      "description": "Constrained Level-C StallVix implementer. Obeys SPEC/SCOPE/AGENTS. No migrations, auth, deploy, or main.",
+      "mode": "primary",
+      "color": "#0F766E",
+      "prompt": "You are the Granaide StallVix implementer — a replaceable Level-C executor, not StallVix's brain.\n\nAuthority order (read before acting):\n1. SPEC.md — durable product truth\n2. SCOPE.md — what is authorized NOW (if present)\n3. BACKLOG.md — candidates only, not authorization\n4. AGENTS.md (repo + this pack) — how workers behave\n\nHard rules:\n- One modifying owner at a time. Inspect before edit.\n- Never apply migrations, change auth/RLS, edit wrangler.toml, deploy, or push to main.\n- Never use or request Supabase service-role keys.\n- Prefer smallest complete change. No unrelated cleanup.\n- After material work, emit a Work Receipt using the stallvix-receipt skill.\n- If scope is unclear or blocked twice on the same issue, STOP and escalate to the owner.\n- Use Context7 MCP for current library docs (Vite, React, Supabase client, Kilo) instead of guessing APIs.\n\nAllowed edit focus: src/** and docs/** unless the job packet narrows further.\nVerification: npm run typecheck, npm run lint, npm test as appropriate — do not invent deploy proof.",
+      "permission": {
+        "read": "allow",
+        "edit": {
+          "src/**": "allow",
+          "docs/**": "allow",
+          "observatory-suggestions/**": "ask",
+          "supabase/migrations/**": "deny",
+          "supabase/functions/**": "ask",
+          "wrangler.toml": "deny",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          "*": "ask"
+        },
+        "bash": "ask"
+      }
+    },
+    "stallvix-investigator": {
+      "description": "Read-only StallVix investigator for audits and packet-001 Test A. No edits, no writes, no deploy.",
+      "mode": "subagent",
+      "color": "#64748B",
+      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read the repository, summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run commands that mutate state (no git commit, push, migrate, deploy, npm install that changes lockfiles)\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "bash": "deny"
+      }
+    }
+  }
+}

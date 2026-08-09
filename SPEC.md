@@ -17,6 +17,7 @@
 - Observatory lane created (`OBSERVATORY.md`)
 - Agent guidance documents (`AGENTS.md`, `CLAUDE.md`)
 - Documentation index (`docs/DOCS_INDEX.md`)
+- **First product spike:** StallVix Kilo Executor Pack at `products/stallvix-kilo-pack/` (Kilo config + skills + Test A harness; not the full SaaS builder)
 
 **Reported (Not Verified This Session):**
 - StallVix operating backbone exists at `E:\Plan M\Projects\Cube 10\StallVix`
@@ -35,6 +36,8 @@
 ## B. One-Paragraph Product Definition
 
 Granaide is a low-code platform where businesses configure AI agents through forms (personality, tools, triggers, guardrails) without writing code. The platform stores agent configurations, execution history, and proprietary data (process, outcome, integration, relationship patterns) as a competitive moat. It refuses to pretend to be a general-purpose automation platform — it is specifically for creating and deploying AI agents that run on schedules, respond to webhooks, and perform niche-specific business tasks.
+
+**Near-term product proof (DRAFT amendment, 2026-08-09):** Before the full web builder ships, Granaide’s first concrete product is the **StallVix Kilo Executor Pack** — a capability-gated Kilo Code agent/config pack that runs as a replaceable Level-C executor against StallVix, aligned with StallVix OBS PR #35 (Kilo is not the StallVix brain; StallVix-embedded Kilo stays parked until ordinary graph population). See `products/stallvix-kilo-pack/`.
 
 ---
 
