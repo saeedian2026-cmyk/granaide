@@ -6,6 +6,17 @@
 
 This is Granaide’s first shippable product: a **Kilo Code config pack** that turns Kilo into a **capability-gated Level-C executor** for StallVix work — not StallVix’s brain.
 
+## Active spike command center
+
+The runtime-proof phase is managed from [`operations/AGENT-001-COMMAND-CENTER.md`](./operations/AGENT-001-COMMAND-CENTER.md).
+
+- **Chief senior operator:** GPT Plus + Codex
+- **Final integration reviewer:** Claude Code after the spike exit gate
+- **Deterministic builder lane:** Cursor
+- **Runtime agent under proof:** Kilo
+
+The command center contains three Cursor packets and three gated Kilo packets. Real Kilo containment is not considered proven until the Kilo runtime passes the recorded denial/session/receipt tests.
+
 ## Architecture lock (from StallVix OBS PR #35)
 
 Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35) packets 001–003.
@@ -31,6 +42,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |
 | [`proof/`](./proof/) | Captured Test A receipts |
+| [`operations/`](./operations/) | Spike command center, task packets, runtime proof plan |
 
 ## Agents
 
