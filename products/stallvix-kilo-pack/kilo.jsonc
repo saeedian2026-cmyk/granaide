@@ -1,10 +1,12 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01C containment gaps)
+  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01D grep hard-deny)
   // Install into StallVix checkout per INSTALL.md — do not commit secrets.
   // Permission rule order: last matching rule wins (Kilo Agent Permissions docs).
   // Put catch-all first; specific allow/deny exceptions after.
   // Tool boundaries are distinct: read ≠ grep ≠ glob ≠ external_directory ≠ bash ≠ edit.
+  // KILO-01R: grep path denies match the search ROOT only, not each hit file — parent-dir
+  // grep bypassed **/credentials.json. Investigator therefore hard-denies grep entirely.
   "default_agent": "stallvix-investigator",
   "mcp": {
     "context7": {
@@ -34,10 +36,10 @@
   },
   "agent": {
     "stallvix-investigator": {
-      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no outside-worktree access.",
+      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no grep, no outside-worktree access.",
       "mode": "primary",
       "color": "#64748B",
-      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read and search the repository (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
+      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read repository files (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings. Prefer targeted `read` of known paths over search.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- use grep/search tools (hard-denied — Kilo grep permissions apply to search root, not hit files)\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
       "permission": {
         "read": {
           "*": "allow",
@@ -51,19 +53,9 @@
           "*.env.example": "allow",
           "**/.env.example": "allow"
         },
-        // Grep is a separate tool from read. Sensitive-path denies must be explicit.
-        "grep": {
-          "*": "allow",
-          "*.env": "deny",
-          "*.env.*": "deny",
-          "**/.env": "deny",
-          "**/.env.*": "deny",
-          "**/credentials.json": "deny",
-          "**/*.pem": "deny",
-          "**/*.key": "deny",
-          "*.env.example": "allow",
-          "**/.env.example": "allow"
-        },
+        // CURSOR-01D / KILO-01R: path-scoped grep denies are not content-safe when the
+        // search root is a parent directory. Hard-deny the tool for investigator.
+        "grep": "deny",
         // Glob may still reveal filenames; that is name discovery, not content confidentiality.
         "edit": "deny",
         "bash": "deny",
@@ -89,9 +81,12 @@
           "*.env.example": "allow",
           "**/.env.example": "allow"
         },
-        // Mechanical equivalent of investigator grep confidentiality for the same sensitive paths.
+        // Grep checks the search ROOT path only (not each hit). File-level denies do not
+        // stop parent-dir searches. Deny known secret roots + filenames as defense-in-depth.
         "grep": {
           "*": "allow",
+          "docs/agent-work/probes": "deny",
+          "docs/agent-work/probes/**": "deny",
           "*.env": "deny",
           "*.env.*": "deny",
           "**/.env": "deny",

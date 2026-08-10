@@ -1,0 +1,18 @@
+{
+  "name": "stallvix-kilo-pack",
+  "version": "0.1.0",
+  "product": "Agent Pack #001",
+  "safe_default_agent": "stallvix-investigator",
+  "required_agents": ["stallvix-investigator", "stallvix-implementer"],
+  "required_skills": [
+    "stallvix-authority",
+    "stallvix-receipt",
+    "stallvix-safe-change"
+  ],
+  "required_docs": [
+    "README.md",
+    "INSTALL.md",
+    "AGENTS.md",
+    "PROOF-TEST-A.md"
+  ]
+}

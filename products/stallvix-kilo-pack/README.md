@@ -46,12 +46,12 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 ## Agents
 
-1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`task`/`external_directory` deny; sensitive-path denies on both `read` and `grep`.
-2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution; same sensitive `read`/`grep` path denies.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`task`/`external_directory` deny; sensitive-path denies on `read`.
+2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution; sensitive `read` denies + grep search-root denies for probe/secret paths.
 
 Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
 
-**Proof lesson (KILO-01R):** config deny on `read` is not enough — `grep` and `external_directory` must be proven separately.
+**Proof lesson (KILO-01R → CURSOR-01D):** `read` deny ≠ `grep` deny. Grep permission matches the **search root**, not hit files — path-scoped grep denies leaked the sentinel via a parent-dir search. Investigator now hard-denies `grep`.
 
 ## Non-goals
 
@@ -64,3 +64,21 @@ Safe default is investigator. Pick implementer only after Gate B containment PAS
 ## Quick start
 
 See [`INSTALL.md`](./INSTALL.md). Run Test A with [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) before any write-capable job.
+
+## Factory primitives (reusable for Agent Pack #002)
+
+From the Granaide repo root:
+
+```bash
+# Structural safety before any runtime launch (CURSOR-02)
+npm run verify:agent-pack -- products/stallvix-kilo-pack
+
+# Headless proof harness — needs Kilo CLI on PATH (CURSOR-03)
+npm run proof:kilo -- --help
+npm run proof:kilo -- \
+  --workspace ../StallVix \
+  --agent stallvix-investigator \
+  --prompt-file products/stallvix-kilo-pack/PROOF-TEST-A.md
+```
+
+Pack #002 reuses the same scripts: point `--` / `--pack-dir` at the new pack folder and ship a `pack.json` with `name`, `version`, `safe_default_agent`, and required agent/skill/doc lists.

@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify:agent-pack": "node scripts/verify-agent-pack.mjs",
+    "test:verify-agent-pack": "node scripts/verify-agent-pack.test.mjs",
+    "proof:kilo": "node scripts/proof-kilo.mjs",
+    "test:proof-kilo": "node scripts/proof-kilo.test.mjs"
   },
   "dependencies": {
     "next": "16.3.0",
@@ -20,6 +24,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "jsonc-parser": "^3.3.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

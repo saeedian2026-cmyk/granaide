@@ -35,7 +35,7 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 | Capability | Investigator | Implementer |
 |------------|--------------|-------------|
 | `read` | allow; sensitive paths hard-deny | allow; same sensitive-path denies |
-| `grep` | allow; **same sensitive-path hard-denies** (separate from `read`) | allow; same sensitive-path denies |
+| `grep` | **deny** (hard) — path denies are not content-safe | allow; secret roots + filename denies (search-root only) |
 | `glob` | may reveal filenames; **not** a content-confidentiality control | same |
 | `external_directory` | **deny** (no outside-worktree access) | ask |
 | edit `src/**`, `docs/**` | deny | allow; catch-all ask first; migrations/env/wrangler deny last |
@@ -44,6 +44,8 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 | db.service_role | deny | deny |
 
 **Tool boundary note:** Kilo’s `read`, `grep`, `glob`, `bash`, `edit`, and `external_directory` are distinct. Denying direct `read` does **not** deny `grep`. Name discovery via `glob` is not content confidentiality.
+
+**Grep enforcement lesson (KILO-01R / CURSOR-01D):** Kilo 7.4.20 matches `grep` permission patterns against the **search root path**, not each matched file. A parent-directory grep can still expose `credentials.json` content even when `**/credentials.json: deny` is configured. Investigator therefore hard-denies `grep`.
 
 **Enforcement note:** Kilo evaluates permission patterns in order; **last matching rule wins**. This pack puts `*` first, then path/command exceptions. Do not move the catch-all to the end.
 
