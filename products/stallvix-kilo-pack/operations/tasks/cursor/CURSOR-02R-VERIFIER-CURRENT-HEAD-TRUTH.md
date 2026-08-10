@@ -1,5 +1,7 @@
 # CURSOR-02R — Verifier Current-Head Truth Repair
 
+> **SUPERSEDED FOR EXECUTION by `CURSOR-08-FACTORY-TOOLING-CLOSEOUT.md`.** Keep this file as audit/source detail only. Do not assign it as a standalone task.
+
 **Owner:** Cursor  
 **Reviewer/operator:** GPT Plus + Codex  
 **Repo:** Granaide  
