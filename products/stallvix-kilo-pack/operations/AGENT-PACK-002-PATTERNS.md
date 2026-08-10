@@ -159,6 +159,23 @@ pack-name/
 ### Critical Ordering Rule
 **Last matching rule wins.** Put catch-all `*` first, then specific exceptions. Never put catch-all last or it will override hard denies.
 
+### Tool Boundary Independence (CRITICAL LESSON FROM AGENT 001)
+**Kilo treats these as distinct, independent controls:**
+
+| Control | What it covers | Deny behavior |
+|---------|----------------|---------------|
+| `read` | Direct file content reads | Denies specific file paths |
+| `grep` | Content search across files | Denies search operation entirely or by pattern |
+| `glob` | Name/path discovery only | **Not** content confidentiality control |
+| `external_directory` | Tools touching paths outside worktree | Denies outside-worktree access |
+| `edit` | File modifications | Denies write operations |
+| `bash` | Shell command execution | Denies shell access |
+| `task` | Subagent spawning | Denies task delegation |
+
+**CRITICAL:** Passing one control does **not** imply another passes. Each must be tested and configured independently.
+
+**Lesson from CURSOR-01D:** Kilo grep permission applies to search root directory, not individual files. Without explicit grep deny, grep can search any file including denied read paths. For read-only agents, safe default is `"grep": "deny"`.
+
 ## Containment Test Pattern
 
 ### Test Sequence (A1-A8)
