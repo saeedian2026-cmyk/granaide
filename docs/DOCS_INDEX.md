@@ -14,6 +14,7 @@ Granaide/
 │   └── stallvix-kilo-pack/  # First product: Kilo executor pack for StallVix
 ├── docs/                 # Documentation
 │   ├── SCHEMA_DESIGN.md # Database schema
+│   ├── SPIKE_CONSOLIDATION_LOOP.md  # Codex↔Cursor operating protocol (StallVix-first spike)
 │   └── DOCS_INDEX.md    # This file
 ├── OBSERVATORY.md       # Research & suggestions lane
 ├── AGENTS.md           # Agent operating rules
@@ -30,6 +31,7 @@ Granaide/
 - **AGENTS.md** - Operating rules for AI agents working on this repo
 - **CLAUDE.md** - Guidance for Claude Code
 - **products/stallvix-kilo-pack/** - First product spike: StallVix Kilo Executor Pack
+- **docs/SPIKE_CONSOLIDATION_LOOP.md** - Operating protocol for Codex↔Cursor consolidation (not Observatory)
 
 ### Technical Documentation
 - **docs/SCHEMA_DESIGN.md** - Complete database schema with tables, RLS policies, functions, and migrations
@@ -41,6 +43,11 @@ Granaide/
 - Never merged, never a PR
 - Zero authority until pulled into task packets
 - Newest entries on top, dated
+
+### Spike consolidation loop (docs/SPIKE_CONSOLIDATION_LOOP.md)
+- Operating protocol for Codex scan → Cursor judgment → one proof
+- Ships via PR (unlike Observatory)
+- Authorizes the decision loop only — not StallVix implementation, DB, auth, or deploy
 
 ### Main Development
 - `master` branch - main development branch
