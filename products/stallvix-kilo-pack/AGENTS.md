@@ -37,7 +37,7 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 | `read` | allow; sensitive paths hard-deny | allow; same sensitive-path denies |
 | `grep` | **deny** (hard) — path denies are not content-safe | **deny** (hard) — same reason |
 | `glob` | may reveal filenames; **not** a content-confidentiality control | same |
-| `external_directory` | **deny** (no outside-worktree access) | **deny** |
+| `external_directory` | **deny** except Kilo-managed tool output relocated inside the worktree | same |
 | edit `src/**`, `docs/**` | deny | allow; catch-all ask first; migrations/env/wrangler deny last |
 | bash typecheck/lint/test | deny | ask for five exact verification commands only |
 | migration.apply / deploy / `git push` | deny | deny by default-deny shell allowlist |
@@ -48,6 +48,8 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 **Grep enforcement lesson (KILO-01R / CURSOR-01D):** Kilo 7.4.20 matches `grep` permission patterns against the **search root path**, not each matched file. A parent-directory grep can expose a denied descendant. Both agents therefore hard-deny `grep`.
 
 **Enforcement note:** Kilo evaluates permission patterns in order; **last matching rule wins**. This pack puts `*` first, then path/command exceptions. Do not move the catch-all to the end.
+
+**Kilo-managed output exception:** Kilo appends an allow for its tool-output directory after the agent's external-directory deny. Always launch through `run-stallvix-kilo.ps1`, which sets `XDG_DATA_HOME` to `.kilo-runtime-data` under the current Git worktree. Ignore that directory in Git. A direct `kilo` launch does not meet this pack's outside-worktree claim.
 
 **Shell boundary:** implementer bash is deny-by-default. Only exact `npm run typecheck`, `npm run lint`, `npm test`, `git status --short`, and `git diff --check` commands may reach a human approval prompt. Unmatched wrappers, deploys, pushes, migrations, and arbitrary commands remain denied. This permission layer is still not an operating-system sandbox; use a sanitized dedicated worktree and keep credentials out of it. Reload Kilo after editing project `kilo.jsonc`.
 

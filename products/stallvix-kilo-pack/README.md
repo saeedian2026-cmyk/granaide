@@ -29,6 +29,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`AGENTS.md`](./AGENTS.md) | Distilled StallVix worker contract for Kilo |
 | [`PRODUCT-BRIEF.md`](./PRODUCT-BRIEF.md) | Product contract, success measures, four-tool roadmap, and promotion gates |
 | [`PAYLOAD-MANIFEST.json`](./PAYLOAD-MANIFEST.json) | Portable normalized hashes for the install payload |
+| [`run-stallvix-kilo.ps1`](./run-stallvix-kilo.ps1) | Required Windows launcher that roots Kilo tool output inside the worktree |
 | [`skills/`](./skills/) | Agent Skills (Sanity Agent Toolkit packaging pattern) |
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |

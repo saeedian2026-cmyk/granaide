@@ -29,7 +29,7 @@ The opt-in implementer is present as a future capability but remains unauthorize
 ## Trust contract
 
 - `stallvix-investigator` is the default primary agent.
-- Investigator denies edit, shell, grep, delegation, and external-directory tools.
+- Investigator denies edit, shell, grep, delegation, and general external-directory tools. Kilo's automatic tool-output exception must be relocated inside the worktree by the supplied launcher.
 - Common secret-bearing reads are denied for root and nested paths.
 - Implementer denies grep, delegation, and external-directory access.
 - Implementer shell is deny-by-default; only five exact verification commands may ask for human approval.
@@ -42,7 +42,7 @@ The opt-in implementer is present as a future capability but remains unauthorize
 The candidate is reviewable when all of these are true:
 
 1. Source security regression tests pass, including adversarial path and command cases.
-2. The StallVix consumer matches the source-generated manifest on Windows and LF checkouts.
+2. The StallVix consumer matches the source-generated manifest on Windows and LF checkouts, and launches with Kilo data rooted inside the worktree.
 3. Kilo loads the intended investigator as a primary agent.
 4. A real read-only session cites StallVix evidence and produces no agent-authored repository mutation.
 5. Runtime negative probes, resume evidence, and a sanitized event manifest are captured before calling the full Test A / Gate B passed.

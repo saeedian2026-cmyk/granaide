@@ -7,6 +7,7 @@ const packUrl = new URL("../products/stallvix-kilo-pack/", import.meta.url);
 export const payloadPaths = [
   "kilo.jsonc",
   "AGENTS.md",
+  "run-stallvix-kilo.ps1",
   "skills/stallvix-authority/SKILL.md",
   "skills/stallvix-receipt/SKILL.md",
   "skills/stallvix-safe-change/SKILL.md",

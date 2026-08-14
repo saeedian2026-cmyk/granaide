@@ -79,8 +79,10 @@ Never silently replace StallVix `AGENTS.md`.
 
 ### 5) Open StallVix in Kilo and smoke-check
 
+Install `run-stallvix-kilo.ps1` as `scripts/run-granaide-kilo.ps1`, add `.kilo-runtime-data/` to the consumer `.gitignore`, and launch this pack through that script from the StallVix worktree root. The launcher places Kilo's automatically allowed tool-output directory inside the sanitized worktree instead of the user's home directory.
+
 1. Open the **StallVix** folder in Kilo (not Granaide). Reload / start a **fresh** session if config was already cached.
-2. Confirm **both** agents appear in the picker as primary: `stallvix-investigator` (default) and `stallvix-implementer`.
+2. Run `pwsh scripts/run-granaide-kilo.ps1 agent list` and confirm **both** agents appear as primary: `stallvix-investigator` (default) and `stallvix-implementer`. Confirm the effective tool-output exception resolves under `.kilo-runtime-data/` in this worktree.
 3. Activation attestation (`kilo agent list`) is required before containment probes — copy alone is not install.
 4. Run the live read-only Test A in [`PROOF-TEST-A.md`](./PROOF-TEST-A.md); record the baseline SHA and verify `git status` is unchanged by the agent.
 5. Only after the owner accepts a complete Work Receipt may the implementer be selected for a separately authorized small `src/**` / `docs/**` job.
