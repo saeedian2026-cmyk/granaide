@@ -39,6 +39,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`skills/`](./skills/) | Agent Skills (Sanity Agent Toolkit packaging pattern) |
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
 | [`RELEASE-CHECKLIST.md`](./RELEASE-CHECKLIST.md) | Evidence, pilot, licensing, support, and commercial-release gates |
+| [`EVIDENCE-GATE-A-2026-08-14.md`](./EVIDENCE-GATE-A-2026-08-14.md) | Locked source/consumer revisions and exact Gate A verification results |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |
 | [`proof/`](./proof/) | Captured Test A receipts |
 
