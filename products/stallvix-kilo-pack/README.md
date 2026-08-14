@@ -32,6 +32,9 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`PAYLOAD-MANIFEST.json`](./PAYLOAD-MANIFEST.json) | Portable normalized hashes for the install payload |
 | [`run-stallvix-kilo.ps1`](./run-stallvix-kilo.ps1) | Required Windows launcher that roots Kilo tool output inside the worktree |
 | [`packets/P2-FULL-TEST-A-CLOSEOUT.md`](./packets/P2-FULL-TEST-A-CLOSEOUT.md) | Next credential-gated, no-secret runtime proof packet |
+| [`packets/P3-AGENTS-SDK-FAKE-MODEL-SPIKE.md`](./packets/P3-AGENTS-SDK-FAKE-MODEL-SPIKE.md) | Phase-2 server-agent falsification packet; parked until foundation completes |
+| [`packets/P4-RETRIEVAL-VALUE-GATE.md`](./packets/P4-RETRIEVAL-VALUE-GATE.md) | Permissioned keyword/vector/hybrid benchmark; parked until real data exists |
+| [`packets/P5-DURABLE-RUNNER-BAKEOFF.md`](./packets/P5-DURABLE-RUNNER-BAKEOFF.md) | Phase-3 Supabase-native versus Trigger.dev durability bakeoff |
 | [`skills/`](./skills/) | Agent Skills (Sanity Agent Toolkit packaging pattern) |
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |
