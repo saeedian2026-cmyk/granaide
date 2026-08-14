@@ -6,6 +6,17 @@
 
 This is Granaide’s first shippable product: a **Kilo Code config pack** that turns Kilo into a **capability-gated Level-C executor** for StallVix work — not StallVix’s brain.
 
+## Active spike command center
+
+The runtime-proof phase is managed from [`operations/AGENT-001-COMMAND-CENTER.md`](./operations/AGENT-001-COMMAND-CENTER.md).
+
+- **Chief senior operator:** GPT Plus + Codex
+- **Final integration reviewer:** Claude Code after the spike exit gate
+- **Deterministic builder lane:** Cursor
+- **Runtime agent under proof:** Kilo
+
+The command center contains three Cursor packets and three gated Kilo packets. Real Kilo containment is not considered proven until the Kilo runtime passes the recorded denial/session/receipt tests.
+
 ## Architecture lock (from StallVix OBS PR #35)
 
 Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35) packets 001–003.
@@ -31,11 +42,16 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |
 | [`proof/`](./proof/) | Captured Test A receipts |
+| [`operations/`](./operations/) | Spike command center, task packets, runtime proof plan |
 
 ## Agents
 
-1. **`stallvix-implementer`** (primary) — constrained Level-C worker. Edits only allowed paths; denies migrations/auth/deploy/`main`.
-2. **`stallvix-investigator`** (subagent) — read-only investigation for Test A and audits.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`task`/`external_directory` deny; sensitive-path denies on `read`.
+2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution; sensitive `read` denies + grep search-root denies for probe/secret paths.
+
+Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
+
+**Proof lesson (KILO-01R → CURSOR-01D):** `read` deny ≠ `grep` deny. Grep permission matches the **search root**, not hit files — path-scoped grep denies leaked the sentinel via a parent-dir search. Investigator now hard-denies `grep`.
 
 ## Non-goals
 
@@ -48,3 +64,21 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 ## Quick start
 
 See [`INSTALL.md`](./INSTALL.md). Run Test A with [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) before any write-capable job.
+
+## Factory primitives (reusable for Agent Pack #002)
+
+From the Granaide repo root:
+
+```bash
+# Structural safety before any runtime launch (CURSOR-02)
+npm run verify:agent-pack -- products/stallvix-kilo-pack
+
+# Headless proof harness — needs Kilo CLI on PATH (CURSOR-03)
+npm run proof:kilo -- --help
+npm run proof:kilo -- \
+  --workspace ../StallVix \
+  --agent stallvix-investigator \
+  --prompt-file products/stallvix-kilo-pack/PROOF-TEST-A.md
+```
+
+Pack #002 reuses the same scripts: point `--` / `--pack-dir` at the new pack folder and ship a `pack.json` with `name`, `version`, `safe_default_agent`, and required agent/skill/doc lists.
