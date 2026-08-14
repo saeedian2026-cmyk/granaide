@@ -1,102 +1,99 @@
-# Install — StallVix Kilo Executor Pack
+# Install the Granaide Trusted StallVix Worker
 
-Plain English first, then commands.
+Version 0.1.0 is a source-locked candidate. Install the exact files declared in
+[`pack.json`](./pack.json), verify them against
+[`PAYLOAD-MANIFEST.json`](./PAYLOAD-MANIFEST.json), and activate them through the
+shipped launcher. Copying some files or hand-merging agent definitions is not a
+verified install.
 
-## What “install” means (and what it does *not*)
+## Boundary
 
-**Install = copy config into your StallVix folder so Kilo reads it.**
+The pack installs local Kilo configuration into a StallVix checkout. It does not
+merge StallVix `main`, change Supabase/auth/RLS, embed Kilo in the web app, or
+deploy anything.
 
-You are **not**:
-- merging into StallVix `main`
-- changing Supabase / auth / RLS
-- “turning on Kilo inside the StallVix web app”
-- deploying anything
-
-Think of it like copying a **recipe card** into the kitchen where Kilo cooks. StallVix the product stays the restaurant OS; this pack only tells the Kilo chef how to behave in that kitchen.
-
-```text
-Granaide repo                          StallVix repo
-products/stallvix-kilo-pack/   --->    .kilo/ + skills  (copy)
-     (product you sell/own)            (consumer install, local)
-```
-
-After copy, when you open **StallVix** in Kilo, you pick agent `stallvix-investigator` (read-only) or `stallvix-implementer` (allowed-path edits).
+The default agent is the read-only `stallvix-investigator`.
+`stallvix-implementer` remains opt-in and requires separate owner approval for a
+specific small job; installing the pack does not grant that authority.
 
 ## Prerequisites
 
-- StallVix clone on disk (e.g. `E:\Plan M\Projects\Cube 10\StallVix`)
-- Kilo Code app/CLI that loads project `kilo.json` / `kilo.jsonc` and skills under `.kilo/skills/`
-- Node/npm (Context7 MCP uses `npx`)
+- A clean, disposable StallVix worktree. Do not use the protected primary tree.
+- Kilo Code CLI 7.4.20 (the tested version) available on `PATH`.
+- PowerShell 7 (`pwsh`) or Windows PowerShell 5.1 (`powershell.exe`).
+- Node/npm for the repository's verification commands.
+- A source commit or release containing this exact candidate.
 
-## Step-by-step (Windows-friendly)
+## Collision rule
 
-Set paths once (PowerShell):
+Version 0.1.0 does not support automatic coexistence with another Kilo pack. If
+the consumer already contains `.kilo/kilo.json`, `.kilo/kilo.jsonc`, any target
+skill directory, `AGENTS.granaide-kilo.md`, or `run-stallvix-kilo.ps1`, stop.
+Review or back up those files deliberately; do not overwrite or hand-merge them
+and call the result source-locked.
 
-```powershell
-$PACK = "E:\Plan M\Projects\Cube 10\Granaide\products\stallvix-kilo-pack"
-$SVX  = "E:\Plan M\Projects\Cube 10\StallVix"
-```
+## Exact install map
 
-### 1) Ensure StallVix has a `.kilo` folder
+| Pack source | StallVix destination |
+|---|---|
+| `kilo.jsonc` | `.kilo/kilo.jsonc` |
+| `AGENTS.md` | `AGENTS.granaide-kilo.md` |
+| `run-stallvix-kilo.ps1` | `run-stallvix-kilo.ps1` |
+| `skills/stallvix-authority/SKILL.md` | `.kilo/skills/stallvix-authority/SKILL.md` |
+| `skills/stallvix-receipt/SKILL.md` | `.kilo/skills/stallvix-receipt/SKILL.md` |
+| `skills/stallvix-safe-change/SKILL.md` | `.kilo/skills/stallvix-safe-change/SKILL.md` |
 
-```powershell
-New-Item -ItemType Directory -Force -Path "$SVX\.kilo\skills" | Out-Null
-```
+`AGENTS.granaide-kilo.md` supplements the consumer's real `AGENTS.md`; it never
+replaces it.
 
-### 2) Copy the agent config
+## Install procedure
 
-If StallVix has **no** `kilo.json` / `kilo.jsonc` yet:
+1. Record the source commit and consumer baseline SHA in the Work Receipt.
+2. Confirm every destination in the map above is absent.
+3. Create only the three destination skill directories and copy each mapped
+   file byte-for-byte.
+4. Add `.kilo-runtime-data/` to the consumer `.gitignore`. This directory holds
+   Kilo's automatically allowed tool output inside the sanitized worktree.
+5. Commit the installed candidate on a review branch so the diff is auditable.
+6. Run the consumer's install-lock test (currently
+   `npm run test:kilo-install`). It must verify the source commit, manifest, and
+   normalized hashes.
+7. Launch only from the StallVix worktree root:
 
-```powershell
-Copy-Item "$PACK\kilo.jsonc" "$SVX\.kilo\kilo.jsonc"
-```
+   ```powershell
+   powershell.exe -NoProfile -File .\run-stallvix-kilo.ps1 agent list
+   ```
 
-If StallVix **already** has `.kilo\kilo.json` (Context7 may already be there):
+8. Confirm both primary agents appear, the investigator is the default, and the
+   only effective external-directory exception resolves beneath
+   `.kilo-runtime-data/kilo/tool-output/` in this worktree.
+9. Run the full credential-safe P2 packet in
+   [`packets/P2-FULL-TEST-A-CLOSEOUT.md`](./packets/P2-FULL-TEST-A-CLOSEOUT.md).
+   Do not substitute model refusal for runtime denial.
 
-- Do **not** blind-overwrite if you customized it.
-- Open both files and **merge**: keep one `context7` MCP block; add the two agents (`stallvix-implementer`, `stallvix-investigator`) from the pack.
-- Session junk like `agent-manager.json` stays; leave it alone.
+The StallVix candidate branch provides the executable
+`npm run test:kilo-install` verifier in `scripts/stallvix-kilo-install.check.mjs`.
+It checks the recorded Granaide source commit, the copied manifest hash, every
+installed destination, the read-only default, and launcher containment. This is
+consumer integration code in StallVix PR #69, not a source-pack unit test.
 
-### 3) Copy the three skills
+## Acceptance
 
-```powershell
-Copy-Item -Recurse "$PACK\skills\stallvix-authority"   "$SVX\.kilo\skills\"
-Copy-Item -Recurse "$PACK\skills\stallvix-receipt"     "$SVX\.kilo\skills\"
-Copy-Item -Recurse "$PACK\skills\stallvix-safe-change" "$SVX\.kilo\skills\"
-```
+Installation is complete only when the consumer branch has:
 
-Skills = on-demand playbooks (authority, receipts, safe-change). Same idea as Sanity’s agent-skills folders.
+- an exact manifest-verified payload from a recorded source commit;
+- activation evidence from the required launcher;
+- adversarial permission evidence classified by enforcement layer;
+- a durable sanitized event log and complete Work Receipt;
+- unchanged repository state for the read-only investigator job.
 
-### 4) Add the Kilo worker contract (do not overwrite StallVix AGENTS.md)
-
-StallVix already has the real `AGENTS.md`. This pack ships a **Kilo supplement**:
-
-```powershell
-Copy-Item "$PACK\AGENTS.md" "$SVX\AGENTS.granaide-kilo.md"
-```
-
-Never silently replace StallVix `AGENTS.md`.
-
-### 5) Open StallVix in Kilo and smoke-check
-
-1. Open the **StallVix** folder in Kilo (not Granaide).
-2. Confirm agents appear: `stallvix-implementer`, `stallvix-investigator`.
-3. Run **Test A** with investigator only — see [`PROOF-TEST-A.md`](./PROOF-TEST-A.md).
-4. Only after Test A looks good, use implementer for small `src/**` / `docs/**` jobs.
-
-## Done vs not done
-
-| Done after install | Still NOT done |
-|--------------------|----------------|
-| Kilo can load StallVix-specific agents locally | StallVix control plane / embedded Kilo server |
-| Skills teach authority + receipts | Graph Context Resolver |
-| You can run read-only Test A | Any merge to StallVix `main` without owner OK |
+The current candidate has not yet passed that complete gate. See
+[`RELEASE-CHECKLIST.md`](./RELEASE-CHECKLIST.md).
 
 ## Uninstall
 
-Delete the copied skills, remove pack agents from `.kilo` config (or delete `kilo.jsonc` if it was only from this pack), delete `AGENTS.granaide-kilo.md`. StallVix app code untouched.
-
-## Owner decisions later
-
-1. **Consumer PR** — optional: commit the installed `.kilo` bits on a StallVix branch (owner-approved).
-2. **Embed** — still PARKED until ordinary graph population (Topics/Workstreams/receipts) is real.
+From the consumer branch, remove only the six mapped destinations above and the
+pack's `.kilo-runtime-data/` ignore entry. Delete `.kilo-runtime-data/` only after
+confirming it contains no evidence the owner needs to retain. Keep the Work
+Receipt and source-lock evidence as the audit record. StallVix application code
+and its real `AGENTS.md` are untouched.

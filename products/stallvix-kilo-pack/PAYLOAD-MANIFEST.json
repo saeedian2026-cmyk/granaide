@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "product": "granaide-stallvix-kilo-pack",
+  "product_version": "0.1.0",
+  "algorithm": "sha256",
+  "normalization": "UTF-8; strip BOM; CRLF/CR to LF",
+  "files": {
+    "kilo.jsonc": "edd7365a982935aa269e024e5a6f0a96cba9ff1a714f084f84eba9f7cedf6dab",
+    "AGENTS.md": "67baa8d1060dce1165a1b611c2295fbea9caabd8b30134f87597148c668bfe96",
+    "run-stallvix-kilo.ps1": "547ee36f327515499685624935aae4bb239192f710789a04c0cf90efd0078312",
+    "skills/stallvix-authority/SKILL.md": "b352deaf4bce64cdadc91477c5947fb00ac36d40b3ac7d13410860b49271f9a1",
+    "skills/stallvix-receipt/SKILL.md": "9bfbc9ca1935bf3dbef32b5ea79f7cb00d7f42b9c024d70fa3828bf4b18fd340",
+    "skills/stallvix-safe-change/SKILL.md": "599e7836ac614082acbdb1459dd589b4a82dff77ef684791f8a6518aa7a74c5c"
+  }
+}
