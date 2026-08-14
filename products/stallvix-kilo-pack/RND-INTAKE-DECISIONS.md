@@ -8,7 +8,7 @@ Scope: Granaide product #1 and StallVix smartness architecture
 This ledger consolidates the useful evidence from:
 
 1. `Granaide: Kilo in stallvxi` — source/install/activation/containment history and Agent 001 sequencing.
-2. `Github repo dump` — code-review-graph, i-have-adhd, Pi, Openship, Docker boilerplate, and Supabase portability/testing candidates.
+2. `GitHub repo dump` — code-review-graph, i-have-adhd, Pi, Openship, Docker boilerplate, and Supabase portability/testing candidates.
 3. `Repo Tool Intake Lab` — reality gates, candidate levels, bounded falsification, Spark separation, and project-specific intake rules.
 
 Conversation content is research evidence, not implementation authority. Current repository rules, tests, source docs, and owner-approved task packets remain authoritative.

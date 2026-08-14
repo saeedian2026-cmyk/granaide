@@ -1,6 +1,17 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { promisify } from "node:util";
 import {
   createManifest,
   hashNormalizedText,
@@ -14,6 +25,7 @@ const packUrl = new URL(
   "../products/stallvix-kilo-pack/pack.json",
   import.meta.url,
 );
+const execFileAsync = promisify(execFile);
 
 async function readPackConfig() {
   const source = await readFile(configUrl, "utf8");
@@ -172,4 +184,68 @@ test("the product descriptor maps every locked payload file to its consumer path
     descriptor.install_map["run-stallvix-kilo.ps1"],
     "run-stallvix-kilo.ps1",
   );
+});
+
+test("the launcher is bound to the worktree where it is installed", async () => {
+  const fixtureRoot = await mkdtemp(join(tmpdir(), "granaide-kilo-launcher-"));
+  const installedRoot = join(fixtureRoot, "installed");
+  const otherRoot = join(fixtureRoot, "other");
+  const binRoot = join(fixtureRoot, "bin");
+  const resultPath = join(fixtureRoot, "result.json");
+
+  try {
+    await Promise.all([
+      execFileAsync("git", ["init", installedRoot]),
+      execFileAsync("git", ["init", otherRoot]),
+    ]);
+    await mkdir(binRoot, { recursive: true });
+    await copyFile(
+      new URL(
+        "../products/stallvix-kilo-pack/run-stallvix-kilo.ps1",
+        import.meta.url,
+      ),
+      join(installedRoot, "run-stallvix-kilo.ps1"),
+    );
+    await writeFile(
+      join(binRoot, "kilo.ps1"),
+      [
+        "$payload = [ordered]@{",
+        "  cwd = (Get-Location).Path",
+        "  xdg = $env:XDG_DATA_HOME",
+        "  argv = @($args)",
+        "}",
+        "$payload | ConvertTo-Json -Compress | Set-Content -LiteralPath $env:GRANAIDE_LAUNCH_RESULT",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const env = {
+      ...process.env,
+      GRANAIDE_LAUNCH_RESULT: resultPath,
+      PATH: `${binRoot};${process.env.PATH}`,
+    };
+    await execFileAsync(
+      "powershell.exe",
+      ["-NoProfile", "-File", join(installedRoot, "run-stallvix-kilo.ps1"), "agent", "list"],
+      { cwd: installedRoot, env },
+    );
+    const result = JSON.parse(await readFile(resultPath, "utf8"));
+    assert.equal(result.cwd.toLowerCase(), installedRoot.toLowerCase());
+    assert.equal(
+      result.xdg.toLowerCase(),
+      join(installedRoot, ".kilo-runtime-data").toLowerCase(),
+    );
+    assert.deepEqual(result.argv, ["agent", "list"]);
+
+    await assert.rejects(
+      execFileAsync(
+        "powershell.exe",
+        ["-NoProfile", "-File", join(installedRoot, "run-stallvix-kilo.ps1"), "agent", "list"],
+        { cwd: otherRoot, env },
+      ),
+      /worktree root/i,
+    );
+  } finally {
+    await rm(fixtureRoot, { recursive: true, force: true });
+  }
 });

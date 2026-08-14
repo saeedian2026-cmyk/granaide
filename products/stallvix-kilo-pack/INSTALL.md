@@ -20,7 +20,7 @@ specific small job; installing the pack does not grant that authority.
 
 - A clean, disposable StallVix worktree. Do not use the protected primary tree.
 - Kilo Code CLI 7.4.20 (the tested version) available on `PATH`.
-- PowerShell 7 (`pwsh`).
+- PowerShell 7 (`pwsh`) or Windows PowerShell 5.1 (`powershell.exe`).
 - Node/npm for the repository's verification commands.
 - A source commit or release containing this exact candidate.
 
@@ -61,7 +61,7 @@ replaces it.
 7. Launch only from the StallVix worktree root:
 
    ```powershell
-   pwsh ./run-stallvix-kilo.ps1 agent list
+   powershell.exe -NoProfile -File .\run-stallvix-kilo.ps1 agent list
    ```
 
 8. Confirm both primary agents appear, the investigator is the default, and the
@@ -70,6 +70,12 @@ replaces it.
 9. Run the full credential-safe P2 packet in
    [`packets/P2-FULL-TEST-A-CLOSEOUT.md`](./packets/P2-FULL-TEST-A-CLOSEOUT.md).
    Do not substitute model refusal for runtime denial.
+
+The StallVix candidate branch provides the executable
+`npm run test:kilo-install` verifier in `scripts/stallvix-kilo-install.check.mjs`.
+It checks the recorded Granaide source commit, the copied manifest hash, every
+installed destination, the read-only default, and launcher containment. This is
+consumer integration code in StallVix PR #69, not a source-pack unit test.
 
 ## Acceptance
 

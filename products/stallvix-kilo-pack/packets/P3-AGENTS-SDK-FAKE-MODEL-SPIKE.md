@@ -33,7 +33,9 @@ Implement only:
 3. `change_status` — typed test-double mutation tool.
 4. A tool guardrail that validates actor, project, allowed transition, and idempotency key.
 5. Human approval required for every `change_status` call.
-6. An in-memory or disposable test persistence adapter that counts committed effects.
+6. A disposable restart-safe persistence adapter with unique constraints on
+   idempotency key and receipt key. In-memory counters may report metrics but
+   cannot prove exactly-once behavior.
 
 No handoffs, agent teams, web search, MCP, schedules, webhooks, vector retrieval, background runner, or UI is part of this spike.
 
@@ -75,11 +77,15 @@ Repeat from a fresh deterministic state, approve, and resume. Assert:
 
 ### S5 — duplicate resume
 
-Resume the already approved state again or deliver the same idempotency key twice. Assert:
+Restart the test process, then resume the already approved state again or
+deliver the same idempotency key twice. Also inject a crash after the effect is
+durably committed but before receipt acknowledgement. Restart and retry. Assert:
 
 - side-effect count remains exactly one;
 - the duplicate is reported explicitly;
 - receipt count remains one.
+- durable effect and receipt uniqueness survive both process restarts and the
+  crash window.
 
 ### S6 — guardrail failure
 
@@ -129,3 +135,6 @@ Return one Work Receipt containing:
 - known limitations.
 
 Stop after the falsification result. Passing does not authorize production model traffic or StallVix integration.
+
+If the same blocker repeats on a second attempt, stop, preserve sanitized
+evidence, and escalate to the owner before retrying.

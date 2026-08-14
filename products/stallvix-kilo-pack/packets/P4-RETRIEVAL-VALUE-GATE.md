@@ -4,12 +4,17 @@ Status: **PARKED — DATA AND ROADMAP GATES NOT MET**
 
 Owner: StallVix product authority; Claude Code alone performs any eventual live Supabase write
 
+Modifying owner: assign one named owner before setup; that owner controls any
+migrations, fixtures, benchmark code, and evidence paths for the experiment.
+
 ## Release gate
 
 Do not execute until:
 
 1. StallVix has at least 100 useful, permissioned, non-synthetic records from ordinary graph use.
-2. The owner labels at least 20 realistic queries with relevant result IDs.
+2. The owner labels at least 20 realistic queries with relevant result IDs and
+   freezes an immutable split before candidate-specific tuning: at least 60%
+   tuning queries and at least 40% untouched holdout queries.
 3. Current keyword/navigation behavior is measurable as the baseline.
 4. Two-user RLS isolation fixtures and tests exist.
 5. Vector/retrieval work is explicitly promoted from the parked roadmap.
@@ -29,7 +34,9 @@ Run the same labelled queries against:
 3. pgvector semantic search.
 4. Hybrid full-text + pgvector fusion.
 
-Use the same permissioned corpus snapshot and query set for every candidate.
+Use the same immutable permissioned corpus snapshot and query split for every
+candidate. Tune only on the tuning split. Compute Recall@5, the 15-point adoption
+threshold, and the final verdict only on the untouched holdout split.
 
 ## Required controls
 
@@ -62,7 +69,10 @@ Adopt hybrid retrieval only if all are true:
 1. Recall@5 improves by at least 15 percentage points over keyword search.
 2. p95 database query latency is below 250 ms on the test corpus.
 3. Two-user RLS isolation passes with zero leaked result IDs.
-4. Re-running the benchmark with the same snapshot produces the same ranking within documented tolerance.
+4. Three repeated runs on the same snapshot produce identical ordered top-five
+   result IDs for every holdout query (ranking-difference tolerance: zero).
+   Resolve equal scores deterministically by stable result ID ascending after
+   candidate score descending.
 5. The added migration, indexing, re-embedding, and monitoring burden is accepted explicitly.
 
 If hybrid misses any hard requirement, keep keyword/navigation search and record the failed hypothesis. Do not retain vector infrastructure merely because it is technically interesting.
@@ -89,5 +99,10 @@ Return:
 - metric summary and cost estimate;
 - adopt/reject verdict;
 - rollback/removal plan.
+- exact benchmark and RLS commands, exit codes, and links to machine-readable
+  results in the Work Receipt.
 
 Passing P4 authorizes only the selected retrieval slice. It does not authorize an autonomous Context Agent, RAG chatbot, or multi-agent routing.
+
+If the same blocker repeats on a second attempt, stop, preserve the evidence,
+and escalate to the owner before retrying.
