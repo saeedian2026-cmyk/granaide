@@ -10,11 +10,19 @@ const configUrl = new URL(
   "../products/stallvix-kilo-pack/kilo.jsonc",
   import.meta.url,
 );
+const packUrl = new URL(
+  "../products/stallvix-kilo-pack/pack.json",
+  import.meta.url,
+);
 
 async function readPackConfig() {
   const source = await readFile(configUrl, "utf8");
   const withoutCommentLines = source.replace(/^\s*\/\/.*$/gm, "");
   return JSON.parse(withoutCommentLines.replace(/,\s*([}\]])/g, "$1"));
+}
+
+async function readProductDescriptor() {
+  return JSON.parse(await readFile(packUrl, "utf8"));
 }
 
 function matchesKiloPattern(pattern, value) {
@@ -137,5 +145,31 @@ test("the committed source manifest matches normalized payload bytes", async () 
   assert.equal(
     hashNormalizedText("line one\r\nline two\r\n"),
     hashNormalizedText("line one\nline two\n"),
+  );
+});
+
+test("the product descriptor maps every locked payload file to its consumer path", async () => {
+  const descriptor = await readProductDescriptor();
+  const manifestUrl = new URL(
+    "../products/stallvix-kilo-pack/PAYLOAD-MANIFEST.json",
+    import.meta.url,
+  );
+  const manifest = JSON.parse(await readFile(manifestUrl, "utf8"));
+
+  assert.equal(descriptor.schema_version, 1);
+  assert.equal(descriptor.product_id, manifest.product);
+  assert.equal(descriptor.version, manifest.product_version);
+  assert.equal(descriptor.status, "candidate");
+  assert.equal(descriptor.default_agent, "stallvix-investigator");
+  assert.equal(descriptor.tested_kilo_version, "7.4.20");
+  assert.equal(descriptor.payload_manifest, "PAYLOAD-MANIFEST.json");
+  assert.equal(descriptor.license, "UNSPECIFIED");
+
+  const mappedSources = Object.keys(descriptor.install_map).sort();
+  assert.deepEqual(mappedSources, Object.keys(manifest.files).sort());
+  assert.equal(descriptor.install_map["kilo.jsonc"], ".kilo/kilo.jsonc");
+  assert.equal(
+    descriptor.install_map["run-stallvix-kilo.ps1"],
+    "run-stallvix-kilo.ps1",
   );
 });

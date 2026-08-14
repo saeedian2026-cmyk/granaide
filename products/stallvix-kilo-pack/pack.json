@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "product_id": "granaide-stallvix-kilo-pack",
+  "display_name": "Granaide Trusted StallVix Worker",
+  "version": "0.1.0",
+  "status": "candidate",
+  "publisher": "Granaide",
+  "consumer": "StallVix",
+  "tested_kilo_version": "7.4.20",
+  "default_agent": "stallvix-investigator",
+  "optional_agents": [
+    {
+      "id": "stallvix-implementer",
+      "authorization": "separate-owner-approval-required"
+    }
+  ],
+  "payload_manifest": "PAYLOAD-MANIFEST.json",
+  "license": "UNSPECIFIED",
+  "install_map": {
+    "kilo.jsonc": ".kilo/kilo.jsonc",
+    "AGENTS.md": "AGENTS.granaide-kilo.md",
+    "run-stallvix-kilo.ps1": "run-stallvix-kilo.ps1",
+    "skills/stallvix-authority/SKILL.md": ".kilo/skills/stallvix-authority/SKILL.md",
+    "skills/stallvix-receipt/SKILL.md": ".kilo/skills/stallvix-receipt/SKILL.md",
+    "skills/stallvix-safe-change/SKILL.md": ".kilo/skills/stallvix-safe-change/SKILL.md"
+  },
+  "promotion_gates": {
+    "candidate_to_pilot": "P2 full Test A closeout accepted",
+    "pilot_to_release": "license, support owner, compatibility policy, and clean consumer verification resolved"
+  }
+}

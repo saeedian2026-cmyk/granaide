@@ -1,6 +1,6 @@
 # StallVix Kilo Executor Pack (Granaide product #1)
 
-**Status:** Spike v0  
+**Status:** Candidate v0.1.0 (full Test A and commercial gates still open)
 **Product owner:** Granaide  
 **Consumer:** StallVix repo (install separately; no StallVix schema/RLS/deploy changes)
 
@@ -25,6 +25,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 | Path | Purpose |
 |------|---------|
+| [`pack.json`](./pack.json) | Machine-readable product identity, tested Kilo version, promotion gates, and exact install map |
 | [`kilo.jsonc`](./kilo.jsonc) | Agents `stallvix-implementer` + `stallvix-investigator`, Context7 MCP, permission envelopes |
 | [`AGENTS.md`](./AGENTS.md) | Distilled StallVix worker contract for Kilo |
 | [`PRODUCT-BRIEF.md`](./PRODUCT-BRIEF.md) | Product contract, success measures, four-tool roadmap, and promotion gates |
@@ -37,6 +38,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`packets/P5-DURABLE-RUNNER-BAKEOFF.md`](./packets/P5-DURABLE-RUNNER-BAKEOFF.md) | Phase-3 Supabase-native versus Trigger.dev durability bakeoff |
 | [`skills/`](./skills/) | Agent Skills (Sanity Agent Toolkit packaging pattern) |
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
+| [`RELEASE-CHECKLIST.md`](./RELEASE-CHECKLIST.md) | Evidence, pilot, licensing, support, and commercial-release gates |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |
 | [`proof/`](./proof/) | Captured Test A receipts |
 
