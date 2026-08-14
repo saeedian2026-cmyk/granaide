@@ -20,15 +20,18 @@
   "permission": {
     "read": {
       "*": "allow",
+      ".env": "deny",
+      "*/.env": "deny",
+      ".env.*": "deny",
+      "*/.env.*": "deny",
       "*.env": "deny",
       "*.env.*": "deny",
-      "**/.env": "deny",
-      "**/.env.*": "deny",
-      "**/credentials.json": "deny",
-      "**/*.pem": "deny",
-      "**/*.key": "deny",
-      "*.env.example": "allow",
-      "**/.env.example": "allow"
+      "credentials.json": "deny",
+      "*/credentials.json": "deny",
+      "*.pem": "deny",
+      "*.key": "deny",
+      ".env.example": "allow",
+      "*/.env.example": "allow"
     },
     "edit": "ask",
     "bash": "ask",
@@ -43,15 +46,18 @@
       "permission": {
         "read": {
           "*": "allow",
+          ".env": "deny",
+          "*/.env": "deny",
+          ".env.*": "deny",
+          "*/.env.*": "deny",
           "*.env": "deny",
           "*.env.*": "deny",
-          "**/.env": "deny",
-          "**/.env.*": "deny",
-          "**/credentials.json": "deny",
-          "**/*.pem": "deny",
-          "**/*.key": "deny",
-          "*.env.example": "allow",
-          "**/.env.example": "allow"
+          "credentials.json": "deny",
+          "*/credentials.json": "deny",
+          "*.pem": "deny",
+          "*.key": "deny",
+          ".env.example": "allow",
+          "*/.env.example": "allow"
         },
         // CURSOR-01D / KILO-01R: path-scoped grep denies are not content-safe when the
         // search root is a parent directory. Hard-deny the tool for investigator.
@@ -71,32 +77,22 @@
       "permission": {
         "read": {
           "*": "allow",
+          ".env": "deny",
+          "*/.env": "deny",
+          ".env.*": "deny",
+          "*/.env.*": "deny",
           "*.env": "deny",
           "*.env.*": "deny",
-          "**/.env": "deny",
-          "**/.env.*": "deny",
-          "**/credentials.json": "deny",
-          "**/*.pem": "deny",
-          "**/*.key": "deny",
-          "*.env.example": "allow",
-          "**/.env.example": "allow"
+          "credentials.json": "deny",
+          "*/credentials.json": "deny",
+          "*.pem": "deny",
+          "*.key": "deny",
+          ".env.example": "allow",
+          "*/.env.example": "allow"
         },
-        // Grep checks the search ROOT path only (not each hit). File-level denies do not
-        // stop parent-dir searches. Deny known secret roots + filenames as defense-in-depth.
-        "grep": {
-          "*": "allow",
-          "docs/agent-work/probes": "deny",
-          "docs/agent-work/probes/**": "deny",
-          "*.env": "deny",
-          "*.env.*": "deny",
-          "**/.env": "deny",
-          "**/.env.*": "deny",
-          "**/credentials.json": "deny",
-          "**/*.pem": "deny",
-          "**/*.key": "deny",
-          "*.env.example": "allow",
-          "**/.env.example": "allow"
-        },
+        // Kilo authorizes grep against the search root, not each hit. A parent-root
+        // search can therefore disclose denied descendants, so this pack denies grep.
+        "grep": "deny",
         // Last matching rule wins. Catch-all first; path allows next; hard-denies last.
         "edit": {
           "*": "ask",
@@ -107,34 +103,26 @@
           "supabase/migrations/**": "deny",
           "wrangler.toml": "deny",
           ".env": "deny",
+          "*/.env": "deny",
           ".env.*": "deny",
-          "**/.env": "deny",
-          "**/.env.*": "deny",
-          "**/credentials.json": "deny",
-          "**/*.pem": "deny",
-          "**/*.key": "deny"
+          "*/.env.*": "deny",
+          "credentials.json": "deny",
+          "*/credentials.json": "deny",
+          "*.pem": "deny",
+          "*.key": "deny"
         },
-        // Safe verification stays ask. Forbidden classes are hard-deny after catch-all.
+        // Default-deny shell. Only exact, human-approved verification commands are exposed.
+        // This avoids relying on bypassable deploy/push command blacklists.
         "bash": {
-          "*": "ask",
-          "git push *": "deny",
-          "git push --force *": "deny",
-          "git push -f *": "deny",
-          "wrangler *": "deny",
-          "npx wrangler *": "deny",
-          "npm run deploy *": "deny",
-          "pnpm run deploy *": "deny",
-          "yarn deploy *": "deny",
-          "supabase db *": "deny",
-          "supabase migration *": "deny",
-          "npx supabase db *": "deny",
-          "npx supabase migration *": "deny",
-          "cat .env*": "deny",
-          "type .env*": "deny",
-          "Get-Content .env*": "deny",
-          "Get-Content *.env*": "deny"
+          "*": "deny",
+          "npm run typecheck": "ask",
+          "npm run lint": "ask",
+          "npm test": "ask",
+          "git status --short": "ask",
+          "git diff --check": "ask"
         },
-        "external_directory": "ask"
+        "external_directory": "deny",
+        "task": "deny"
       }
     }
   }
