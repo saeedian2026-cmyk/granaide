@@ -28,8 +28,10 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | [`kilo.jsonc`](./kilo.jsonc) | Agents `stallvix-implementer` + `stallvix-investigator`, Context7 MCP, permission envelopes |
 | [`AGENTS.md`](./AGENTS.md) | Distilled StallVix worker contract for Kilo |
 | [`PRODUCT-BRIEF.md`](./PRODUCT-BRIEF.md) | Product contract, success measures, four-tool roadmap, and promotion gates |
+| [`RND-INTAKE-DECISIONS.md`](./RND-INTAKE-DECISIONS.md) | Consolidated adopt/adapt/runner-up/park decisions from the three R&D chats |
 | [`PAYLOAD-MANIFEST.json`](./PAYLOAD-MANIFEST.json) | Portable normalized hashes for the install payload |
 | [`run-stallvix-kilo.ps1`](./run-stallvix-kilo.ps1) | Required Windows launcher that roots Kilo tool output inside the worktree |
+| [`packets/P2-FULL-TEST-A-CLOSEOUT.md`](./packets/P2-FULL-TEST-A-CLOSEOUT.md) | Next credential-gated, no-secret runtime proof packet |
 | [`skills/`](./skills/) | Agent Skills (Sanity Agent Toolkit packaging pattern) |
 | [`INSTALL.md`](./INSTALL.md) | How to install into a StallVix checkout |
 | [`PROOF-TEST-A.md`](./PROOF-TEST-A.md) | Packet 001 Test A checklist (read-only) |
