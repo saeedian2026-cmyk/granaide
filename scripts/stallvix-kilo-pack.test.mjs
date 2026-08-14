@@ -80,6 +80,17 @@ test("the investigator cannot read common secret-bearing files", async () => {
     "certs/server.pem",
     "private.key",
     "certs/private.key",
+    // DS-01/F4 regression: Kilo `*` spans path separators, so denied patterns must
+    // hold at 2- and 3-level depth too (kept as regression, not a claimed bypass).
+    "a/b/credentials.json",
+    "a/b/c/credentials.json",
+    "a/b/server.pem",
+    "a/b/c/server.pem",
+    "a/b/private.key",
+    "a/b/c/private.key",
+    "a/b/.env",
+    "a/b/.env.production",
+    "config/.env.local",
   ]) {
     assert.equal(resolvePermission(read, path), "deny", path);
   }
@@ -87,6 +98,35 @@ test("the investigator cannot read common secret-bearing files", async () => {
   for (const path of [".env.example", "config/.env.example"]) {
     assert.equal(resolvePermission(read, path), "allow", path);
   }
+});
+
+test("DS-01/F3: the worktree-local Kilo runtime root is opaque to every agent", async () => {
+  const config = await readPackConfig();
+
+  for (const agentName of ["stallvix-investigator", "stallvix-implementer"]) {
+    const agent = config.agent[agentName];
+    assert.equal(
+      resolvePermission(agent.permission.read, ".kilo-runtime-data/anything.json"),
+      "deny",
+      `${agentName} read runtime root`,
+    );
+    assert.equal(
+      resolvePermission(agent.permission.read, ".kilo-runtime-data/tool-output/x.txt"),
+      "deny",
+      `${agentName} read nested runtime output`,
+    );
+    assert.equal(
+      resolvePermission(agent.permission.glob, ".kilo-runtime-data/anything.json"),
+      "deny",
+      `${agentName} glob runtime root`,
+    );
+  }
+
+  assert.equal(
+    resolvePermission(config.permission.read, ".kilo-runtime-data/anything.json"),
+    "deny",
+    "base read runtime root",
+  );
 });
 
 test("the opt-in implementer cannot search across denied descendants", async () => {
@@ -121,8 +161,61 @@ test("the implementer shell is default-deny with a narrow verification allowlist
     "supabase functions deploy api",
     "npm run deploy",
     "Get-Content .env",
+    // DS-01/F7 narrowing: compound/prefixed commands must not inherit an allow/ask
+    // decision by prefix accident; the resolver treats them as exact strings.
+    "npm run lint && rm -rf .",
+    "npm run lint; git status",
+    "npm run lint | cat",
+    "cmd /c npm run lint",
+    'powershell -Command "npm run lint"',
+    "cd . && npm run lint",
   ]) {
     assert.equal(resolvePermission(bash, command), "deny", command);
+  }
+});
+
+test("DS-01/P1: the implementer base policy has no unconditional src/docs edit allow", async () => {
+  const config = await readPackConfig();
+  const edit = config.agent["stallvix-implementer"].permission.edit;
+  const editRules = typeof edit === "string" ? {} : edit;
+
+  assert.equal(editRules["*"], "ask");
+  assert.notEqual(editRules["src/**"], "allow");
+  assert.notEqual(editRules["docs/**"], "allow");
+  assert.equal(resolvePermission(edit, "src/components/App.tsx"), "ask");
+  assert.equal(resolvePermission(edit, "docs/README.md"), "ask");
+});
+
+test("DS-01/P2: authority/evidence paths are explicit edit hard-denies", async () => {
+  const config = await readPackConfig();
+  const edit = config.agent["stallvix-implementer"].permission.edit;
+
+  for (const path of [
+    "SPEC.md",
+    "SCOPE.md",
+    "BACKLOG.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "AGENTS.granaide-kilo.md",
+    "docs/agent-work/packets/SVX-ANY-01.md",
+    "docs/agent-work/packets/sub/SVX-ANY-01.md",
+    "docs/audit/SVX-AUDIT-01.md",
+    ".kilo/kilo.jsonc",
+    ".kilo/skills/stallvix-authority/SKILL.md",
+    ".kilo-runtime-data/kilo/session.json",
+    "supabase/migrations/001.sql",
+    "wrangler.toml",
+    ".env",
+    "src/.env.local",
+    "a/b/credentials.json",
+    "a/b/c/credentials.json",
+    "a/b/server.pem",
+    "a/b/c/server.pem",
+    "a/b/private.key",
+    "a/b/c/private.key",
+    "a/b/.env.production",
+  ]) {
+    assert.equal(resolvePermission(edit, path), "deny", path);
   }
 });
 

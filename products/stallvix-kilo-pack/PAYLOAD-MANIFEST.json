@@ -5,8 +5,8 @@
   "algorithm": "sha256",
   "normalization": "UTF-8; strip BOM; CRLF/CR to LF",
   "files": {
-    "kilo.jsonc": "edd7365a982935aa269e024e5a6f0a96cba9ff1a714f084f84eba9f7cedf6dab",
-    "AGENTS.md": "67baa8d1060dce1165a1b611c2295fbea9caabd8b30134f87597148c668bfe96",
+    "kilo.jsonc": "8c3bd8de4aea2c145bc4318294771adca2af8d39664277b23ec3f660d1b7f10d",
+    "AGENTS.md": "c2242b7f1706b2dc749ee0deb6001dffcca3a0d40346b30ec4073bfff38db543",
     "run-stallvix-kilo.ps1": "547ee36f327515499685624935aae4bb239192f710789a04c0cf90efd0078312",
     "skills/stallvix-authority/SKILL.md": "b352deaf4bce64cdadc91477c5947fb00ac36d40b3ac7d13410860b49271f9a1",
     "skills/stallvix-receipt/SKILL.md": "9bfbc9ca1935bf3dbef32b5ea79f7cb00d7f42b9c024d70fa3828bf4b18fd340",

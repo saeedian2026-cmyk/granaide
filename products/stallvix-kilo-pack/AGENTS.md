@@ -34,11 +34,11 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 
 | Capability | Investigator | Implementer |
 |------------|--------------|-------------|
-| `read` | allow; sensitive paths hard-deny | allow; same sensitive-path denies |
+| `read` | allow; sensitive paths hard-deny; `.kilo-runtime-data/**` deny | allow; same sensitive-path denies; `.kilo-runtime-data/**` deny |
 | `grep` | **deny** (hard) — path denies are not content-safe | **deny** (hard) — same reason |
-| `glob` | may reveal filenames; **not** a content-confidentiality control | same |
+| `glob` | may reveal filenames; `.kilo-runtime-data/**` names are **not** discoverable | same |
 | `external_directory` | **deny** except Kilo-managed tool output relocated inside the worktree | same |
-| edit `src/**`, `docs/**` | deny | allow; catch-all ask first; migrations/env/wrangler deny last |
+| edit | deny | catch-all `ask` first; **no** unconditional `src/**`/`docs/**` allow; authority/evidence/runtime-data/migrations/env/wrangler deny last |
 | bash typecheck/lint/test | deny | ask for five exact verification commands only |
 | migration.apply / deploy / `git push` | deny | deny by default-deny shell allowlist |
 | db.service_role | deny | deny |
@@ -51,7 +51,11 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 
 **Kilo-managed output exception:** Kilo appends an allow for its tool-output directory after the agent's external-directory deny. Always launch through `run-stallvix-kilo.ps1`, which sets `XDG_DATA_HOME` to `.kilo-runtime-data` under the current Git worktree. Ignore that directory in Git. A direct `kilo` launch does not meet this pack's outside-worktree claim.
 
-**Shell boundary:** implementer bash is deny-by-default. Only exact `npm run typecheck`, `npm run lint`, `npm test`, `git status --short`, and `git diff --check` commands may reach a human approval prompt. Unmatched wrappers, deploys, pushes, migrations, and arbitrary commands remain denied. This permission layer is still not an operating-system sandbox; use a sanitized dedicated worktree and keep credentials out of it. Reload Kilo after editing project `kilo.jsonc`.
+**Runtime-data boundary (DS-01/F3):** `.kilo-runtime-data/**` is worktree-local Kilo runtime state (tool output, sessions, cache). Agent-facing `read`, `glob` (and `edit` for the implementer) hard-deny that root so no agent can treat Kilo runtime state as ordinary workspace content. This policy is fail-closed; the only exceptions are Kilo-internal, added by Kilo after the agent rules, and narrower than the root. A successful launcher test proves the redirect target, **not** that auth/session material is absent — authenticated runtime inventory is a separate gate, and no real credential may ever be created inside the worktree.
+
+**Authority/evidence immutability (DS-01/F2):** the implementer has **no** unconditional edit allow over `docs/**` or `src/**`. `SPEC.md`, `SCOPE.md`, `BACKLOG.md`, `AGENTS.md`, `CLAUDE.md`, `AGENTS.granaide-kilo.md`, `docs/agent-work/packets/**`, `docs/audit/**`, `.kilo/**`, `.kilo-runtime-data/**`, `supabase/migrations/**`, `wrangler.toml`, `.env*`, and credentials/pem/key files are explicit edit hard-denies. A job that legitimately needs write paths must receive an exact job-scoped grant — the shipped base policy never grants one.
+
+**Shell boundary:** implementer bash is deny-by-default. Only exact `npm run typecheck`, `npm run lint`, `npm test`, `git status --short`, and `git diff --check` commands may reach a human approval prompt. Unmatched wrappers, deploys, pushes, migrations, and arbitrary commands remain denied. Compound or prefixed variants (`npm run lint && …`, `cmd /c npm run lint`, PowerShell-wrapped commands) never inherit the exact allow decision; the static test matrix covers them, and Kilo runtime proof of that rejection is deferred to Gate C/D (DS-01/F7 — static denial is not runtime proof). This permission layer is still not an operating-system sandbox; use a sanitized dedicated worktree and keep credentials out of it. Reload Kilo after editing project `kilo.jsonc`.
 
 ## Sequencing note
 

@@ -1,6 +1,6 @@
 # P2 — Full Test A closeout
 
-Status: **BLOCKED ON CREDENTIAL ROTATION**
+Status: **BLOCKED ON CREDENTIAL ROTATION** (source policy contract updated by DS-01)
 
 Executor after release: Codex operating Kilo through the installed launcher
 
@@ -13,6 +13,15 @@ Authority: read-only investigator proof only
 Close the evidence missing from the genuine 2026-08-14 two-read Kilo session without granting implementation authority. This packet tests the reviewed source candidate and produces a durable sanitized event manifest.
 
 Passing P2 does not authorize the implementer, merge either draft PR, embed Kilo into StallVix, install Docker, or touch database/auth/deployment paths.
+
+## Gate-D bounded-mutation contract (updated by DS-01)
+
+Gate D may only pass when runtime proof demonstrates **two independent boundaries**, neither of which may rely on the other:
+
+1. **Job-grant narrowing** — a path that is not an authority/evidence path and would otherwise need approval is denied outside the exact job grant. Probe: pick a writable product path (e.g. `src/components/App.tsx`), grant it in the job session only, and require that a different non-authority path (e.g. `src/components/Other.tsx`) is still denied outside the grant.
+2. **Authority immutability** — an attempted edit of the governing packet path itself is hard-denied by the **shipped base policy**, independent of the session/job grant. Probe: request an edit of the active Gate-D packet path (e.g. `docs/agent-work/packets/P2-FULL-TEST-A-CLOSEOUT.md` in the consumer checkout) and require a permission-system denial with zero content mutation.
+
+The existing denied probe `docs/agent-work/granaide-kilo-canary-denied.txt` may be retained **only** as a markdown artifact; its expected base-policy disposition under the DS-01 policy is now **`ask`** (it is a `docs/**` path with no specific hard deny — the shipped implementer edit policy is catch-all `ask` with explicit hard-denies covering `docs/agent-work/packets/**` and `docs/audit/**`, so this sibling path no longer resolves to an automatic allow or deny). Document that disposition in the canary run; the probe proves nothing by itself. The two probes above are the actual Gate-D evidence.
 
 ## Preconditions — all required
 
