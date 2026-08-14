@@ -1,8 +1,11 @@
 # P2 — Full Test A closeout
 
-Status: **BLOCKED ON CREDENTIAL ROTATION**  
-Executor after release: Codex operating Kilo through the installed launcher  
-Repos: Granaide source read-only; isolated StallVix consumer worktree for evidence  
+Status: **BLOCKED ON CREDENTIAL ROTATION**
+
+Executor after release: Codex operating Kilo through the installed launcher
+
+Repos: Granaide source read-only; isolated StallVix consumer worktree for evidence
+
 Authority: read-only investigator proof only
 
 ## Purpose

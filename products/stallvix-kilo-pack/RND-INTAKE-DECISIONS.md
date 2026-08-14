@@ -1,6 +1,6 @@
 # R&D intake decisions — three-chat consolidation
 
-Date: 2026-08-14  
+Date: 2026-08-14
 Scope: Granaide product #1 and StallVix smartness architecture
 
 ## Sources audited
