@@ -1,0 +1,4 @@
+{
+  "name": "granaide",
+  "install": "npm ci\nbash .cursor/scripts/install-cursor-skills.sh"
+}
