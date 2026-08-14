@@ -34,8 +34,12 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 ## Agents
 
-1. **`stallvix-implementer`** (primary) — constrained Level-C worker. Edits only allowed paths; denies migrations/auth/deploy/`main`.
-2. **`stallvix-investigator`** (subagent) — read-only investigation for Test A and audits.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`task`/`external_directory` deny; sensitive-path denies on `read`.
+2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; hard-denies migrations/env/deploy/`git push` classes after ordered rule resolution; sensitive `read` denies + grep search-root denies for probe/secret paths.
+
+Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
+
+**Proof lesson (KILO-01R → CURSOR-01D):** `read` deny ≠ `grep` deny. Grep permission matches the **search root**, not hit files — path-scoped grep denies leaked the sentinel via a parent-dir search. Investigator now hard-denies `grep`.
 
 ## Non-goals
 
