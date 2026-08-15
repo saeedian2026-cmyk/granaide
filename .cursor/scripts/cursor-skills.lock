@@ -1,0 +1,8 @@
+# DS-03 immutable pin for codex-cursor-apprentice.
+# commit is a 40-char object name, never a moving branch.
+repo=saeedian2026-cmyk/granaide
+commit=25d2466110abb9196c62205a9f80e53d032b33f3
+prefix=cursor-skills/codex-cursor-apprentice
+SKILL.md=1cbe2dd7c0ba0f7e84d1e6f570af658686b0ed4a95fdd8a47e8d28f9e18a093c
+catalog.md=59b789a4416d221d1228c954a44e865e947715d3ca52dbf1e8365c786bf4ae30
+split.md=dc04d8f526753d6aa47ed1fa44864fe78f21d61408bcd01b71ca51efcce8ad3a
