@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:stallvix-kilo-pack": "node --test scripts/stallvix-kilo-pack.test.mjs"
+    "test:stallvix-kilo-pack": "node --test scripts/stallvix-kilo-pack.test.mjs scripts/stallvix-kilo-jsonc.test.mjs scripts/stallvix-kilo-runtime-inventory.test.mjs"
   },
   "dependencies": {
     "next": "16.3.0",
@@ -21,6 +21,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "jsonc-parser": "3.3.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -26,7 +26,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 | Path | Purpose |
 |------|---------|
 | [`pack.json`](./pack.json) | Machine-readable product identity, tested Kilo version, promotion gates, and exact install map |
-| [`kilo.jsonc`](./kilo.jsonc) | Agents `stallvix-implementer` + `stallvix-investigator`, Context7 MCP, permission envelopes |
+| [`kilo.jsonc`](./kilo.jsonc) | Agents `stallvix-implementer` + `stallvix-investigator`, permission envelopes (no unpinned MCP in v0.1) |
 | [`AGENTS.md`](./AGENTS.md) | Distilled StallVix worker contract for Kilo |
 | [`PRODUCT-BRIEF.md`](./PRODUCT-BRIEF.md) | Product contract, success measures, four-tool roadmap, and promotion gates |
 | [`RND-INTAKE-DECISIONS.md`](./RND-INTAKE-DECISIONS.md) | Consolidated adopt/adapt/runner-up/park decisions from the three R&D chats |
@@ -46,7 +46,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 ## Agents
 
 1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`task`/`external_directory` deny; sensitive-path denies on `read`.
-2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Edits `src/**` / `docs/**`; denies grep, delegation, outside-worktree access, migrations, env, deploy, and push. Shell is deny-by-default with five exact verification commands gated by human approval.
+2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Base write policy is catch-all `ask` with **no** unconditional `src/**` / `docs/**` allow; authority/evidence/runtime-data/migrations/env/deploy/push are hard-denied. Exact write paths come from the job packet. Shell is deny-by-default with five exact StallVix consumer verification commands gated by human approval.
 
 Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
 

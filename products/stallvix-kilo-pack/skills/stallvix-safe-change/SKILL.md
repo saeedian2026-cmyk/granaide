@@ -23,10 +23,9 @@ metadata:
 
 ## Allowed by default (implementer)
 
-- `src/**`
-- `docs/**`
+None. The shipped base policy is catch-all `ask` with authority/evidence/runtime-data hard-denies. `src/**` and `docs/**` are **not** default write allows.
 
-Narrow further if the task packet specifies `allowed_paths`.
+A job packet must grant exact paths. Narrow further if that packet specifies `allowed_paths`.
 
 ## Always forbidden
 
