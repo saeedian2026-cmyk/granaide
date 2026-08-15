@@ -1,24 +1,20 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01D grep hard-deny; DS-01 policy/runtime-root hardening)
+  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01D grep hard-deny; DS-01 policy/runtime-root hardening; DS-02 supply-chain/write-tool fail-closed)
   // Install into StallVix checkout per INSTALL.md — do not commit secrets.
   // Permission rule order: last matching rule wins (Kilo Agent Permissions docs).
   // Put catch-all first; specific allow/deny exceptions after.
   // Tool boundaries are distinct: read ≠ grep ≠ glob ≠ external_directory ≠ bash ≠ edit.
+  // DS-02/S2A: write and apply_patch are separate Edit-group tools (Kilo "How Tools Work").
+  // Public docs do not prove they inherit the `edit` path map. Fail-closed: identical
+  // deny maps on implementer; deny on investigator. Runtime must still prove binding
+  // (ask is not an authority/evidence boundary). Gate C/D — no authenticated run here.
   // KILO-01R: grep path denies match the search ROOT only, not each hit file — parent-dir
   // grep bypassed **/credentials.json. Investigator therefore hard-denies grep entirely.
   // DS-01/F3: .kilo-runtime-data/** is worktree-local Kilo runtime state; agents cannot read it.
   // DS-01/F2: no unconditional src/** or docs/** edit allow; authority/evidence paths hard-deny.
+  // DS-02/S1: no Context7 MCP and no unpinned npx runtime-executable in candidate v0.1.
   "default_agent": "stallvix-investigator",
-  "mcp": {
-    "context7": {
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
-      "environment": {
-        "DEFAULT_MINIMUM_TOKENS": "5000"
-      }
-    }
-  },
   "permission": {
     "read": {
       "*": "allow",
@@ -37,6 +33,8 @@
       "*/.env.example": "allow"
     },
     "edit": "ask",
+    "write": "ask",
+    "apply_patch": "ask",
     "bash": "ask",
     "external_directory": "ask",
     "glob": {
@@ -77,6 +75,8 @@
           ".kilo-runtime-data/**": "deny"
         },
         "edit": "deny",
+        "write": "deny",
+        "apply_patch": "deny",
         "bash": "deny",
         "external_directory": "deny",
         "task": "deny"
@@ -86,7 +86,7 @@
       "description": "Constrained Level-C StallVix implementer. Obeys SPEC/SCOPE/AGENTS. No migrations, auth, deploy, or main. Select deliberately — not the default.",
       "mode": "primary",
       "color": "#0F766E",
-      "prompt": "You are the Granaide StallVix implementer — a replaceable Level-C executor, not StallVix's brain.\n\nAuthority order (read before acting):\n1. SPEC.md — durable product truth\n2. SCOPE.md — what is authorized NOW (if present)\n3. BACKLOG.md — candidates only, not authorization\n4. AGENTS.md (repo + this pack) — how workers behave\n\nHard rules:\n- One modifying owner at a time. Inspect before edit.\n- Never apply migrations, change auth/RLS, edit wrangler.toml, deploy, or push to main.\n- Never use or request Supabase service-role keys.\n- Prefer smallest complete change. No unrelated cleanup.\n- After material work, emit a Work Receipt using the stallvix-receipt skill.\n- If scope is unclear or blocked twice on the same issue, STOP and escalate to the owner.\n- Use Context7 MCP for current library docs (Vite, React, Supabase client, Kilo) instead of guessing APIs.\n\nAllowed edit focus: only the exact paths granted by the job packet — there is no unconditional src/** or docs/** write allow in the base policy. Authority/evidence (SPEC.md, SCOPE.md, BACKLOG.md, AGENTS.md, CLAUDE.md, AGENTS.granaide-kilo.md, docs/agent-work/packets/**, docs/audit/**), .kilo/**, .kilo-runtime-data/**, supabase/migrations/**, wrangler.toml, .env*, and credentials/pem/key files are hard-denied.\nVerification: npm run typecheck, npm run lint, npm test as appropriate — do not invent deploy proof.",
+      "prompt": "You are the Granaide StallVix implementer — a replaceable Level-C executor, not StallVix's brain.\n\nAuthority order (read before acting):\n1. SPEC.md — durable product truth\n2. SCOPE.md — what is authorized NOW (if present)\n3. BACKLOG.md — candidates only, not authorization\n4. AGENTS.md (repo + this pack) — how workers behave\n\nHard rules:\n- One modifying owner at a time. Inspect before edit.\n- Never apply migrations, change auth/RLS, edit wrangler.toml, deploy, or push to main.\n- Never use or request Supabase service-role keys.\n- Prefer smallest complete change. No unrelated cleanup.\n- After material work, emit a Work Receipt using the stallvix-receipt skill.\n- If scope is unclear or blocked twice on the same issue, STOP and escalate to the owner.\n- Do not fetch live library docs via MCP in candidate v0.1. Use the job packet and in-repo sources.\n\nAllowed edit focus: only the exact paths granted by the job packet — there is no unconditional src/** or docs/** write allow in the base policy. Authority/evidence (SPEC.md, SCOPE.md, BACKLOG.md, AGENTS.md, CLAUDE.md, AGENTS.granaide-kilo.md, docs/agent-work/packets/**, docs/audit/**), .kilo/**, .kilo-runtime-data/**, supabase/migrations/**, wrangler.toml, .env*, and credentials/pem/key files are hard-denied.\nVerification: npm run typecheck, npm run lint, npm test as appropriate — do not invent deploy proof. Those three npm scripts are StallVix consumer commands, not Granaide source scripts.",
       "permission": {
         "read": {
           "*": "allow",
@@ -115,6 +115,8 @@
         // Last matching rule wins. Catch-all ask first; NO unconditional src/docs
         // allow; authority/evidence/runtime-data/migrations/env/wrangler deny last.
         // A job-specific agent or generated job grant adds exact `allow` paths.
+        // DS-02/S2A: keep edit / write / apply_patch maps identical until runtime
+        // proves inheritance. Do not treat ask as a deny.
         "edit": {
           "*": "ask",
           "SPEC.md": "deny",
@@ -141,8 +143,62 @@
           "*.pem": "deny",
           "*.key": "deny"
         },
-        // Default-deny shell. Only exact, human-approved verification commands are exposed.
-        // This avoids relying on bypassable deploy/push command blacklists.
+        "write": {
+          "*": "ask",
+          "SPEC.md": "deny",
+          "SCOPE.md": "deny",
+          "BACKLOG.md": "deny",
+          "AGENTS.md": "deny",
+          "CLAUDE.md": "deny",
+          "AGENTS.granaide-kilo.md": "deny",
+          "docs/agent-work/packets/**": "deny",
+          "docs/audit/**": "deny",
+          ".kilo/**": "deny",
+          ".kilo-runtime-data/**": "deny",
+          "supabase/migrations/**": "deny",
+          "supabase/functions/**": "ask",
+          "wrangler.toml": "deny",
+          ".env": "deny",
+          "*/.env": "deny",
+          ".env.*": "deny",
+          "*/.env.*": "deny",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "credentials.json": "deny",
+          "*/credentials.json": "deny",
+          "*.pem": "deny",
+          "*.key": "deny"
+        },
+        "apply_patch": {
+          "*": "ask",
+          "SPEC.md": "deny",
+          "SCOPE.md": "deny",
+          "BACKLOG.md": "deny",
+          "AGENTS.md": "deny",
+          "CLAUDE.md": "deny",
+          "AGENTS.granaide-kilo.md": "deny",
+          "docs/agent-work/packets/**": "deny",
+          "docs/audit/**": "deny",
+          ".kilo/**": "deny",
+          ".kilo-runtime-data/**": "deny",
+          "supabase/migrations/**": "deny",
+          "supabase/functions/**": "ask",
+          "wrangler.toml": "deny",
+          ".env": "deny",
+          "*/.env": "deny",
+          ".env.*": "deny",
+          "*/.env.*": "deny",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "credentials.json": "deny",
+          "*/credentials.json": "deny",
+          "*.pem": "deny",
+          "*.key": "deny"
+        },
+        // Default-deny shell. Only exact, human-approved StallVix *consumer*
+        // verification commands are exposed. Do not add Granaide-only scripts
+        // here, and do not invent typecheck/test scripts in this repo's
+        // package.json merely to resemble the consumer contract.
         "bash": {
           "*": "deny",
           "npm run typecheck": "ask",

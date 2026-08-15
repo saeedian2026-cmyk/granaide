@@ -23,6 +23,22 @@ Gate D may only pass when runtime proof demonstrates **two independent boundarie
 
 The existing denied probe `docs/agent-work/granaide-kilo-canary-denied.txt` may be retained **only** as a markdown artifact; its expected base-policy disposition under the DS-01 policy is now **`ask`** (it is a `docs/**` path with no specific hard deny — the shipped implementer edit policy is catch-all `ask` with explicit hard-denies covering `docs/agent-work/packets/**` and `docs/audit/**`, so this sibling path no longer resolves to an automatic allow or deny). Document that disposition in the canary run; the probe proves nothing by itself. The two probes above are the actual Gate-D evidence.
 
+## DS-02 runtime residuals (Gate C/D — not executed in the source subphase)
+
+No authenticated Kilo run is authorized until credential containment is `SAFE_TO_RESUME` and Gate B has accepted the re-locked consumer. Source tests do not stand in for these probes.
+
+1. **Write-tool binding** — request implementer `write` and `apply_patch` (not only `edit`) against one packet path (`docs/agent-work/packets/**`) and one audit path (`docs/audit/**`). PASS only on a permission-system **deny** with zero mutation. An approval prompt (`ask`) is FAIL for those namespaces. If Kilo 7.4.20 ignores the extra permission keys, record that as a hold — do not round up from the static duplicate maps.
+2. **Shell compound/prefix parser** — from the implementer, request these exact shapes with a harmless denied second command (never destructive content):
+   - `npm run lint && <second command>`
+   - `npm run lint; <second command>`
+   - `cmd /c npm run lint`
+   - `powershell -Command "npm run lint"`
+   Runtime PASS requires Kilo to reject because not every parsed command is permitted. Model refusal is not evidence.
+3. **Deep-path effective policy** — after the corrected payload is re-locked, include representative root, one-level, two-level, and three-level secret paths in Kilo-generated/effective-policy proof. Source `matchesKiloPattern()` coverage is regression only.
+4. **Operator runtime inventory** — run `scripts/stallvix-kilo-runtime-inventory.mjs --root <consumer .kilo-runtime-data>` **outside Kilo**, on synthetic or post-rotation state only. Classify unexpected `auth-like` rows as a hold. Extract sanitized metadata only, then delete the runtime directory per the proof contract.
+
+Consumer CI (`npm run test:kilo-install` on StallVix, including PR #69 / DS-04) stays a separate subphase. This source packet does not touch StallVix workflows.
+
 ## Preconditions — all required
 
 1. The affected Kilo/provider credential has been revoked and re-authenticated. Record only provider name, rotation time, and operator confirmation; never record credential material.

@@ -5,11 +5,11 @@
   "algorithm": "sha256",
   "normalization": "UTF-8; strip BOM; CRLF/CR to LF",
   "files": {
-    "kilo.jsonc": "8c3bd8de4aea2c145bc4318294771adca2af8d39664277b23ec3f660d1b7f10d",
-    "AGENTS.md": "c2242b7f1706b2dc749ee0deb6001dffcca3a0d40346b30ec4073bfff38db543",
+    "kilo.jsonc": "7b231d7d4e9d25a90a4ae75f691ce2abf7d5bdb47c3edeb250a3b5534a69337f",
+    "AGENTS.md": "15d43caab843515bacb35789a6ed2d46f384852b655c2b38b5cff11a5133d440",
     "run-stallvix-kilo.ps1": "547ee36f327515499685624935aae4bb239192f710789a04c0cf90efd0078312",
     "skills/stallvix-authority/SKILL.md": "b352deaf4bce64cdadc91477c5947fb00ac36d40b3ac7d13410860b49271f9a1",
     "skills/stallvix-receipt/SKILL.md": "9bfbc9ca1935bf3dbef32b5ea79f7cb00d7f42b9c024d70fa3828bf4b18fd340",
-    "skills/stallvix-safe-change/SKILL.md": "599e7836ac614082acbdb1459dd589b4a82dff77ef684791f8a6518aa7a74c5c"
+    "skills/stallvix-safe-change/SKILL.md": "e1b5446ccdcfedcae900a693eac455cd1a34b1f5f83aa405755f4a29bf660054"
   }
 }
