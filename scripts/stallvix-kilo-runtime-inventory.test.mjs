@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -9,6 +9,8 @@ import {
   isInsideRoot,
   sanitizeRuntimePath,
 } from "./stallvix-kilo-runtime-inventory.mjs";
+
+const helperUrl = new URL("./stallvix-kilo-runtime-inventory.mjs", import.meta.url);
 
 test("inventory helper classifies and redacts without emitting contents", () => {
   assert.equal(classifyRuntimePath("tool-output/run.txt"), "tool-output");
@@ -20,6 +22,7 @@ test("inventory helper classifies and redacts without emitting contents", () => 
   const redacted = sanitizeRuntimePath("secrets/credentials.json");
   assert.equal(redacted.path, "[REDACTED]");
   assert.equal(redacted.path_sha256.length, 64);
+  assert.equal("sha256" in redacted, false);
   assert.equal(JSON.stringify(redacted).includes("credentials"), false);
 });
 
@@ -30,7 +33,16 @@ test("isInsideRoot rejects escaped real paths", () => {
   assert.equal(isInsideRoot("/repo/.kilo-runtime-data", "/repo/.kilo-runtime-data-evil"), false);
 });
 
-test("inventory walks a synthetic fixture and never emits file contents", async () => {
+test("inventory helper source never opens, reads, or hashes file contents", async () => {
+  const source = await readFile(helperUrl, "utf8");
+  assert.equal(source.includes("createReadStream"), false);
+  assert.equal(source.includes("sha256file"), false);
+  assert.doesNotMatch(source, /\breadFile(Sync)?\b/);
+  assert.doesNotMatch(source, /\bopen(Sync)?\b/);
+  assert.doesNotMatch(source, /\breadFile\b/);
+});
+
+test("inventory walks a synthetic fixture and never emits or hashes file contents", async () => {
   const root = await mkdtemp(join(tmpdir(), "svx-kilo-inventory-"));
   try {
     await mkdir(join(root, "tool-output"), { recursive: true });
@@ -47,7 +59,11 @@ test("inventory walks a synthetic fixture and never emits file contents", async 
     assert.equal(tool.path, "tool-output/ok.txt");
     assert.equal(auth.path, "[REDACTED]");
     assert.equal(typeof tool.bytes, "number");
-    assert.equal(tool.sha256.length, 64);
+    assert.equal(typeof auth.bytes, "number");
+    assert.equal("sha256" in tool, false);
+    assert.equal("sha256" in auth, false);
+    assert.equal("path_sha256" in tool, false);
+    assert.equal(auth.path_sha256.length, 64);
     assert.equal(JSON.stringify(rows).includes("HELLO_SHOULD_NOT_APPEAR"), false);
     assert.equal(JSON.stringify(rows).includes("FAKE_TOKEN_NOT_FOR_OUTPUT"), false);
     assert.equal(JSON.stringify(rows).includes("credentials.json"), false);

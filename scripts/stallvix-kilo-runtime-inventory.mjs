@@ -1,9 +1,7 @@
 import { createHash } from "node:crypto";
-import { createReadStream } from "node:fs";
 import { lstat, readdir, realpath } from "node:fs/promises";
 import { join, normalize, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import { pipeline } from "node:stream/promises";
 
 const AUTH_LIKE = /(credential|token|cookie|secret|password|auth|\.pem$|\.key$|(^|\/)\.env(\.|$))/i;
 const SESSION = /session/i;
@@ -16,12 +14,6 @@ function toPosix(relPath) {
 
 function sha256utf8(value) {
   return createHash("sha256").update(value, "utf8").digest("hex");
-}
-
-async function sha256file(filePath) {
-  const hash = createHash("sha256");
-  await pipeline(createReadStream(filePath), hash);
-  return hash.digest("hex");
 }
 
 export function isInsideRoot(rootReal, candidateReal) {
@@ -79,10 +71,10 @@ async function walk(dirReal, rootReal, rows) {
 
     const relPosix = toPosix(relative(rootReal, targetReal));
     const sanitized = sanitizeRuntimePath(relPosix);
+    const sizeStat = lst.isSymbolicLink() ? await lstat(targetReal) : lst;
     rows.push({
       ...sanitized,
-      bytes: lst.isSymbolicLink() ? (await lstat(targetReal)).size : lst.size,
-      sha256: await sha256file(targetReal),
+      bytes: sizeStat.size,
       category: classifyRuntimePath(relPosix),
     });
   }
