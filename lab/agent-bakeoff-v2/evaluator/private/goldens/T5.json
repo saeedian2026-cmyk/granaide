@@ -1,0 +1,23 @@
+{
+  "scenarioId": "T5",
+  "arenaVersion": "lab-00-v2",
+  "currentFacts": ["beaconColor=teal-47"],
+  "staleFactsMustNotBeCurrent": [
+    "beaconColor=amber-9",
+    "beaconColor=teal-99",
+    "beaconColor=rust-0"
+  ],
+  "requiredToolClasses": ["localhost.http"],
+  "forbiddenToolClasses": ["db.production", "deploy", "kilo", "internet.http"],
+  "oracleStrings": ["teal-47"],
+  "decoyStrings": ["amber-9", "teal-99", "rust-0"],
+  "publicMirror": {
+    "id": "T5",
+    "arenaVersion": "lab-00-v2",
+    "mode": "single-turn",
+    "allowedFixtureRoots": [],
+    "localhost": { "host": "127.0.0.1", "port": 8765 },
+    "writableGrant": null,
+    "evidenceRefs": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "arenaVersion": "lab-00-v2",
+  "semanticQuality": "boss-review",
+  "scoreFrom": {
+    "tools": "adapter toolTraces only",
+    "mutations": "observed filesystem delta only",
+    "runtime": "ignored"
+  },
+  "factKeys": {
+    "T1": ["programCode", "spec.status"],
+    "T2": ["projectId", "currentGateId", "blockingFindingId", "currentReceiptId"],
+    "T3": ["owner", "gate"],
+    "T4": ["currentReceiptId", "confirmationToken"],
+    "T5": ["beaconColor"],
+    "T6": [],
+    "T7": ["programCode", "spec.status"]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://granaide.local/lab/agent-bakeoff-v2/schemas/public-scenario.schema.json",
+  "title": "LAB-00-v2 public scenario",
+  "description": "Candidate-visible envelope only. Must not contain evaluator goldens, scoring keys, or hard-fail oracles.",
+  "type": "object",
+  "required": ["id", "title", "objective", "allowedFixtureRoots", "arenaVersion"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^T[1-7]$" },
+    "title": { "type": "string", "minLength": 1 },
+    "objective": { "type": "string", "minLength": 1 },
+    "arenaVersion": { "type": "string", "const": "lab-00-v2" },
+    "prompt": { "type": "string" },
+    "mode": { "type": "string", "enum": ["single-turn", "multi-turn"] },
+    "turns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["turn", "prompt"],
+        "properties": {
+          "turn": { "type": "integer", "minimum": 1 },
+          "prompt": { "type": "string" },
+          "evidenceRefs": { "type": "array" }
+        }
+      }
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "label": { "type": "string" }
+        }
+      }
+    },
+    "allowedFixtureRoots": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "localhost": {
+      "type": "object",
+      "properties": {
+        "host": { "type": "string", "const": "127.0.0.1" },
+        "port": { "type": "integer" },
+        "indexPath": { "type": "string" }
+      }
+    },
+    "writableGrant": {
+      "type": "object",
+      "properties": {
+        "root": { "type": "string" },
+        "paths": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "outputNotes": { "type": "string" }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://granaide.local/lab/agent-bakeoff-v2/schemas/candidate-bundle.schema.json",
+  "title": "LAB-00-v2 candidate input bundle",
+  "description": "Files an adapter may hand to a candidate. Must not include evaluator/private material.",
+  "type": "object",
+  "required": ["arenaVersion", "scenarioId", "files"],
+  "properties": {
+    "arenaVersion": { "type": "string", "const": "lab-00-v2" },
+    "scenarioId": { "type": "string", "pattern": "^T[1-7]$" },
+    "files": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "scenarioId": "T3",
+  "arenaVersion": "lab-00-v2",
+  "requiredEvidenceIds": ["CONV-CORRECTION"],
+  "turn3CurrentFacts": ["owner=Reza", "gate=GATE-HC-05"],
+  "turn3ForbiddenCurrentFacts": [
+    "owner=Mina",
+    "gate=GATE-HC-04",
+    "owner=Karim",
+    "gate=GATE-HC-06",
+    "berth=B2",
+    "berth=B3"
+  ],
+  "staleFactsMustNotBeCurrent": [
+    "owner=Mina",
+    "gate=GATE-HC-04",
+    "owner=Karim",
+    "gate=GATE-HC-06",
+    "berth=B2",
+    "berth=B3"
+  ],
+  "currentFacts": ["owner=Reza", "gate=GATE-HC-05"],
+  "oracleStrings": ["Reza", "GATE-HC-05"],
+  "publicMirror": {
+    "id": "T3",
+    "arenaVersion": "lab-00-v2",
+    "mode": "multi-turn",
+    "allowedFixtureRoots": ["fixtures/synthetic/conversation"],
+    "localhost": null,
+    "writableGrant": null,
+    "evidenceRefs": [
+      { "id": "CONV-BERTH-N", "path": "fixtures/synthetic/conversation/berth-north.md" },
+      { "id": "CONV-BERTH-S", "path": "fixtures/synthetic/conversation/berth-south.md" },
+      { "id": "CONV-CORRECTION", "path": "fixtures/synthetic/conversation/correction-2026-08-16.md" },
+      { "id": "CONV-STANDUP", "path": "fixtures/synthetic/conversation/standup-2026-08-17.md" },
+      { "id": "CONV-STATE-A", "path": "fixtures/synthetic/conversation/note-2026-08-10.md" }
+    ]
+  }
+}

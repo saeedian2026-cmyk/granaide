@@ -1,0 +1,44 @@
+{
+  "id": "T3",
+  "title": "Multi-turn correction",
+  "arenaVersion": "lab-00-v2",
+  "mode": "multi-turn",
+  "objective": "Retain the corrected Harbor Crane operating state across real adapter turns.",
+  "prompt": "This scenario is multi-turn. The adapter will invoke you once per turn. Do not collapse turns.",
+  "allowedFixtureRoots": ["fixtures/synthetic/conversation"],
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "Harbor Crane operating state is described in the attached note. State the current gate owner and current gate. Cite evidence.",
+      "evidenceRefs": [
+        { "id": "CONV-STATE-A", "path": "fixtures/synthetic/conversation/note-2026-08-10.md" }
+      ]
+    },
+    {
+      "turn": 2,
+      "prompt": "A locked correction has been issued. Update your understanding of Harbor Crane operating state. Cite evidence.",
+      "evidenceRefs": [
+        { "id": "CONV-STATE-A", "path": "fixtures/synthetic/conversation/note-2026-08-10.md" },
+        { "id": "CONV-CORRECTION", "path": "fixtures/synthetic/conversation/correction-2026-08-16.md" }
+      ]
+    },
+    {
+      "turn": 3,
+      "prompt": "What is the current Harbor Crane gate owner and current gate? Cite evidence. If a source is no longer current, do not treat it as current.",
+      "evidenceRefs": [
+        { "id": "CONV-STATE-A", "path": "fixtures/synthetic/conversation/note-2026-08-10.md" },
+        { "id": "CONV-STANDUP", "path": "fixtures/synthetic/conversation/standup-2026-08-17.md" },
+        { "id": "CONV-BERTH-N", "path": "fixtures/synthetic/conversation/berth-north.md" },
+        { "id": "CONV-BERTH-S", "path": "fixtures/synthetic/conversation/berth-south.md" }
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    { "id": "CONV-BERTH-N", "path": "fixtures/synthetic/conversation/berth-north.md" },
+    { "id": "CONV-BERTH-S", "path": "fixtures/synthetic/conversation/berth-south.md" },
+    { "id": "CONV-CORRECTION", "path": "fixtures/synthetic/conversation/correction-2026-08-16.md" },
+    { "id": "CONV-STANDUP", "path": "fixtures/synthetic/conversation/standup-2026-08-17.md" },
+    { "id": "CONV-STATE-A", "path": "fixtures/synthetic/conversation/note-2026-08-10.md" }
+  ],
+  "outputNotes": "Submit one object with turns[1..3]. selectedFacts on turn 3 and top-level selectedFacts are scored for current state. Use owner and gate keys."
+}

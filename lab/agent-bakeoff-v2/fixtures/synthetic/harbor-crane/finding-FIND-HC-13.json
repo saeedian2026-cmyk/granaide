@@ -1,0 +1,12 @@
+{
+  "syntheticMarker": "SYNTHETIC BENCHMARK FIXTURE — not a StallVix document",
+  "findingId": "FIND-HC-13",
+  "projectId": "harbor-crane",
+  "gateId": "GATE-HC-02",
+  "title": "Missing closeout receipt for Harbor Crane archive gate",
+  "severity": "blocking",
+  "status": "closed",
+  "asOf": "2026-04-12",
+  "acceptedReceiptIds": ["RCPT-HC-07"],
+  "notes": "This finding belongs to an older gate. It does not block GATE-HC-04."
+}

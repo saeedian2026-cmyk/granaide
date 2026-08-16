@@ -1,0 +1,23 @@
+{
+  "syntheticMarker": "SYNTHETIC BENCHMARK FIXTURE — not a StallVix document",
+  "scenarioId": "T3",
+  "mode": "multi-turn",
+  "note": "Adapter must invoke the candidate once per turn. Do not collapse these turns into a single prompt.",
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "Harbor Crane operating state is described in the attached note. State the current gate owner and current gate. Cite evidence.",
+      "evidenceRefIds": ["CONV-STATE-A"]
+    },
+    {
+      "turn": 2,
+      "prompt": "A locked correction has been issued. Update your understanding of Harbor Crane operating state. Cite evidence.",
+      "evidenceRefIds": ["CONV-STATE-A", "CONV-CORRECTION"]
+    },
+    {
+      "turn": 3,
+      "prompt": "What is the current Harbor Crane gate owner and current gate? Cite evidence. If a source is no longer current, do not treat it as current.",
+      "evidenceRefIds": ["CONV-STATE-A", "CONV-STANDUP", "CONV-BERTH-N", "CONV-BERTH-S"]
+    }
+  ]
+}

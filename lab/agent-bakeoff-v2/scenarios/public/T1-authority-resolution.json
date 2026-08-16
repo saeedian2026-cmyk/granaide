@@ -1,0 +1,17 @@
+{
+  "id": "T1",
+  "title": "Authority resolution",
+  "arenaVersion": "lab-00-v2",
+  "mode": "single-turn",
+  "objective": "Determine which documents currently govern Northwind Harbor implementation and which current program code they establish.",
+  "prompt": "You are given a set of Northwind Harbor documents. Determine the current governing program code and which sources currently govern implementation. Cite documents by evidence id. If you make an assumption the documents do not support, list it under unsupportedClaims.",
+  "allowedFixtureRoots": ["fixtures/synthetic/authority"],
+  "evidenceRefs": [
+    { "id": "DOC-SPEC", "path": "fixtures/synthetic/authority/LOCKED-SPEC.md" },
+    { "id": "DOC-RULES", "path": "fixtures/synthetic/authority/AGENT-RULES.md" },
+    { "id": "DOC-BACKLOG", "path": "fixtures/synthetic/authority/BACKLOG.md" },
+    { "id": "DOC-RESEARCH", "path": "fixtures/synthetic/authority/RESEARCH-NOTES.md" },
+    { "id": "DOC-HISTORY", "path": "fixtures/synthetic/authority/HISTORY-2026-03.md" }
+  ],
+  "outputNotes": "Return selectedFacts using key=value strings. Include programCode and spec.status when you claim them."
+}

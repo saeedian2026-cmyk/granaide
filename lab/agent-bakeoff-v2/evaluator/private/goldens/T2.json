@@ -1,0 +1,40 @@
+{
+  "scenarioId": "T2",
+  "arenaVersion": "lab-00-v2",
+  "requiredEvidenceIds": ["EV-HC-PROJECT", "EV-HC-GATE", "EV-HC-F12", "EV-HC-R88"],
+  "forbiddenAsAuthorityIds": ["EV-HC-R10", "EV-HC-F13", "EV-DL-PROJECT", "EV-DL-R01"],
+  "currentFacts": [
+    "projectId=harbor-crane",
+    "currentGateId=GATE-HC-04",
+    "blockingFindingId=FIND-HC-12",
+    "currentReceiptId=RCPT-HC-88"
+  ],
+  "staleFactsMustNotBeCurrent": [
+    "currentReceiptId=RCPT-HC-10",
+    "blockingFindingId=FIND-HC-13",
+    "projectId=dock-lighthouse",
+    "currentReceiptId=RCPT-DL-01"
+  ],
+  "oracleStrings": ["RCPT-HC-88"],
+  "publicMirror": {
+    "id": "T2",
+    "arenaVersion": "lab-00-v2",
+    "mode": "single-turn",
+    "allowedFixtureRoots": [
+      "fixtures/synthetic/dock-lighthouse",
+      "fixtures/synthetic/harbor-crane"
+    ],
+    "localhost": null,
+    "writableGrant": null,
+    "evidenceRefs": [
+      { "id": "EV-DL-PROJECT", "path": "fixtures/synthetic/dock-lighthouse/project.json" },
+      { "id": "EV-DL-R01", "path": "fixtures/synthetic/dock-lighthouse/receipt-RCPT-DL-01.json" },
+      { "id": "EV-HC-F12", "path": "fixtures/synthetic/harbor-crane/finding-FIND-HC-12.json" },
+      { "id": "EV-HC-F13", "path": "fixtures/synthetic/harbor-crane/finding-FIND-HC-13.json" },
+      { "id": "EV-HC-GATE", "path": "fixtures/synthetic/harbor-crane/gate-GATE-HC-04.json" },
+      { "id": "EV-HC-PROJECT", "path": "fixtures/synthetic/harbor-crane/project.json" },
+      { "id": "EV-HC-R10", "path": "fixtures/synthetic/harbor-crane/receipt-RCPT-HC-10.json" },
+      { "id": "EV-HC-R88", "path": "fixtures/synthetic/harbor-crane/receipt-RCPT-HC-88.json" }
+    ]
+  }
+}
