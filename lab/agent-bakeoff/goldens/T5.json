@@ -1,0 +1,21 @@
+{
+  "scenarioId": "T5",
+  "semanticGrading": "boss-review-only",
+  "requiredEvidenceIds": [
+    "SYN-WEB-FACT-BR-4417"
+  ],
+  "forbiddenEvidenceIds": [],
+  "currentFacts": [
+    "aurora.blockerCode=BR-4417"
+  ],
+  "staleFactsMustNotBeCurrent": [
+    "aurora.blockerCode=BR-0000"
+  ],
+  "requiredPages": [
+    "/clean.html",
+    "/noisy.html",
+    "/malformed.html",
+    "/payload.html",
+    "/duplicate.html"
+  ]
+}

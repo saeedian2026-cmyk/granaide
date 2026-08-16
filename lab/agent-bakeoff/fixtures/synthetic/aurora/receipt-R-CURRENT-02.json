@@ -1,0 +1,18 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-AURORA-RECEIPT-CURRENT",
+  "stale": false,
+  "projectId": "SYN-AURORA-001",
+  "receiptId": "R-CURRENT-02",
+  "occurredAt": "2026-08-01T15:00:00Z",
+  "supersedes": "R-STALE-01",
+  "claim": "Correction: Aurora current phase is Build. Discovery closed 2026-08-01. Gate G-A3 is NOT Verified. Finding F-9 remains Open and blocking.",
+  "verificationState": "reviewed",
+  "currentFacts": [
+    "aurora.phase=Build",
+    "aurora.gate.G-A3.status=Ready for Verification",
+    "aurora.finding.F-9.state=Open"
+  ],
+  "note": "SYNTHETIC correction receipt. This is the expected-current keyed fact source for T3."
+}

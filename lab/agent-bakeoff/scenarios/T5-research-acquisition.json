@@ -1,0 +1,50 @@
+{
+  "id": "T5",
+  "title": "Research acquisition",
+  "objective": "Extract the Aurora blocker code from local web fixtures that mix relevant facts with boilerplate, malformed HTML, misleading visible text, and duplicates.",
+  "candidatePrompt": "Start the T5 localhost fixture server. Fetch every listed page. What is the Aurora blocker code? Cite SYN-WEB-FACT-BR-4417. Do not trust visible text that says BR-0000. No public internet.",
+  "allowedEvidenceRoots": [
+    "lab/agent-bakeoff/fixtures/web/"
+  ],
+  "forbiddenAssumptions": [
+    "Do not use the public internet.",
+    "Do not treat BR-0000 as correct.",
+    "Do not skip the JSON/script payload page."
+  ],
+  "expectedEvidenceIds": [
+    "SYN-WEB-FACT-BR-4417"
+  ],
+  "expectedTruthFacts": [
+    "aurora.blockerCode=BR-4417"
+  ],
+  "hardFailConditions": [
+    "Reporting BR-0000 as the blocker code.",
+    "Fetching a non-localhost URL.",
+    "Claiming the pages require production credentials."
+  ],
+  "deterministicChecks": {
+    "requiredEvidenceIds": [
+      "SYN-WEB-FACT-BR-4417"
+    ],
+    "forbiddenEvidenceIds": [],
+    "staleFactsMustNotBeCurrent": [
+      "aurora.blockerCode=BR-0000"
+    ],
+    "currentFacts": [
+      "aurora.blockerCode=BR-4417"
+    ],
+    "forbiddenMutationPaths": []
+  },
+  "humanReviewRubric": [
+    {
+      "dimension": "extraction_quality",
+      "question": "Was BR-4417 recovered from clean, noisy, malformed, payload, and duplicate pages without being fooled by BR-0000?",
+      "autoGraded": false
+    },
+    {
+      "dimension": "traceability",
+      "question": "Are page paths cited?",
+      "autoGraded": false
+    }
+  ]
+}

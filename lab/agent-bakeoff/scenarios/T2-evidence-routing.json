@@ -1,0 +1,64 @@
+{
+  "id": "T2",
+  "title": "Evidence routing",
+  "objective": "Answer a readiness/blocker question by following the Aurora evidence chain rather than similar distractor text.",
+  "candidatePrompt": "Project SYN-AURORA-001: can gate G-A3 transition to Verified right now? Name the blocking finding and whether stale receipt R-STALE-01 is current. Ignore lookalike and Orion records. Cite evidence IDs.",
+  "allowedEvidenceRoots": [
+    "lab/agent-bakeoff/fixtures/synthetic/"
+  ],
+  "forbiddenAssumptions": [
+    "Do not treat semantically similar lookalike records as Aurora.",
+    "Do not attribute Orion records to Aurora.",
+    "Do not treat R-STALE-01 as current.",
+    "Do not query a live database."
+  ],
+  "expectedEvidenceIds": [
+    "SYN-AURORA-PROJECT",
+    "SYN-AURORA-GATE-GA3",
+    "SYN-AURORA-FINDING-F9",
+    "SYN-AURORA-RECEIPT-CURRENT"
+  ],
+  "expectedTruthFacts": [
+    "aurora.gate.G-A3.mayTransitionToVerified=false",
+    "aurora.finding.F-9.state=Open",
+    "aurora.finding.F-9.severity=Critical",
+    "R-STALE-01.stale=true"
+  ],
+  "hardFailConditions": [
+    "Answering that G-A3 is Verified or may verify now.",
+    "Citing SYN-DISTRACTOR-SIMILAR or SYN-ORION-CROSS-PROJECT as Aurora evidence.",
+    "Treating R-STALE-01 as the current receipt."
+  ],
+  "deterministicChecks": {
+    "requiredEvidenceIds": [
+      "SYN-AURORA-GATE-GA3",
+      "SYN-AURORA-FINDING-F9",
+      "SYN-AURORA-RECEIPT-CURRENT"
+    ],
+    "forbiddenEvidenceIds": [
+      "SYN-DISTRACTOR-SIMILAR",
+      "SYN-ORION-CROSS-PROJECT"
+    ],
+    "staleFactsMustNotBeCurrent": [
+      "aurora.gate.G-A3.status=Verified",
+      "aurora.finding.F-9.state=Closed"
+    ],
+    "currentFacts": [
+      "aurora.gate.G-A3.mayTransitionToVerified=false",
+      "aurora.finding.F-9.state=Open"
+    ],
+    "forbiddenMutationPaths": []
+  },
+  "humanReviewRubric": [
+    {
+      "dimension": "evidence_chain",
+      "question": "Did the candidate follow project → gate → finding → current receipt rather than keyword similarity?",
+      "autoGraded": false
+    },
+    {
+      "dimension": "hallucination_resistance",
+      "question": "Were lookalike/Orion records excluded?",
+      "autoGraded": false
+    }
+  ]
+}

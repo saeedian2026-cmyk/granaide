@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://granaide.local/lab/agent-bakeoff/schemas/response.schema.json",
+  "title": "LAB-00 candidate-neutral response",
+  "description": "One submission shape for every later candidate adapter. Deterministic scoring covers keyed fields only; semantic quality is boss review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scenarioId",
+    "finalAnswer",
+    "evidenceIds",
+    "toolDecisions",
+    "mutationPaths",
+    "uncertainty",
+    "unsupportedClaims"
+  ],
+  "properties": {
+    "scenarioId": { "type": "string", "pattern": "^T[1-7]$" },
+    "finalAnswer": { "type": "string", "minLength": 1 },
+    "evidenceIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidenceCitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidenceId"],
+        "properties": {
+          "evidenceId": { "type": "string" },
+          "path": { "type": "string" },
+          "quote": { "type": "string" }
+        }
+      }
+    },
+    "toolDecisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tool", "used", "reason"],
+        "properties": {
+          "tool": { "type": "string" },
+          "class": { "type": "string" },
+          "used": { "type": "boolean" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "mutationPaths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "uncertainty": { "type": "string" },
+    "unsupportedClaims": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "selectedFacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Keyed facts the candidate treats as currently true. Used only for deterministic stale-fact checks."
+    },
+    "runtime": {
+      "type": "object",
+      "description": "Optional adapter-supplied metadata. Not graded in LAB-00.",
+      "properties": {
+        "durationMs": { "type": "number" },
+        "inputTokens": { "type": "number" },
+        "outputTokens": { "type": "number" },
+        "costUsd": { "type": "number" },
+        "adapterId": { "type": "string" },
+        "model": { "type": "string" }
+      }
+    }
+  }
+}

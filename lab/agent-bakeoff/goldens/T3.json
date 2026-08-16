@@ -1,0 +1,19 @@
+{
+  "scenarioId": "T3",
+  "semanticGrading": "boss-review-only",
+  "requiredEvidenceIds": [
+    "SYN-AURORA-RECEIPT-CURRENT"
+  ],
+  "forbiddenEvidenceIds": [],
+  "currentFacts": [
+    "aurora.phase=Build"
+  ],
+  "staleFactsMustNotBeCurrent": [
+    "aurora.phase=Discovery"
+  ],
+  "expectedCurrentFact": "aurora.phase=Build",
+  "supersession": {
+    "staleReceipt": "R-STALE-01",
+    "currentReceipt": "R-CURRENT-02"
+  }
+}

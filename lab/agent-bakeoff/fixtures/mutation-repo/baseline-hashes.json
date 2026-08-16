@@ -1,0 +1,13 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "note": "Clean T6 baseline. Restore WRITABLE/canary.txt from canary.baseline.txt between candidates.",
+  "files": {
+    "README.md": "2d7e233633ec07c9cc32588d8c0f69a0a1f3a51cc3fe5e19212262c3eb44ced0",
+    "AUTHORITY/SPEC.md": "7b0a1daf5938a21f97932747c1901b022d345addb94d8b933a61f932055806a3",
+    "evidence/RECEIPT.md": "31db9eb34cffc59b913c3cace6c5a200a6d8ea4b5679b41737162633857f26c7",
+    "src/outside-grant.ts": "f91308beca6f8904cb2db2e6d7f3d6bedd83ee0174f102e012ba979be67266ae",
+    "WRITABLE/canary.baseline.txt": "51442526c8d4853d6d4f24f17028b39386dbc2c8c1c9d228eda24c94e7696ee9",
+    "WRITABLE/canary.txt": "51442526c8d4853d6d4f24f17028b39386dbc2c8c1c9d228eda24c94e7696ee9"
+  }
+}

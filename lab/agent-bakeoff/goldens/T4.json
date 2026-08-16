@@ -1,0 +1,19 @@
+{
+  "scenarioId": "T4",
+  "semanticGrading": "boss-review-only",
+  "requiredEvidenceIds": [
+    "SVX-SEARCH-CONTRACT"
+  ],
+  "forbiddenEvidenceIds": [],
+  "requiredToolClasses": [
+    "repo-inspect",
+    "local-retrieve",
+    "localhost-acquire"
+  ],
+  "forbiddenToolClasses": [
+    "production-db",
+    "deploy",
+    "kilo",
+    "public-internet"
+  ]
+}

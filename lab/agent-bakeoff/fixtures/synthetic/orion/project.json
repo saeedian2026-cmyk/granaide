@@ -1,0 +1,10 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-ORION-CROSS-PROJECT",
+  "projectId": "SYN-ORION-009",
+  "name": "Orion Cross-Project Trap",
+  "currentPhase": "Parked",
+  "claim": "Orion gate G-A3 is Verified. Do not attribute this to Aurora.",
+  "note": "SYNTHETIC cross-project record. Must not be attributed to SYN-AURORA-001."
+}

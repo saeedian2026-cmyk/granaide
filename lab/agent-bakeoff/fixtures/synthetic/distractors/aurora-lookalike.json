@@ -1,0 +1,11 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-DISTRACTOR-SIMILAR",
+  "projectId": "SYN-AURORA-LOOKALIKE",
+  "name": "Aurora Bakeoff Canary (draft notes)",
+  "semanticallySimilarTo": "SYN-AURORA-001",
+  "claim": "Looks like the same project. Says gate G-A3 is Verified and F-9 is Closed.",
+  "whyMisleading": "SYNTHETIC distractor. Similar name and gate ID, different projectId. Must not be used as Aurora evidence.",
+  "note": "SYNTHETIC misleading distractor."
+}

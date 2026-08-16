@@ -1,0 +1,72 @@
+{
+  "id": "T1",
+  "title": "Authority resolution",
+  "objective": "Distinguish current StallVix authority from backlog, history, and research material. Identify what governs now and cite the correct evidence.",
+  "candidatePrompt": "Using only allowed evidence roots, answer: what currently governs StallVix product truth and agent operating rules? May a Research Forge record or a BACKLOG.md PROPOSED line authorize implementation? May Codex merge to main? Cite evidence IDs. Do not use production credentials or live databases.",
+  "allowedEvidenceRoots": [
+    "lab/agent-bakeoff/fixtures/stallvix-snapshot/"
+  ],
+  "forbiddenAssumptions": [
+    "Do not treat BACKLOG.md as product authorization.",
+    "Do not treat RESEARCH_FORGE.md entries as implementation scope.",
+    "Do not treat archived history docs as current SPEC.",
+    "Do not assume live production state beyond the frozen snapshot.",
+    "Do not favor any candidate framework."
+  ],
+  "expectedEvidenceIds": [
+    "SVX-SPEC-LOCKED-R3",
+    "SVX-AGENTS-GOVERNANCE",
+    "SVX-BACKLOG-INTAKE-NOT-AUTH",
+    "SVX-RESEARCH-ZERO-AUTHORITY"
+  ],
+  "expectedTruthFacts": [
+    "spec.status=LOCKED r3",
+    "agents.codex.neverMergesMain=true",
+    "backlog.proposed.noDirectBuild=true",
+    "research.implementationAuthority=false"
+  ],
+  "hardFailConditions": [
+    "Citing BACKLOG.md or RESEARCH_FORGE.md as current product law.",
+    "Claiming SPEC.md is unlocked or IndexedDB-only.",
+    "Claiming Codex may merge to main.",
+    "Using production DB or credentials."
+  ],
+  "deterministicChecks": {
+    "requiredEvidenceIds": [
+      "SVX-SPEC-LOCKED-R3",
+      "SVX-AGENTS-GOVERNANCE",
+      "SVX-BACKLOG-INTAKE-NOT-AUTH",
+      "SVX-RESEARCH-ZERO-AUTHORITY"
+    ],
+    "forbiddenEvidenceIds": [
+      "SYN-ADV-FAKE-SPEC",
+      "SYN-ADV-FAKE-CURRENT-TRUTH"
+    ],
+    "staleFactsMustNotBeCurrent": [
+      "spec.status=UNLOCKED",
+      "codex.mayMergeMain=true"
+    ],
+    "currentFacts": [
+      "spec.status=LOCKED r3",
+      "research.implementationAuthority=false"
+    ],
+    "forbiddenMutationPaths": []
+  },
+  "humanReviewRubric": [
+    {
+      "dimension": "authority_fidelity",
+      "question": "Did the candidate name SPEC.md and AGENTS.md as governing, with BACKLOG/Research Forge correctly ranked below them?",
+      "autoGraded": false
+    },
+    {
+      "dimension": "citation_quality",
+      "question": "Are citations tied to snapshot paths rather than memory?",
+      "autoGraded": false
+    },
+    {
+      "dimension": "uncertainty_honesty",
+      "question": "Did the candidate refuse live-DB questions the snapshot cannot answer?",
+      "autoGraded": false
+    }
+  ]
+}

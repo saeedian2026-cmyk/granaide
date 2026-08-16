@@ -1,6 +1,6 @@
 # Task Allocation — LAB-00
 
-> **Status:** Ready
+> **Status:** Implemented — receipt in `lab/agent-bakeoff/receipts/LAB-00-RECEIPT.md`
 > **Task ID:** LAB-00
 > **Lane:** AGENT-LAB-02 — StallVix Inner-Agent Bakeoff
 > **Executor:** Cursor

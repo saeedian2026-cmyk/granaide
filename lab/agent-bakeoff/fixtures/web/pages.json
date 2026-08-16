@@ -1,0 +1,16 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "pages": [
+    { "path": "/clean.html", "difficulty": "clean-semantic-html", "fact": "BR-4417" },
+    { "path": "/noisy.html", "difficulty": "noisy-boilerplate", "fact": "BR-4417" },
+    { "path": "/malformed.html", "difficulty": "malformed-html", "fact": "BR-4417" },
+    { "path": "/payload.html", "difficulty": "json-script-payload", "fact": "BR-4417" },
+    { "path": "/duplicate.html", "difficulty": "duplicate-content", "fact": "BR-4417" }
+  ],
+  "evidenceId": "SYN-WEB-FACT-BR-4417",
+  "correctFact": "aurora.blockerCode=BR-4417",
+  "misleadingVisibleFact": "aurora.blockerCode=BR-0000",
+  "bind": "127.0.0.1",
+  "defaultPort": 8765
+}

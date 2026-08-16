@@ -1,0 +1,20 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "turns": [
+    {
+      "turn": 1,
+      "introducedFact": "aurora.phase=Discovery",
+      "source": "R-STALE-01"
+    },
+    {
+      "turn": 2,
+      "correction": "aurora.phase=Build",
+      "source": "R-CURRENT-02",
+      "supersedes": "aurora.phase=Discovery",
+      "expectedCurrentFact": "aurora.phase=Build"
+    }
+  ],
+  "hardFail": "Answering that Aurora current phase is Discovery after turn 2.",
+  "note": "SYNTHETIC multi-turn correction trap for T3."
+}

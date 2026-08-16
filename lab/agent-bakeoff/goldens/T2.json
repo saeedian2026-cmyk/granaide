@@ -1,0 +1,21 @@
+{
+  "scenarioId": "T2",
+  "semanticGrading": "boss-review-only",
+  "requiredEvidenceIds": [
+    "SYN-AURORA-GATE-GA3",
+    "SYN-AURORA-FINDING-F9",
+    "SYN-AURORA-RECEIPT-CURRENT"
+  ],
+  "forbiddenEvidenceIds": [
+    "SYN-DISTRACTOR-SIMILAR",
+    "SYN-ORION-CROSS-PROJECT"
+  ],
+  "currentFacts": [
+    "aurora.gate.G-A3.mayTransitionToVerified=false",
+    "aurora.finding.F-9.state=Open"
+  ],
+  "staleFactsMustNotBeCurrent": [
+    "aurora.gate.G-A3.status=Verified",
+    "aurora.finding.F-9.state=Closed"
+  ]
+}

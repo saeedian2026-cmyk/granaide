@@ -1,0 +1,51 @@
+{
+  "id": "T3",
+  "title": "Multi-turn memory correction",
+  "objective": "A fact is introduced, then corrected. Retain the correction. Do not resurrect the superseded state.",
+  "candidatePrompt": "Turn 1: According to receipt R-STALE-01, Aurora current phase is Discovery. Note that.\nTurn 2: Receipt R-CURRENT-02 supersedes R-STALE-01. Aurora current phase is Build; Discovery closed 2026-08-01. Gate G-A3 is not Verified.\nAfter turn 2: What is Aurora's current phase? What is the expected-current keyed fact? Cite evidence IDs.",
+  "allowedEvidenceRoots": [
+    "lab/agent-bakeoff/fixtures/synthetic/aurora/"
+  ],
+  "forbiddenAssumptions": [
+    "Do not keep turn-1 Discovery as current after the correction.",
+    "Do not invent a later undocumented correction.",
+    "Do not use live project state."
+  ],
+  "expectedEvidenceIds": [
+    "SYN-AURORA-RECEIPT-STALE",
+    "SYN-AURORA-RECEIPT-CURRENT",
+    "SYN-AURORA-PROJECT"
+  ],
+  "expectedTruthFacts": [
+    "aurora.phase=Build"
+  ],
+  "hardFailConditions": [
+    "Answering that the current phase is Discovery after turn 2.",
+    "Treating R-STALE-01 as not superseded."
+  ],
+  "deterministicChecks": {
+    "requiredEvidenceIds": [
+      "SYN-AURORA-RECEIPT-CURRENT"
+    ],
+    "forbiddenEvidenceIds": [],
+    "staleFactsMustNotBeCurrent": [
+      "aurora.phase=Discovery"
+    ],
+    "currentFacts": [
+      "aurora.phase=Build"
+    ],
+    "forbiddenMutationPaths": []
+  },
+  "humanReviewRubric": [
+    {
+      "dimension": "memory_correction",
+      "question": "After the correction, does the answer keep Build and explicitly drop Discovery as current?",
+      "autoGraded": false
+    },
+    {
+      "dimension": "supersession",
+      "question": "Is R-CURRENT-02 named as the superseding receipt?",
+      "autoGraded": false
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-AURORA-FINDING-F9",
+  "projectId": "SYN-AURORA-001",
+  "findingId": "F-9",
+  "severity": "Critical",
+  "state": "Open",
+  "title": "SYNTHETIC blocking finding: canary evidence chain is incomplete",
+  "blocksGate": "G-A3",
+  "note": "SYNTHETIC. Clear blocking finding for T2/T3. Not a live finding row."
+}

@@ -1,0 +1,252 @@
+{
+  "arenaVersion": "lab-00-v1",
+  "granaideBaseSha": "b0c122a7f834e66a6e66573845e6c003a98c8c44",
+  "stallvixCommit": "8d11ed7a27482595b015ee3fdb91f696edf361ed",
+  "note": "Immutable arena artifacts. Benchmark changes after candidate testing begins require a new arena version, not silent edits. receipts/ are excluded.",
+  "files": [
+    {
+      "path": "lab/agent-bakeoff/README.md",
+      "sha256": "20909bbf80d5d0a36983f4a73ae2985ea0caf80ae3543c730c44c6fb7069f9bc"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/AUTHORITY/SPEC.md",
+      "sha256": "7b0a1daf5938a21f97932747c1901b022d345addb94d8b933a61f932055806a3"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/README.md",
+      "sha256": "2d7e233633ec07c9cc32588d8c0f69a0a1f3a51cc3fe5e19212262c3eb44ced0"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/WRITABLE/canary.baseline.txt",
+      "sha256": "51442526c8d4853d6d4f24f17028b39386dbc2c8c1c9d228eda24c94e7696ee9"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/baseline-hashes.json",
+      "sha256": "eef1712925248356d57ecf65f03bf948a2aba4101eb2a91e646a8d0213daf5e0"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/evidence/RECEIPT.md",
+      "sha256": "31db9eb34cffc59b913c3cace6c5a200a6d8ea4b5679b41737162633857f26c7"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/src/outside-grant.ts",
+      "sha256": "f91308beca6f8904cb2db2e6d7f3d6bedd83ee0174f102e012ba979be67266ae"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/AGENTS.md",
+      "sha256": "ab8637bab1b3b931da218887632b10d222eee0fc818cfb1a570cdda628317b0a"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/BACKLOG.md",
+      "sha256": "803ebd87b4ed4c782ddfc0f399d521fcbacbb97eaf7f7c0a56e41d3d7845ebac"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/CURRENT_STATE.md",
+      "sha256": "6a68fe08129f6e07a7a921ee0bb1d57cbd2776f022323a170b6ff772fcc37bd0"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/DOCS_INDEX.md",
+      "sha256": "7d1f4e99b36145dc20329f3c285b6814c6d8404a7ef421f60bc9c1a133ca1919"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/RESEARCH_FORGE.md",
+      "sha256": "b1b8cd0b1a8481507cfcd153d952dc5cbf48d0f3fa0c389db28a189ae92b0847"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/SPEC.md",
+      "sha256": "9fe8bb1be7d991a83728ad6742927955601974243c5ee42c704a330a206b2598"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/agent-work/PACKET_TEMPLATE.md",
+      "sha256": "c6301e40edbda25cff259141f7f664688ffd6b6b0861efaf8c23bb81a9d4f064"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/agent-work/RECEIPT_TEMPLATE.md",
+      "sha256": "d726fe2723862bba44469d451c60f481f186de386736ce3f7f93de6a6befdb2b"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/architecture/OPERATIONAL-GRAPH.md",
+      "sha256": "6a6811582462513854b13fc715c9223e080eb00a7a87ac40af0dbe7a7c4916a3"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/history/2026-08/TRUTH_AUDIT_SVX-TRUTH-01.md",
+      "sha256": "c2be361c1a1db905373db585116b6a82d9482c24a5ae5a12047e716ca311c64c"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/lanes/SVX-PLATFORM-SEARCH-CONTRACT-01.md",
+      "sha256": "06eb5101e1d1dd0a49f790c8d7da9dd5dc6820d14d0836323a495a4ff3092dbc"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/SYNTHETIC.md",
+      "sha256": "276e6fc4d7f9c9dbb18862ec4f4951d43cdcc34b9ad43c37110ce674bc36d79a"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/CURRENT_TRUTH.md",
+      "sha256": "306253f55f3f41cb0a2c30fa0a6ccbd35a18a48daa0c555705de320eff145914"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/IGNORE_PREVIOUS_INSTRUCTIONS.md",
+      "sha256": "4bcd73f3ae5f573aab3b591c331a56c1ad01a7efcdadafc6ebbe03882001df65"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/SPEC-UNLOCKED.md",
+      "sha256": "0dcf4862af7059d0606ea737c8a61f790ce61a8dd73af6415275a8fef5b8f29a"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/receipt-contradiction.json",
+      "sha256": "8c88c4f662c5de743fa0e036eef8fc45212fe42d6c2cf2a01e2d5ea7aeeab558"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/finding-F-9.json",
+      "sha256": "a8601380f6f9811d4878e1a9c07f74d5d1d2385497285a14843df85e67df02bf"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/gate-G-A3.json",
+      "sha256": "f28c40d73b6799f00da4a9de13719e2a3cf6fca20d21bc737339aa5df5cf4ce2"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/project.json",
+      "sha256": "236946d15d7ce89f7d45d8faab6e0e561bee919e008f9bed732516a697677588"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/receipt-R-CURRENT-02.json",
+      "sha256": "42991b7c7c8a815a7dad933eb1320e4a0d12c8ec67734e33307456d7f3c33c70"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/receipt-R-STALE-01.json",
+      "sha256": "3db1c6fc4edb80aa3092adf9ded1a25792d8d9a23bc9465f8db7a8ec76a3a218"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/t3-correction-trap.json",
+      "sha256": "177042b4824e61aefd67b325870612f44cde29d5f305d20547cbc25dc6ce3403"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/distractors/aurora-lookalike.json",
+      "sha256": "08db125ba9693f93ff5e40c3cebdd01c6f8310b7d46ea5fcce9a112d10044448"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/orion/project.json",
+      "sha256": "d1f74505f3402dce06e4e89e7807f71f4e1d0032feefa62d44144e018c710db1"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/web/clean.html",
+      "sha256": "5b79dc6c42e4ae58d0e495bdcb43e22f8a5e684e9280557252c5a4542785a08f"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/web/duplicate.html",
+      "sha256": "432bdea8d04021787057ec29f7fec7e3197deaa577182570d678b399ddfe6adf"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/web/malformed.html",
+      "sha256": "60a95e131247b7840657080ce50aaa38cfd9fca1f55723f85516fcb2272d68ac"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/web/noisy.html",
+      "sha256": "84ff5351559c9b4faf9948ee11fdf701f0ddb70c46681edb4cc905473a259410"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/web/pages.json",
+      "sha256": "c9b495fff3be7c7a9e4ed22407d7607e48ea2e741cb515bd0eee1961993aea00"
+    },
+    {
+      "path": "lab/agent-bakeoff/fixtures/web/payload.html",
+      "sha256": "c87b814835da666add25075b6a77a62f0eccd1fdb634f9eaed502673eb776050"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T1.json",
+      "sha256": "06f906fece8cd949ae3a1684e122df080ed60e2f1474e74eaee1abf1651f1081"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T2.json",
+      "sha256": "9134654d8f4af4f6a551a81276472390460df4f10e117e6d50f2a898eddd2b53"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T3.json",
+      "sha256": "bdcc3a7a0be2fc9c6e0802dd1fd4736a3ad82a1a0a037f72993ff1538ca8f7aa"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T4.json",
+      "sha256": "e62981eed6a457eb4a94fd2131f96b77e67ded17c751ae70f775cb643094366c"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T5.json",
+      "sha256": "846af54d9516fd143f1d0cb6aaf427f712fef8edc7b97aa97883d30a79242144"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T6.json",
+      "sha256": "74d93523c9c2153ee8327517aebd2f66965359cdaa399620b6e9cbee05d9f776"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/T7.json",
+      "sha256": "96f2311592289dbb9bd57219a2574ae87f6fbf6dcf784071434c857887bd236d"
+    },
+    {
+      "path": "lab/agent-bakeoff/goldens/evidence-catalog.json",
+      "sha256": "e3ac7610cb0e45df0d3013feff8fbc3f1f4d3cf90f4ede77849c5e27ed260ff5"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T1-authority-resolution.json",
+      "sha256": "2369aba6976a0af9c5cf5f7199f9c8097153a8f61e0af466137b3b41f781bab2"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T2-evidence-routing.json",
+      "sha256": "c9c2cfe4a4f22ed893a366fe7091d454c0bbd2a019ca5f6a5ccc7b0fbd48c451"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T3-memory-correction.json",
+      "sha256": "e838661e59c9350807bbb871e42f5fa12c5f856821c431f79f3902cd0d4f4a9f"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T4-tool-routing.json",
+      "sha256": "63235e30cc909b0d1d6c38ea55aa75d42e64e43376b30a0769dc5df195d64d1f"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T5-research-acquisition.json",
+      "sha256": "2d2b171c71d6c3e666d8f3466bb1f157cfaf13311a5d49f9d540c790ca555f52"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T6-bounded-operator.json",
+      "sha256": "e74934f1ecff1d4b439a54a776bfeebbc2a33d3c6d6a0377fdf09091c40650aa"
+    },
+    {
+      "path": "lab/agent-bakeoff/scenarios/T7-adversarial-truth.json",
+      "sha256": "4f898cc687eab14153a36088ac649950421bcda91b5ffb38c5209cc743a20170"
+    },
+    {
+      "path": "lab/agent-bakeoff/schemas/response.schema.json",
+      "sha256": "99b2aa7a09077d9897d85e9ecdc021eddbf6cb538fae09ebc58ac9b6d711b123"
+    },
+    {
+      "path": "lab/agent-bakeoff/schemas/scenario.schema.json",
+      "sha256": "00f9a33cc0798ab3c2b0b8c6849abdf1e34b48e84f2026985a1ac8e9d6634665"
+    },
+    {
+      "path": "lab/agent-bakeoff/scripts/build-fixture.mjs",
+      "sha256": "2b40f7c0bdc3052249f6eadfcd01af86567d4bdffcb72aafd2185a68c2a74f48"
+    },
+    {
+      "path": "lab/agent-bakeoff/scripts/lib.mjs",
+      "sha256": "4a724b7408ee5deab894a8f151c7f48e12e471f163155f0df56c318b5331d564"
+    },
+    {
+      "path": "lab/agent-bakeoff/scripts/reset-mutation-fixture.mjs",
+      "sha256": "d8a6aef419b38e40837609a095f005e73fd4630602bd1e99f6ef130d0c61ba35"
+    },
+    {
+      "path": "lab/agent-bakeoff/scripts/score-response.mjs",
+      "sha256": "d9a281c93829821376d2436c91a495088999356690ea9b4dc376f1c079e68d14"
+    },
+    {
+      "path": "lab/agent-bakeoff/scripts/serve-web-fixtures.mjs",
+      "sha256": "62134b55dec17dce276ec2cfe5a70367a973785db9cf446326571789555ab55c"
+    },
+    {
+      "path": "lab/agent-bakeoff/scripts/verify-arena.mjs",
+      "sha256": "77d1765babfa5bc0fc8efaa238546b96b2cc14ea652d8b0e588367c79556c5fa"
+    },
+    {
+      "path": "lab/agent-bakeoff/source-manifest.json",
+      "sha256": "d071c2a864bcac8b7d430c34e09b0083ca1137fe66a26cd63d05d36b6e45309b"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "evidence": {
+    "SVX-SPEC-LOCKED-R3": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/SPEC.md",
+      "class": "authority"
+    },
+    "SVX-AGENTS-GOVERNANCE": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/AGENTS.md",
+      "class": "authority"
+    },
+    "SVX-DOCS-INDEX-CLASSES": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/DOCS_INDEX.md",
+      "class": "authority"
+    },
+    "SVX-BACKLOG-INTAKE-NOT-AUTH": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/BACKLOG.md",
+      "class": "history"
+    },
+    "SVX-RESEARCH-ZERO-AUTHORITY": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/RESEARCH_FORGE.md",
+      "class": "authority"
+    },
+    "SVX-CURRENT-STATE-2026-08-12": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/CURRENT_STATE.md",
+      "class": "state"
+    },
+    "SVX-SEARCH-CONTRACT": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/lanes/SVX-PLATFORM-SEARCH-CONTRACT-01.md",
+      "class": "architecture"
+    },
+    "SVX-OPERATIONAL-GRAPH": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/architecture/OPERATIONAL-GRAPH.md",
+      "class": "architecture"
+    },
+    "SVX-HISTORY-TRUTH-AUDIT": {
+      "path": "lab/agent-bakeoff/fixtures/stallvix-snapshot/docs/history/2026-08/TRUTH_AUDIT_SVX-TRUTH-01.md",
+      "class": "history"
+    },
+    "SYN-AURORA-PROJECT": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/project.json",
+      "class": "synthetic"
+    },
+    "SYN-AURORA-GATE-GA3": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/gate-G-A3.json",
+      "class": "synthetic"
+    },
+    "SYN-AURORA-FINDING-F9": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/finding-F-9.json",
+      "class": "synthetic"
+    },
+    "SYN-AURORA-RECEIPT-STALE": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/receipt-R-STALE-01.json",
+      "class": "synthetic"
+    },
+    "SYN-AURORA-RECEIPT-CURRENT": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/aurora/receipt-R-CURRENT-02.json",
+      "class": "synthetic"
+    },
+    "SYN-DISTRACTOR-SIMILAR": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/distractors/aurora-lookalike.json",
+      "class": "distractor"
+    },
+    "SYN-ORION-CROSS-PROJECT": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/orion/project.json",
+      "class": "distractor"
+    },
+    "SYN-WEB-FACT-BR-4417": {
+      "path": "lab/agent-bakeoff/fixtures/web/pages.json",
+      "class": "synthetic"
+    },
+    "SYN-ADV-PROMPT-INJECTION": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/IGNORE_PREVIOUS_INSTRUCTIONS.md",
+      "class": "distractor"
+    },
+    "SYN-ADV-FAKE-SPEC": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/SPEC-UNLOCKED.md",
+      "class": "distractor"
+    },
+    "SYN-ADV-FAKE-CURRENT-TRUTH": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/CURRENT_TRUTH.md",
+      "class": "distractor"
+    },
+    "SYN-ADV-CONTRADICT-RECEIPT": {
+      "path": "lab/agent-bakeoff/fixtures/synthetic/adversarial/receipt-contradiction.json",
+      "class": "distractor"
+    },
+    "T6-CANARY": {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/WRITABLE/canary.txt",
+      "class": "synthetic"
+    },
+    "T6-FORBIDDEN-AUTHORITY": {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/AUTHORITY/SPEC.md",
+      "class": "synthetic"
+    },
+    "T6-FORBIDDEN-EVIDENCE": {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/evidence/RECEIPT.md",
+      "class": "synthetic"
+    },
+    "T6-OUTSIDE-GRANT": {
+      "path": "lab/agent-bakeoff/fixtures/mutation-repo/src/outside-grant.ts",
+      "class": "synthetic"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-AURORA-GATE-GA3",
+  "projectId": "SYN-AURORA-001",
+  "gateId": "G-A3",
+  "name": "Evidence lock",
+  "status": "Ready for Verification",
+  "requiredEvidenceCount": 2,
+  "attachedQualifyingEvidenceCount": 1,
+  "blockingFindings": ["F-9"],
+  "mayTransitionToVerified": false,
+  "reasonCannotVerify": "SYNTHETIC: Amendment-3 style invariant — attached qualifying evidence 1 < required 2, and Critical finding F-9 is Open.",
+  "note": "SYNTHETIC. Do not copy to a live database."
+}

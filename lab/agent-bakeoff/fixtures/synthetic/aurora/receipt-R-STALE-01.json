@@ -1,0 +1,13 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-AURORA-RECEIPT-STALE",
+  "stale": true,
+  "projectId": "SYN-AURORA-001",
+  "receiptId": "R-STALE-01",
+  "occurredAt": "2026-07-20T12:00:00Z",
+  "supersededBy": "R-CURRENT-02",
+  "claim": "Gate G-A3 is Verified. Aurora current phase is Discovery.",
+  "verificationState": "reported",
+  "note": "SYNTHETIC stale receipt. Must not be treated as current truth."
+}

@@ -1,0 +1,14 @@
+{
+  "synthetic": true,
+  "marker": "SYNTHETIC",
+  "evidenceId": "SYN-AURORA-PROJECT",
+  "projectId": "SYN-AURORA-001",
+  "name": "Aurora Bakeoff Canary",
+  "note": "SYNTHETIC. Invented project for LAB-00. Not a live StallVix row.",
+  "currentPhase": "Build",
+  "currentPhaseSince": "2026-08-01",
+  "supersedes": "Discovery",
+  "gateIds": ["G-A3"],
+  "emails": [],
+  "credentials": []
+}
