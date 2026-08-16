@@ -36,6 +36,8 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 |------------|--------------|-------------|
 | `read` | allow; sensitive paths hard-deny; `.kilo-runtime-data/**` deny | allow; same sensitive-path denies; `.kilo-runtime-data/**` deny |
 | `grep` | **deny** (hard) — path denies are not content-safe | **deny** (hard) — same reason |
+| `codebase_search` | **deny** (hard) — WarpGrep returns file contents; does not inherit `grep`/`read` | **deny** (hard) — same reason |
+| `semantic_search` | **deny** (hard) — returns `codeChunk`; does not inherit `grep`/`read` | **deny** (hard) — same reason |
 | `glob` | may reveal filenames; `.kilo-runtime-data/**` names are **not** discoverable | same |
 | `external_directory` | **deny** except Kilo-managed tool output relocated inside the worktree | same |
 | edit | deny | catch-all `ask` first; **no** unconditional `src/**`/`docs/**` allow; authority/evidence/runtime-data/migrations/env/wrangler deny last |
@@ -44,9 +46,11 @@ Default agent in `kilo.jsonc`: **`stallvix-investigator`** (primary, selectable)
 | migration.apply / deploy / `git push` | deny | deny by default-deny shell allowlist |
 | db.service_role | deny | deny |
 
-**Tool boundary note:** Kilo’s `read`, `grep`, `glob`, `bash`, `edit`, `write`, `apply_patch`, and `external_directory` are distinct. Denying direct `read` does **not** deny `grep`. Denying `edit` does **not**, by documented proof, deny `write` or `apply_patch`. Name discovery via `glob` is not content confidentiality.
+**Tool boundary note:** Kilo’s `read`, `grep`, `glob`, `codebase_search`, `semantic_search`, `bash`, `edit`, `write`, `apply_patch`, and `external_directory` are distinct. Denying direct `read` does **not** deny `grep`. Denying `grep` does **not** deny `codebase_search` or `semantic_search`. Denying `edit` does **not**, by documented proof, deny `write` or `apply_patch`. Name discovery via `glob` is not content confidentiality.
 
 **Grep enforcement lesson (KILO-01R / CURSOR-01D):** Kilo 7.4.20 matches `grep` permission patterns against the **search root path**, not each matched file. A parent-directory grep can expose a denied descendant. Both agents therefore hard-deny `grep`.
+
+**Search-tool containment (Gate C CORRECT_ONCE):** Kilo 7.4.20 `codebase_search` (`packages/opencode/src/tool/warpgrep.ts`) asks permission `"codebase_search"` and returns `c.file` + `c.content`. `semantic_search` (`packages/opencode/src/kilocode/tool/semantic-search.ts`) asks `"semantic_search"` and returns `codeChunk`. Neither consults `read` or `grep` denies. `Permission.fromConfig` treats those keys as their own permission names; `Permission.disabled` strips a tool when the last matching rule is pattern `"*"` action `"deny"` (`packages/opencode/src/permission/index.ts`); `LLMRequestPrep.resolveTools` applies that strip (`packages/opencode/src/session/llm/request.ts`). Root `tools.codebase_search` / `tools.semantic_search` `false` converts to the same permission deny (`packages/opencode/src/config/config.ts`). Missing `@vscode/ripgrep-win32-x64` is a WarpGrep runtime failure after permission allowed the call — not a control. Both agents therefore hard-deny both search tools.
 
 **Enforcement note:** Kilo evaluates permission patterns in order; **last matching rule wins**. This pack puts `*` first, then path/command exceptions. Do not move the catch-all to the end.
 

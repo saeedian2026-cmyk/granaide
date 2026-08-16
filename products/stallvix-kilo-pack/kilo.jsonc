@@ -1,20 +1,40 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01D grep hard-deny; DS-01 policy/runtime-root hardening; DS-02 supply-chain/write-tool fail-closed)
+  // Granaide StallVix Kilo Executor Pack v0 (CURSOR-01D grep hard-deny; DS-01 policy/runtime-root hardening; DS-02 supply-chain/write-tool fail-closed; Gate C CORRECT_ONCE search-tool deny)
   // Install into StallVix checkout per INSTALL.md — do not commit secrets.
   // Permission rule order: last matching rule wins (Kilo Agent Permissions docs).
   // Put catch-all first; specific allow/deny exceptions after.
-  // Tool boundaries are distinct: read ≠ grep ≠ glob ≠ external_directory ≠ bash ≠ edit.
+  // Tool boundaries are distinct: read ≠ grep ≠ glob ≠ codebase_search ≠ semantic_search ≠ external_directory ≠ bash ≠ edit.
   // DS-02/S2A: write and apply_patch are separate Edit-group tools (Kilo "How Tools Work").
   // Public docs do not prove they inherit the `edit` path map. Fail-closed: identical
   // deny maps on implementer; deny on investigator. Runtime must still prove binding
   // (ask is not an authority/evidence boundary). Gate C/D — no authenticated run here.
   // KILO-01R: grep path denies match the search ROOT only, not each hit file — parent-dir
   // grep bypassed **/credentials.json. Investigator therefore hard-denies grep entirely.
+  // Gate C CORRECT_ONCE: grep deny does not contain codebase_search or semantic_search.
+  // Kilo 7.4.20: Tool.define("codebase_search") asks permission "codebase_search"
+  // (packages/opencode/src/tool/warpgrep.ts) and returns file contents without consulting
+  // read denies. semantic_search asks permission "semantic_search"
+  // (packages/opencode/src/kilocode/tool/semantic-search.ts) and returns codeChunk.
+  // Permission.fromConfig maps each key to that permission name. Permission.disabled
+  // strips a tool iff last matching rule is pattern "*" action "deny"; edit/write/
+  // apply_patch map to "edit", every other tool name is its own key
+  // (packages/opencode/src/permission/index.ts). LLMRequestPrep.resolveTools applies
+  // that strip (packages/opencode/src/session/llm/request.ts). Config.tools false
+  // converts to the same permission deny (packages/opencode/src/config/config.ts).
+  // experimental.codebase_search only gates registration; a global true still
+  // registers the tool. Agent-level deny is the fail-closed control.
   // DS-01/F3: .kilo-runtime-data/** is worktree-local Kilo runtime state; agents cannot read it.
   // DS-01/F2: no unconditional src/** or docs/** edit allow; authority/evidence paths hard-deny.
   // DS-02/S1: no Context7 MCP and no unpinned npx runtime-executable in candidate v0.1.
   "default_agent": "stallvix-investigator",
+  // Kilo 7.4.20 Config.tools boolean map converts false → permission deny for that
+  // tool name (config.ts). Agent permission keys below are the explicit deny that
+  // Permission.disabled strips even if a global config re-enables experimental search.
+  "tools": {
+    "codebase_search": false,
+    "semantic_search": false
+  },
   "permission": {
     "read": {
       "*": "allow",
@@ -44,10 +64,10 @@
   },
   "agent": {
     "stallvix-investigator": {
-      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no grep, no outside-worktree access.",
+      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no grep, no codebase_search, no semantic_search, no outside-worktree access.",
       "mode": "primary",
       "color": "#64748B",
-      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read repository files (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings. Prefer targeted `read` of known paths over search.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- use grep/search tools (hard-denied — Kilo grep permissions apply to search root, not hit files)\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
+      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read repository files (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings. Prefer targeted `read` of known paths over search.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- use grep, codebase_search, or semantic_search (hard-denied — grep deny does not contain those other search tools; Kilo grep permissions apply to search root, not hit files)\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
       "permission": {
         "read": {
           "*": "allow",
@@ -68,6 +88,12 @@
         // CURSOR-01D / KILO-01R: path-scoped grep denies are not content-safe when the
         // search root is a parent directory. Hard-deny the tool for investigator.
         "grep": "deny",
+        // Gate C CORRECT_ONCE: grep deny is a different permission key. 7.4.20
+        // codebase_search / semantic_search ask their own names and return file
+        // contents under denied read paths. Strip both via "*" deny so
+        // Permission.disabled removes them from the session tool list.
+        "codebase_search": "deny",
+        "semantic_search": "deny",
         // Glob may still reveal filenames; that is name discovery, not content confidentiality.
         // DS-01/F3: runtime root names are not discoverable either.
         "glob": {
@@ -107,6 +133,10 @@
         // Kilo authorizes grep against the search root, not each hit. A parent-root
         // search can therefore disclose denied descendants, so this pack denies grep.
         "grep": "deny",
+        // Same content-return reason as investigator: codebase_search and
+        // semantic_search do not inherit grep or read denies (Kilo 7.4.20).
+        "codebase_search": "deny",
+        "semantic_search": "deny",
         // Glob reveals names only; the worktree runtime root stays opaque (DS-01/F3).
         "glob": {
           "*": "allow",

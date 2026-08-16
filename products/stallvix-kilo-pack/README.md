@@ -45,12 +45,14 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 ## Agents
 
-1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`task`/`external_directory` deny; sensitive-path denies on `read`.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`codebase_search`/`semantic_search`/`task`/`external_directory` deny; sensitive-path denies on `read`.
 2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Base write policy is catch-all `ask` with **no** unconditional `src/**` / `docs/**` allow; authority/evidence/runtime-data/migrations/env/deploy/push are hard-denied. Exact write paths come from the job packet. Shell is deny-by-default with five exact StallVix consumer verification commands gated by human approval.
 
 Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
 
 **Proof lesson (KILO-01R → CURSOR-01D):** `read` deny ≠ `grep` deny. Grep permission matches the **search root**, not hit files — path-scoped grep denies leaked the sentinel via a parent-dir search. Both agents now hard-deny `grep`.
+
+**Proof lesson (Gate C CORRECT_ONCE):** `grep` deny ≠ `codebase_search` deny ≠ `semantic_search` deny. Gate C runtime invoked `codebase_search` after grep was denied; the call was not permission-denied (it failed later on missing `@vscode/ripgrep-win32-x64`). Both agents now hard-deny `codebase_search` and `semantic_search` as their own permission keys.
 
 ## Non-goals
 

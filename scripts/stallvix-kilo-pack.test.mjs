@@ -76,6 +76,8 @@ test("the default StallVix agent is a primary read-only investigator", async () 
   assert.equal(investigator.permission.apply_patch, "deny");
   assert.equal(investigator.permission.bash, "deny");
   assert.equal(investigator.permission.grep, "deny");
+  assert.equal(investigator.permission.codebase_search, "deny");
+  assert.equal(investigator.permission.semantic_search, "deny");
   assert.equal(investigator.permission.external_directory, "deny");
   assert.equal(investigator.permission.task, "deny");
 });
@@ -158,8 +160,32 @@ test("the opt-in implementer cannot search across denied descendants", async () 
   const implementer = config.agent["stallvix-implementer"];
 
   assert.equal(implementer.permission.grep, "deny");
+  assert.equal(implementer.permission.codebase_search, "deny");
+  assert.equal(implementer.permission.semantic_search, "deny");
   assert.equal(implementer.permission.external_directory, "deny");
   assert.equal(implementer.permission.task, "deny");
+});
+
+test("Gate C CORRECT_ONCE: grep deny is not codebase_search or semantic_search deny", async () => {
+  const config = await readPackConfig();
+
+  assert.equal(config.tools.codebase_search, false);
+  assert.equal(config.tools.semantic_search, false);
+
+  for (const agentName of ["stallvix-investigator", "stallvix-implementer"]) {
+    const permission = config.agent[agentName].permission;
+    assert.equal(permission.grep, "deny", `${agentName} grep`);
+    assert.equal(permission.codebase_search, "deny", `${agentName} codebase_search`);
+    assert.equal(permission.semantic_search, "deny", `${agentName} semantic_search`);
+    assert.ok(
+      Object.prototype.hasOwnProperty.call(permission, "codebase_search"),
+      `${agentName} must name codebase_search explicitly; grep deny is a different key`,
+    );
+    assert.ok(
+      Object.prototype.hasOwnProperty.call(permission, "semantic_search"),
+      `${agentName} must name semantic_search explicitly; grep deny is a different key`,
+    );
+  }
 });
 
 test("the implementer shell is default-deny with a narrow verification allowlist", async () => {
