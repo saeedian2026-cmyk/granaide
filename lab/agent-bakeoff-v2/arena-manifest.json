@@ -10,7 +10,8 @@
     "include": [
       "public scenario envelope",
       "scenario.allowedFixtureRoots",
-      "scenario-specific writable area"
+      "scenario-specific writable area",
+      "multi-turn per-turn evidence only"
     ],
     "exclude": [
       "evaluator/private",
@@ -26,7 +27,8 @@
   "publicFiles": {
     ".gitattributes": "07864b24c41b2504a3cd1c01e1e30a39408588e52ca396b36ca64d8bfa2e2f83",
     ".gitignore": "f63213a219e3987204d2c3e538b16f711dfcb7a58ed10f9118a244070edd0043",
-    "README.md": "2894584978cee0f42b35a51ae093bb867960922075f44cd764023e8f9762705e",
+    ".runtime-private/pr-body.md": "ef4c1b538e94cea608328aed7e7f34c33f94c97dfbf69301470398831040dc0a",
+    "README.md": "e974f049d549fd5d30275d6cc07d858a12447a72002ada04cca48294a023e039",
     "fixtures/mutation-repo/AUTHORITY/SPEC.md": "9d93144f939acd78b021e06f7a650b9fe5025053c1b6a6bb59d03fa3e9316854",
     "fixtures/mutation-repo/README.md": "57d1fc061af572454c60dcf90e160675795037ca1f15453812618810851ad676",
     "fixtures/mutation-repo/WRITABLE/TASK.txt": "3054541f3a11f413b0ab168b75f41b2ff33b0e5e94302a2d1f3f3ab68f22d580",
@@ -68,7 +70,7 @@
     "fixtures/web/p5.html": "79a71a58875674f0f942ddada958b4aa5528576029037405d3e132068870b73a",
     "fixtures/web/p6.html": "a21ad45c00777ee375934fe7ca08752c5f107be2e41933af39ed4046e203be14",
     "fixtures/web/t4/token.json": "54512c5fd6d69d3594431e8385d131fdc8b9a467414abcaed3384509af886157",
-    "receipts/LAB-00-V2-RECEIPT.md": "781b0ad8725192b5ffa19ec960330c774b78196475aeaa393e0932514710b84d",
+    "receipts/LAB-00-V2-RECEIPT.md": "867174ba4e5363d4a6f40c3e1662c50a201688da1dccea3ff36b650faa06d85c",
     "scenarios/public/T1-authority-resolution.json": "0262221437e9e587954aa9b12ba81d123f677c6beff6237e35949a2fb9c99aac",
     "scenarios/public/T2-evidence-routing.json": "1b08060401b87f3bc573c353c69b005f2bb9949b4e286fc440d234b8afc8f257",
     "scenarios/public/T3-multi-turn-correction.json": "c486c78abc0acb1d7f59fd7df74374782052b17bd9448f64d276d49132e30e95",
@@ -81,19 +83,19 @@
     "schemas/public-scenario.schema.json": "79627d62ebab13f015d84b42f74a1e489a6dbb4c566fc3afdbaff3ab013edfd4",
     "schemas/tool-trace.schema.json": "c6c60b79ce57cb2453bd6b0f10de6e6e334cdeaa4d957466ac56c35d4fd0ab7f",
     "scripts/adapter-runtime.mjs": "9c597eb7e5108f536e2782d3961aad7542a55ff3fb4b2eb4ae3a06b7792db6b2",
-    "scripts/build-candidate-bundle.mjs": "5000923d0b9f87751cb3bcfff5ab545ee3a17cec656fdc3c52831eeb149ced9e",
+    "scripts/build-candidate-bundle.mjs": "f3f85161e0bfef409bc70423970d8969f1022e12f97c9f65eb58ca9c52f8dca8",
     "scripts/build-private-runtime-fixture.mjs": "8c1543fbdc25cd7745b50da93beeabfa13112083d27dac250f04bad06b4e8114",
-    "scripts/lib.mjs": "afc4dd7e3ff3937aac653b08d0efec4097b5acdfebea5be5188fd1f470b939d7",
+    "scripts/lib.mjs": "af70750ba6b6a9a324fc61786f7a30530eb77ffe77bf82fa7e9c58fc44b88f8a",
     "scripts/observe-fs.mjs": "6a53b5e6cad4173b2de3c2e7ed0e2a828e47a0c0b0730cf9dce36088ca1fbe64",
     "scripts/reset-mutation-fixture.mjs": "e0ebd85bb8f2e376cf6a568f696ddad4ad0441ffd00d5fecee428bf33b8f84d6",
     "scripts/run-all.mjs": "3b40b9825b8546aa917f234199c216d7e71beca5dedc4baef7a22a3bb9b45245",
-    "scripts/run-negative-controls.mjs": "bdef2a453864412eeb4a1a5204ac6f358239297d7470591d88a149fb55e31f19",
+    "scripts/run-negative-controls.mjs": "2cbc505a224bb4081f26d78f0162d89c5cb8c9ec10738601e327811f8beb51ec",
     "scripts/run-t6-evaluation.mjs": "13eab705c29acba33ac857a2b04e1b8cfb39ad5ef1d1b685cdfc4a69a6c06c83",
     "scripts/score-response.mjs": "5997a54c5b1b56fea7a7481158782c10cec751a8153b8e71466482016b661cb4",
     "scripts/serve-web-fixtures.mjs": "578c0b2a3d95786228b96f64507e76ec9cc44678488a53b788516fdc0b10cc25",
     "scripts/validate.mjs": "fd0b5da13f284812954aeb1f58b50c365d6f626cdaa633f04eb64327d2cbb180",
-    "scripts/verify-arena.mjs": "be7b0a5151d0b81423f87badfe6104899e7e850d6977a14cef9b2152324de693",
-    "scripts/verify-public-safety.mjs": "cd731e7e5b21a79d4c2821c102d5250b3a12d1a1a72b4ac31bdd72cd376c02c4"
+    "scripts/verify-arena.mjs": "b1565fdcd2adec0ea29c646be3e245fd6dcb29371b67e345a8ddce0e02466f4f",
+    "scripts/verify-public-safety.mjs": "eaab342f552f31f215ade2054c18d41a67a16637524122ee69bf37c259a28c31"
   },
   "evaluatorFiles": {
     "evaluator/private/README.md": "a2abc9441e6f959e8a5b615b562da23aee9260ff0516b2641a1e0de9cde6d81a",

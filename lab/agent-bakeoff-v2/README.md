@@ -25,10 +25,16 @@ No StallVix private document body is copied, sanitized, excerpted, or transforme
 Candidate adapters receive only:
 
 1. that scenario's public envelope
-2. that scenario's `allowedFixtureRoots`
+2. that scenario's allowed evidence files (`allowedFixtureRoots` for single-turn; **per-turn evidence only** for T3)
 3. the scenario-specific writable area when T6 runs
 
-They do not receive `evaluator/private/`, goldens, scorer scripts, `arena-manifest.json`, other scenarios, or answer-bearing metadata.
+They do not receive later-turn evidence before that turn, `evaluator/private/`, goldens, scorer scripts, `arena-manifest.json`, other scenarios, or answer-bearing metadata.
+
+T3 multi-turn surfaces:
+
+```text
+node lab/agent-bakeoff-v2/scripts/build-candidate-bundle.mjs --scenario T3 --turn 1
+```
 
 ## Commands
 

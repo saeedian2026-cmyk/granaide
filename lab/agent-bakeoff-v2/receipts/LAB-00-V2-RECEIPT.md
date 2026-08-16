@@ -15,9 +15,13 @@ Public/private StallVix publication check: PASS for committed bytes. No `stallvi
 
 Synthetic-only committed fixture check: PASS. Candidate-visible corpus is purpose-built Northwind Harbor. Every synthetic doc carries `SYNTHETIC BENCHMARK FIXTURE — not a StallVix document`.
 
-Candidate/evaluator separation: PASS. `scenarios/public/` vs `evaluator/private/`. Per-scenario execution root = envelope + `allowedFixtureRoots` + T6 writable area. No goldens, scorer scripts, arena manifest, or other scenarios in that root (V2-ADD-6).
+Candidate/evaluator separation: PASS. `scenarios/public/` vs `evaluator/private/`. Per-scenario execution root = envelope + allowed evidence + T6 writable area. T3 uses per-turn surfaces so later-turn files are absent until that turn (R1). No goldens, scorer scripts, arena manifest, or other scenarios in that root (V2-ADD-6).
 
 Oracle leakage negative control: PASS (NC2). Copying T1 golden into a candidate bundle fails the bundle verifier. Restore green.
+
+R1 T3 temporal isolation: PASS. Turn 1 surface cannot read correction/standup/berth files. Injecting correction into Turn 1 fails `verifyTurnSurface`. Building T3 without `{ turn }` is rejected.
+
+R2 evaluator seal: PASS. Mutating evaluator-only `semanticQuality` in `scoring-keys.json` (no `publicMirror` change) fails verify-arena on evaluator hash drift. Restore green.
 
 T1: synthetic locked spec, rules, backlog, research, history. Prompt does not name the governing files. Deterministic keys: governing sources + program code.
 
@@ -37,7 +41,7 @@ Schema validation: structural validate required fields, types, scenario id, evid
 
 Scorer malformed-input behavior: JSON/object/field errors return `{pass:false, malformed:true}` and exit 1. No crash.
 
-Arena verifier: `node lab/agent-bakeoff-v2/scripts/verify-arena.mjs` → PASS. Includes publicMirror deep-compare (V2-ADD-1) and self-describing-field scan (V2-ADD-3).
+Arena verifier: `node lab/agent-bakeoff-v2/scripts/verify-arena.mjs` → PASS. Includes publicMirror deep-compare (V2-ADD-1), self-describing-field scan (V2-ADD-3), T3 per-turn surfaces (R1), and public+evaluator hash seal (R2).
 
 Public-safety verifier: `node lab/agent-bakeoff-v2/scripts/verify-public-safety.mjs` → PASS.
 

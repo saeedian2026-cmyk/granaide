@@ -86,6 +86,7 @@ export const CANDIDATE_EXECUTION_ROOT_POLICY = {
     "public scenario envelope",
     "scenario.allowedFixtureRoots",
     "scenario-specific writable area",
+    "multi-turn per-turn evidence only",
   ],
   exclude: [
     "evaluator/private",
@@ -277,6 +278,31 @@ export function stable(value) {
 
 export function deepEqual(a, b) {
   return JSON.stringify(stable(a)) === JSON.stringify(stable(b));
+}
+
+export function evidenceRefsForTurn(scenario, turnNumber) {
+  if (!Array.isArray(scenario.turns) || turnNumber == null) {
+    return scenario.evidenceRefs || [];
+  }
+  const turn = scenario.turns.find((t) => t.turn === turnNumber);
+  return turn?.evidenceRefs || [];
+}
+
+export function futureEvidencePaths(scenario, turnNumber) {
+  const current = new Set(
+    evidenceRefsForTurn(scenario, turnNumber)
+      .map((r) => r.path)
+      .filter(Boolean),
+  );
+  const paths = new Set();
+  for (const t of scenario.turns || []) {
+    if (t.turn > turnNumber) {
+      for (const ref of t.evidenceRefs || []) {
+        if (ref.path && !current.has(ref.path)) paths.add(ref.path);
+      }
+    }
+  }
+  return [...paths].sort();
 }
 
 export function collectEvidenceRefs(scenario) {

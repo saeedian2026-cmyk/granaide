@@ -248,20 +248,22 @@ async function main() {
   verifySyntheticMarkers();
   verifyTrackedSecrets();
 
-  const { buildCandidateBundle, verifyCandidateBundle } = await import("./build-candidate-bundle.mjs");
-  for (const id of Object.keys(SCENARIO_FILES)) {
-    const tmp = path.join(os.tmpdir(), `lab-00-v2-bundle-${process.pid}-${id}`);
-    rmSync(tmp, { recursive: true, force: true });
-    mkdirSync(tmp, { recursive: true });
-    const built = buildCandidateBundle({ outDir: tmp, scenarioId: id });
-    const bundleCheck = verifyCandidateBundle(built.outDir, id);
-    if (!bundleCheck.ok) bundleCheck.failures.forEach((f) => err(`${id} candidate bundle: ${f}`));
+  const { buildCandidateBundle, verifyCandidateBundle, buildTurnSurface, verifyTurnSurface } =
+    await import("./build-candidate-bundle.mjs");
+  const laterTurnEvidence = [
+    "correction-2026-08-16.md",
+    "standup-2026-08-17.md",
+    "berth-north.md",
+    "berth-south.md",
+  ];
+  function assertBundleHygiene(tmp, id, turn) {
+    const label = turn == null ? id : `${id} turn ${turn}`;
     const bundleRels = walkFiles(tmp).map((abs) => posixRel(tmp, abs));
-    if (bundleRels.some((rel) => rel.includes("evaluator/"))) err(`${id} bundle leaked evaluator/`);
-    if (bundleRels.some((rel) => rel.includes("scripts/"))) err(`${id} bundle leaked scorer/scripts`);
-    if (bundleRels.some((rel) => rel.endsWith("arena-manifest.json"))) err(`${id} bundle leaked arena-manifest`);
+    if (bundleRels.some((rel) => rel.includes("evaluator/"))) err(`${label} bundle leaked evaluator/`);
+    if (bundleRels.some((rel) => rel.includes("scripts/"))) err(`${label} bundle leaked scorer/scripts`);
+    if (bundleRels.some((rel) => rel.endsWith("arena-manifest.json"))) err(`${label} bundle leaked arena-manifest`);
     if (id !== "T1" && bundleRels.some((rel) => rel.includes("T1-authority-resolution.json"))) {
-      err(`${id} bundle contains another scenario`);
+      err(`${label} bundle contains another scenario`);
     }
     if (id === "T5" && bundleRels.some((rel) => rel.includes("p4.html") || rel.includes("t5-pages-registry"))) {
       err("T5 execution root contains answer-bearing web/registry files");
@@ -269,9 +271,38 @@ async function main() {
     if (id === "T4" && bundleRels.some((rel) => rel.includes("t4/token.json"))) {
       err("T4 execution root contains localhost token file; token must be HTTP-only");
     }
+    if (id === "T3" && turn === 1) {
+      if (bundleRels.some((rel) => laterTurnEvidence.some((name) => rel.endsWith(name)))) {
+        err("T3 turn 1 filesystem contains later-turn evidence");
+      }
+    }
+  }
+  for (const id of Object.keys(SCENARIO_FILES)) {
+    const envelope = loadJson(path.join(publicScenariosDir(), SCENARIO_FILES[id]));
+    if (envelope.mode === "multi-turn") {
+      for (const t of envelope.turns || []) {
+        const tmp = path.join(os.tmpdir(), `lab-00-v2-bundle-${process.pid}-${id}-t${t.turn}`);
+        rmSync(tmp, { recursive: true, force: true });
+        mkdirSync(tmp, { recursive: true });
+        buildTurnSurface({ outDir: tmp, scenarioId: id, turn: t.turn, envelope });
+        const turnCheck = verifyTurnSurface(tmp, id, t.turn);
+        if (!turnCheck.ok) turnCheck.failures.forEach((f) => err(`${id} turn ${t.turn}: ${f}`));
+        assertBundleHygiene(tmp, id, t.turn);
+        rmSync(tmp, { recursive: true, force: true });
+      }
+      continue;
+    }
+    const tmp = path.join(os.tmpdir(), `lab-00-v2-bundle-${process.pid}-${id}`);
+    rmSync(tmp, { recursive: true, force: true });
+    mkdirSync(tmp, { recursive: true });
+    const built = buildCandidateBundle({ outDir: tmp, scenarioId: id });
+    const bundleCheck = verifyCandidateBundle(built.outDir, id);
+    if (!bundleCheck.ok) bundleCheck.failures.forEach((f) => err(`${id} candidate bundle: ${f}`));
+    assertBundleHygiene(tmp, id);
     rmSync(tmp, { recursive: true, force: true });
   }
   ok("per-scenario candidate execution roots contain only envelope + allowed fixtures");
+  ok("T3 per-turn surfaces isolate future evidence");
 
   const manifest = buildManifest();
   const manifestPath = path.join(arenaRoot(), "arena-manifest.json");
@@ -286,6 +317,9 @@ async function main() {
     if (JSON.stringify(current.publicFiles) !== JSON.stringify(rebuild.publicFiles)) {
       err("public fixture hashes drifted from arena-manifest.json");
     } else ok("public fixture hashes match arena-manifest.json");
+    if (JSON.stringify(current.evaluatorFiles) !== JSON.stringify(rebuild.evaluatorFiles)) {
+      err("evaluator fixture hashes drifted from arena-manifest.json");
+    } else ok("evaluator fixture hashes match arena-manifest.json");
     if (current.arenaVersion !== ARENA_VERSION) err("manifest arenaVersion mismatch");
   }
 

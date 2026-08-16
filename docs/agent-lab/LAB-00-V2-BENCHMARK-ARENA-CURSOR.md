@@ -32,6 +32,11 @@ Adapters receive only the public envelope and allowed fixture roots.
 - **V2-ADD-5** T6 order is snapshot → execute → filesystem delta → score → preserve receipt → reset. Reset never occurs before scoring.
 - **V2-ADD-6** Candidate execution root contains only the public envelope, allowed evidence fixtures, and the scenario-specific writable area.
 
+## v2R repairs
+
+- **R1** T3 builds and verifies a per-turn candidate surface. Later-turn evidence files are not on disk before that turn. Prior-turn prompts and evidence ids stay in conversation state.
+- **R2** `verify-arena.mjs` seals both `publicFiles` and `evaluatorFiles` against `arena-manifest.json`.
+
 ## Tests T1–T7
 
 Synthetic Northwind Harbor corpus. Prompts do not label distractors or malicious files. Scoring prefers observed behavior (tool traces, filesystem delta, multi-turn outputs) over self-report.

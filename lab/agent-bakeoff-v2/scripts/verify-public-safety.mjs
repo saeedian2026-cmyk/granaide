@@ -42,7 +42,11 @@ function scanText(rel, text) {
   if (JWTISH.test(text)) err(`${rel} matches JWT/token-like material`);
   if (KEYISH.test(text)) err(`${rel} matches obvious API key pattern`);
   if (PEM.test(text)) err(`${rel} matches PEM/private-key material`);
-  if (STALLVIX_COPY.test(text) || STALLVIX_COPY.test(rel)) {
+  if (STALLVIX_COPY.test(rel)) {
+    err(`${rel} references stallvix-snapshot copy path`);
+  }
+  const denyListDoc = rel.includes("/scripts/") || rel.includes("/receipts/");
+  if (!denyListDoc && STALLVIX_COPY.test(text)) {
     err(`${rel} references stallvix-snapshot copy path`);
   }
 }

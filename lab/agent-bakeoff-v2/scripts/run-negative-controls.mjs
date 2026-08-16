@@ -9,8 +9,13 @@ import {
 } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { arenaRoot, evaluatorDir, loadJson, publicScenariosDir, repoRoot } from "./lib.mjs";
-import { buildCandidateBundle, verifyCandidateBundle } from "./build-candidate-bundle.mjs";
+import { arenaRoot, evaluatorDir, loadJson, publicScenariosDir, repoRoot, walkFiles } from "./lib.mjs";
+import {
+  buildCandidateBundle,
+  buildTurnSurface,
+  verifyCandidateBundle,
+  verifyTurnSurface,
+} from "./build-candidate-bundle.mjs";
 import { mutationRepoRoot, resetMutationRepo } from "./observe-fs.mjs";
 import { score } from "./score-response.mjs";
 import { runT6Evaluation } from "./run-t6-evaluation.mjs";
@@ -196,6 +201,57 @@ async function main() {
   record("NC2 restore bundle → PASS", cleanBundle.ok === true);
   rmSync(tmp, { recursive: true, force: true });
 
+  const t1dir = path.join(os.tmpdir(), `lab-00-v2-t3-t1-${process.pid}`);
+  rmSync(t1dir, { recursive: true, force: true });
+  buildTurnSurface({ outDir: t1dir, scenarioId: "T3", turn: 1 });
+  const laterTurnFiles = [
+    "correction-2026-08-16.md",
+    "standup-2026-08-17.md",
+    "berth-north.md",
+    "berth-south.md",
+  ];
+  const t1rels = walkFiles(t1dir).map((abs) => abs.split(path.sep).join("/"));
+  const t1HasLater = laterTurnFiles.some((name) => t1rels.some((rel) => rel.endsWith(`/${name}`) || rel.endsWith(name)));
+  const t1CanRead = laterTurnFiles.some((name) =>
+    existsSync(path.join(t1dir, "fixtures", "synthetic", "conversation", name)),
+  );
+  const t1env = loadJson(path.join(t1dir, "scenario.json"));
+  record(
+    "R1 turn 1 cannot access correction/standup/berth evidence",
+    t1HasLater === false && t1CanRead === false,
+  );
+  record(
+    "R1 turn 1 preserves conversation state without future files",
+    Array.isArray(t1env.conversationState) && t1env.conversationState.length === 0,
+  );
+  record("R1 turn 1 surface verifies", verifyTurnSurface(t1dir, "T3", 1).ok === true);
+  const correctionDest = path.join(
+    t1dir,
+    "fixtures",
+    "synthetic",
+    "conversation",
+    "correction-2026-08-16.md",
+  );
+  mkdirSync(path.dirname(correctionDest), { recursive: true });
+  writeFileSync(
+    correctionDest,
+    readFileSync(path.join(arenaRoot(), "fixtures", "synthetic", "conversation", "correction-2026-08-16.md")),
+  );
+  record("R1 inject correction into turn 1 → FAIL", verifyTurnSurface(t1dir, "T3", 1).ok === false);
+  rmSync(correctionDest, { force: true });
+  record("R1 restore turn 1 surface → PASS", verifyTurnSurface(t1dir, "T3", 1).ok === true);
+  let missingTurnThrew = false;
+  try {
+    buildCandidateBundle({
+      outDir: path.join(os.tmpdir(), `lab-00-v2-t3-noturn-${process.pid}`),
+      scenarioId: "T3",
+    });
+  } catch {
+    missingTurnThrew = true;
+  }
+  record("R1 T3 bundle without turn is rejected", missingTurnThrew === true);
+  rmSync(t1dir, { recursive: true, force: true });
+
   resetMutationRepo();
   const goldenT6 = loadJson(path.join(evaluatorDir(), "goldens", "T6.json"));
   writeFileSync(path.join(mutationRepoRoot(), "WRITABLE", "canary.txt"), goldenT6.requiredMutation.exactContents);
@@ -262,6 +318,21 @@ async function main() {
   writeFileSync(goldenT1, goldenBytes);
   const mirrorOk = verifyArena();
   record("ADD-1 restore publicMirror → verifier PASS", mirrorOk.status === 0);
+
+  const scoringPath = path.join(evaluatorDir(), "scoring-keys.json");
+  const scoringBytes = readFileSync(scoringPath, "utf8");
+  const scoringJson = JSON.parse(scoringBytes);
+  scoringJson.semanticQuality = "mutated-oracle-field";
+  writeFileSync(scoringPath, `${JSON.stringify(scoringJson, null, 2)}\n`);
+  const evalFail = verifyArena();
+  const evalText = `${evalFail.stdout}${evalFail.stderr}`;
+  record(
+    "R2 mutate evaluator-only scoring field → verifier FAIL",
+    evalFail.status !== 0 && evalText.includes("evaluator fixture hashes drifted"),
+  );
+  writeFileSync(scoringPath, scoringBytes);
+  const evalOk = verifyArena();
+  record("R2 restore evaluator scoring keys → verifier PASS", evalOk.status === 0);
 
   const t1Scenario = path.join(publicScenariosDir(), "T1-authority-resolution.json");
   const t1Bytes = readFileSync(t1Scenario, "utf8");
