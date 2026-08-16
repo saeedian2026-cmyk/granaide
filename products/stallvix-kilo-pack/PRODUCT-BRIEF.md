@@ -29,9 +29,9 @@ The opt-in implementer is present as a future capability but remains unauthorize
 ## Trust contract
 
 - `stallvix-investigator` is the default primary agent.
-- Investigator denies edit, shell, grep, delegation, and general external-directory tools. Kilo's automatic tool-output exception must be relocated inside the worktree by the supplied launcher.
+- Investigator denies edit, shell, grep, codebase_search, semantic_search, delegation, and general external-directory tools. Kilo's automatic tool-output exception must be relocated inside the worktree by the supplied launcher.
 - Common secret-bearing reads are denied for root and nested paths.
-- Implementer denies grep, delegation, and external-directory access.
+- Implementer denies grep, codebase_search, semantic_search, delegation, and external-directory access.
 - Implementer shell is deny-by-default; only five exact verification commands may ask for human approval.
 - Migrations, auth/RLS changes, deploys, pushes, secrets, and live Supabase writes are outside this product's authority.
 - Kilo permissions are application guardrails, not an operating-system sandbox. The customer supplies a sanitized dedicated worktree with no credentials.
