@@ -15,7 +15,8 @@ This lab does **not** test fast-agent, M-flow, DeepSeek Harness, Scrapling, or K
 | Granaide base | `b0c122a7f834e66a6e66573845e6c003a98c8c44` |
 | StallVix source | `8d11ed7a27482595b015ee3fdb91f696edf361ed` |
 | Packet commit (pre-arena) | `3a23d4004298ddf1f0525fc136f90cf051c90e7a` |
-| Head SHA | see git / PR head after push |
+| Arena freeze commit | `82405e5a465d0bb85e1cc577392ea35bc370598c` |
+| Head SHA | PR #8 head (includes LF-lock `.gitattributes`) |
 
 StallVix was read only from local clone `E:\Plan M\Projects\Cube 10\StallVix`. No StallVix files were written. GitHub MCP cannot see the private StallVix repo; `gh` and the local git object were used instead.
 
@@ -47,7 +48,7 @@ Sanitizer redacted emails to `redacted@example.invalid` and project-ref `utxseas
 | docs/agent-work/RECEIPT_TEMPLATE.md | architecture | no | `d726fe2723862bba44469d451c60f481f186de386736ce3f7f93de6a6befdb2b` |
 
 Full provenance: `lab/agent-bakeoff/source-manifest.json`.  
-Sealed arena inventory: `lab/agent-bakeoff/arena-manifest.json` (61 immutable files; `receipts/` and T6 `WRITABLE/canary.txt` excluded).
+Sealed arena inventory: `lab/agent-bakeoff/arena-manifest.json` (62 immutable files; `receipts/` and T6 `WRITABLE/canary.txt` excluded). `.gitattributes` forces LF.
 
 ## Scenario inventory T1–T7
 
@@ -76,7 +77,7 @@ node lab/agent-bakeoff/scripts/build-fixture.mjs
   PASS (11 files from StallVix 8d11ed7)
 
 node lab/agent-bakeoff/scripts/verify-arena.mjs
-  PASS (T1–T7 parse, 11 source hashes, synthetic markers, no secret paths, T6 baseline, 61 arena files)
+  PASS (T1–T7 parse, 11 source hashes, synthetic markers, no secret paths, T6 baseline, 62 arena files)
 
 node lab/agent-bakeoff/scripts/serve-web-fixtures.mjs --self-check
   T5 fixture server: http://127.0.0.1:8765/
@@ -115,6 +116,7 @@ Skipped. Root `package.json` scripts are Next.js `lint`/`build` over `src/**`. L
 - T4 tool-class scoring requires adapters to fill `toolDecisions[].class`. That is a contract, not a runtime proof of any candidate.
 - GitHub MCP 404 on private StallVix; rebuilds need `STALLVIX_GIT_DIR` pointing at a clone that contains `8d11ed7`.
 - LAB-01 is not started.
+- `core.autocrlf=true` on this machine. `lab/agent-bakeoff/.gitattributes` forces LF so SHA-256 verification survives Windows checkout.
 
 ## Concepts discovered (do not convert to LAB-01 tasks)
 

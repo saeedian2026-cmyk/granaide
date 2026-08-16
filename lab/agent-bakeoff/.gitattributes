@@ -1,0 +1,2 @@
+# Keep arena fixture bytes stable. core.autocrlf must not rewrite hashes.
+* text=auto eol=lf

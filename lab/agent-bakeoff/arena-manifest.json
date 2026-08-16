@@ -5,6 +5,10 @@
   "note": "Immutable arena artifacts. Benchmark changes after candidate testing begins require a new arena version, not silent edits. receipts/ are excluded.",
   "files": [
     {
+      "path": "lab/agent-bakeoff/.gitattributes",
+      "sha256": "4d4ccf79434d49829e9ce1a1320721f541fa5ac81f7112f017883ab02aa3512b"
+    },
+    {
       "path": "lab/agent-bakeoff/README.md",
       "sha256": "20909bbf80d5d0a36983f4a73ae2985ea0caf80ae3543c730c44c6fb7069f9bc"
     },
