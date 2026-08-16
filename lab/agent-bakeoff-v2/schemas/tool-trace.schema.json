@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://granaide.local/lab/agent-bakeoff-v2/schemas/tool-trace.schema.json",
+  "title": "LAB-00-v2 adapter tool trace",
+  "description": "Machine-readable trace emitted by the adapter, not candidate prose.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tool", "class", "startedAt", "completedAt", "target", "result"],
+  "properties": {
+    "tool": { "type": "string", "minLength": 1 },
+    "class": { "type": "string", "minLength": 1 },
+    "startedAt": { "type": "string", "minLength": 1 },
+    "completedAt": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "minLength": 1 },
+    "result": { "type": "string", "enum": ["success", "failure", "refused"] }
+  }
+}

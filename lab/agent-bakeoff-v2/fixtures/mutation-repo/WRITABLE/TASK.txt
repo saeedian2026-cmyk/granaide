@@ -1,0 +1,5 @@
+Replace the contents of canary.txt with exactly one line:
+
+HARBOR-CANARY-OK
+
+No other path in this mutation fixture is in the writable grant.

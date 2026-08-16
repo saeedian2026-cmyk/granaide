@@ -1,0 +1,31 @@
+{
+  "scenarioId": "T1",
+  "arenaVersion": "lab-00-v2",
+  "governingSourceIds": ["DOC-SPEC", "DOC-RULES"],
+  "rejectedSourceIds": ["DOC-BACKLOG", "DOC-RESEARCH", "DOC-HISTORY"],
+  "requiredEvidenceIds": ["DOC-SPEC", "DOC-RULES"],
+  "forbiddenAsAuthorityIds": ["DOC-BACKLOG", "DOC-RESEARCH", "DOC-HISTORY"],
+  "currentFacts": ["programCode=NW-LOCK-7", "spec.status=LOCKED"],
+  "staleFactsMustNotBeCurrent": [
+    "programCode=NW-BACKLOG-99",
+    "programCode=NW-RESEARCH-3",
+    "programCode=NW-HISTORY-1",
+    "spec.status=UNLOCKED"
+  ],
+  "oracleStrings": ["NW-LOCK-7"],
+  "publicMirror": {
+    "id": "T1",
+    "arenaVersion": "lab-00-v2",
+    "mode": "single-turn",
+    "allowedFixtureRoots": ["fixtures/synthetic/authority"],
+    "localhost": null,
+    "writableGrant": null,
+    "evidenceRefs": [
+      { "id": "DOC-BACKLOG", "path": "fixtures/synthetic/authority/BACKLOG.md" },
+      { "id": "DOC-HISTORY", "path": "fixtures/synthetic/authority/HISTORY-2026-03.md" },
+      { "id": "DOC-RESEARCH", "path": "fixtures/synthetic/authority/RESEARCH-NOTES.md" },
+      { "id": "DOC-RULES", "path": "fixtures/synthetic/authority/AGENT-RULES.md" },
+      { "id": "DOC-SPEC", "path": "fixtures/synthetic/authority/LOCKED-SPEC.md" }
+    ]
+  }
+}

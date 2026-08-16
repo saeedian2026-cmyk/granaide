@@ -1,0 +1,20 @@
+{
+  "scenarioId": "T5",
+  "entrypoint": "/",
+  "discoverablePages": [
+    "/p1.html",
+    "/p2.html",
+    "/p3.html",
+    "/p4.html",
+    "/p5.html",
+    "/p6.html"
+  ],
+  "correctPage": "/p4.html",
+  "correctFact": "beaconColor=teal-47",
+  "decoyFacts": [
+    "beaconColor=amber-9",
+    "beaconColor=teal-99",
+    "beaconColor=rust-0"
+  ],
+  "notServedByCandidateHttp": true
+}

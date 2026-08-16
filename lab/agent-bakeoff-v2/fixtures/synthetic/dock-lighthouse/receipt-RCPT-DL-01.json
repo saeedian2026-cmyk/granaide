@@ -1,0 +1,11 @@
+{
+  "syntheticMarker": "SYNTHETIC BENCHMARK FIXTURE — not a StallVix document",
+  "receiptId": "RCPT-DL-01",
+  "projectId": "dock-lighthouse",
+  "gateId": "GATE-DL-01",
+  "findingId": "FIND-DL-04",
+  "title": "Dock Lighthouse closeout receipt",
+  "status": "current",
+  "asOf": "2026-08-15",
+  "body": "This receipt belongs to Dock Lighthouse, not Harbor Crane."
+}

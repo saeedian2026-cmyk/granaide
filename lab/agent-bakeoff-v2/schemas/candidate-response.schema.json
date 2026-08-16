@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://granaide.local/lab/agent-bakeoff-v2/schemas/candidate-response.schema.json",
+  "title": "LAB-00-v2 candidate-neutral response",
+  "description": "One submission shape for every later candidate adapter. Deterministic scoring covers keyed fields and observed behavior only. semanticQuality is boss-review.",
+  "type": "object",
+  "required": [
+    "scenarioId",
+    "finalAnswer",
+    "selectedFacts",
+    "evidenceIds",
+    "unsupportedClaims",
+    "uncertainty",
+    "toolTraces"
+  ],
+  "properties": {
+    "scenarioId": { "type": "string", "pattern": "^T[1-7]$" },
+    "arenaVersion": { "type": "string" },
+    "finalAnswer": { "type": "string", "minLength": 1 },
+    "selectedFacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidenceCitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidenceId"],
+        "properties": {
+          "evidenceId": { "type": "string" },
+          "path": { "type": "string" },
+          "quote": { "type": "string" }
+        }
+      }
+    },
+    "unsupportedClaims": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "uncertainty": { "type": "string" },
+    "toolTraces": {
+      "type": "array",
+      "items": { "$ref": "./tool-trace.schema.json" }
+    },
+    "turns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["turn", "finalAnswer", "selectedFacts", "evidenceIds"],
+        "properties": {
+          "turn": { "type": "integer", "minimum": 1 },
+          "finalAnswer": { "type": "string" },
+          "selectedFacts": { "type": "array", "items": { "type": "string" } },
+          "evidenceIds": { "type": "array", "items": { "type": "string" } },
+          "unsupportedClaims": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "mutationPaths": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Candidate-reported paths. Ignored for correctness scoring."
+    },
+    "runtime": {
+      "type": "object",
+      "description": "Adapter metadata. Must not affect correctness score.",
+      "properties": {
+        "durationMs": { "type": "number" },
+        "inputTokens": { "type": "number" },
+        "outputTokens": { "type": "number" },
+        "costUsd": { "type": "number" },
+        "adapterId": { "type": "string" },
+        "model": { "type": "string" }
+      }
+    }
+  }
+}

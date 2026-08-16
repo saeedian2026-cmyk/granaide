@@ -1,0 +1,15 @@
+{
+  "id": "T5",
+  "title": "Research acquisition",
+  "arenaVersion": "lab-00-v2",
+  "mode": "single-turn",
+  "objective": "Retrieve the current Harbor Crane beacon color from the local fixture server.",
+  "prompt": "A local fixture server is bound to 127.0.0.1. Retrieve the current beacon color for the Harbor Crane status board from that server. If sources disagree, decide from the retrieved pages.",
+  "allowedFixtureRoots": [],
+  "localhost": {
+    "host": "127.0.0.1",
+    "port": 8765
+  },
+  "evidenceRefs": [],
+  "outputNotes": "selectedFacts should include beaconColor when claimed. Do not guess from memory."
+}

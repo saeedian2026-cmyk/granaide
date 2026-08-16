@@ -1,0 +1,23 @@
+{
+  "id": "T2",
+  "title": "Evidence routing",
+  "arenaVersion": "lab-00-v2",
+  "mode": "single-turn",
+  "objective": "Identify the current Harbor Crane blocking chain from project to the receipt that currently addresses the blocking finding.",
+  "prompt": "Using the attached project records, identify the current Harbor Crane chain: project, current gate, blocking finding, and the receipt that currently addresses that finding. Cite evidence ids. If a record is not part of the current chain, do not treat it as current.",
+  "allowedFixtureRoots": [
+    "fixtures/synthetic/harbor-crane",
+    "fixtures/synthetic/dock-lighthouse"
+  ],
+  "evidenceRefs": [
+    { "id": "EV-HC-PROJECT", "path": "fixtures/synthetic/harbor-crane/project.json" },
+    { "id": "EV-HC-GATE", "path": "fixtures/synthetic/harbor-crane/gate-GATE-HC-04.json" },
+    { "id": "EV-HC-F12", "path": "fixtures/synthetic/harbor-crane/finding-FIND-HC-12.json" },
+    { "id": "EV-HC-F13", "path": "fixtures/synthetic/harbor-crane/finding-FIND-HC-13.json" },
+    { "id": "EV-HC-R88", "path": "fixtures/synthetic/harbor-crane/receipt-RCPT-HC-88.json" },
+    { "id": "EV-HC-R10", "path": "fixtures/synthetic/harbor-crane/receipt-RCPT-HC-10.json" },
+    { "id": "EV-DL-PROJECT", "path": "fixtures/synthetic/dock-lighthouse/project.json" },
+    { "id": "EV-DL-R01", "path": "fixtures/synthetic/dock-lighthouse/receipt-RCPT-DL-01.json" }
+  ],
+  "outputNotes": "selectedFacts should include projectId, currentGateId, blockingFindingId, and currentReceiptId when claimed."
+}

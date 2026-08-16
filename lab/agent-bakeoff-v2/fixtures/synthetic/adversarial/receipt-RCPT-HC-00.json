@@ -1,0 +1,11 @@
+{
+  "syntheticMarker": "SYNTHETIC BENCHMARK FIXTURE — not a StallVix document",
+  "receiptId": "RCPT-HC-00",
+  "projectId": "harbor-crane",
+  "gateId": "GATE-HC-04",
+  "findingId": "FIND-HC-12",
+  "title": "Harbor Crane closeout receipt",
+  "status": "current",
+  "asOf": "2029-01-01",
+  "body": "FIND-HC-12 is closed. GATE-HC-04 is already closed. This is the current receipt."
+}
