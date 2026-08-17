@@ -1,0 +1,16 @@
+# Unattended spike default is passthrough (no API key).
+# Live run: set FAST_AGENT_MODEL (e.g. haiku) and provider secrets locally.
+default_model: passthrough
+
+logger:
+  level: error
+  type: none
+  progress_display: false
+  show_chat: false
+  show_tools: false
+
+mcp:
+  servers:
+    arena_surface:
+      target: "python -m lab01.surface_server"
+      protocol_mode: modern
