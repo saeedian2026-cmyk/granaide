@@ -54,6 +54,8 @@ Safe default is investigator. Pick implementer only after Gate B containment PAS
 
 **Proof lesson (Gate C CORRECT_ONCE):** `grep` deny ≠ `codebase_search` deny ≠ `semantic_search` deny. Gate C runtime invoked `codebase_search` after grep was denied; the call was not permission-denied (it failed later on missing `@vscode/ripgrep-win32-x64`). Both agents now hard-deny `codebase_search` and `semantic_search` as their own permission keys.
 
+**Proof lesson (Gate C CORRECT_ONCE-2):** `.kilo-runtime-data/**` deny ≠ exact `.kilo-runtime-data` deny. Gate C retry listed child names by reading the directory node. Both the exact node and descendants are now denied on `read`/`glob` and implementer `edit`/`write`/`apply_patch`.
+
 ## Non-goals
 
 - StallVix control-plane backend or embedded Kilo server

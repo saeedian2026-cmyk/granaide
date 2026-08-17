@@ -223,3 +223,9 @@ Locked runtime rule: every Kilo command stays inside the isolated
 `XDG_DATA_HOME=<worktree>/.kilo-runtime-data` launcher. Do not run host
 `kilo session` or `kilo auth` diagnostics. That class of leak is recorded;
 SEC-01 stays owner-closed and is not reopened by this packet.
+
+## Gate C CORRECT_ONCE-2 residual (runtime-root exact node)
+
+`.kilo-runtime-data/**` is not the directory node. A later Gate C narrow
+regression must C1-invoke `read` of the exact `.kilo-runtime-data` path after
+this source head is consumer-re-locked. Descendant file deny is not name-opacity.

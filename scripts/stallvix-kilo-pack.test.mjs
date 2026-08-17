@@ -117,42 +117,91 @@ test("the investigator cannot read common secret-bearing files", async () => {
   }
 });
 
-test("DS-01/F3: the worktree-local Kilo runtime root is opaque to every agent", async () => {
+test("DS-01/F3 + CORRECT_ONCE-2: runtime root exact node, child, and nested child are opaque", async () => {
   const config = await readPackConfig();
+
+  const runtimePaths = [
+    ".kilo-runtime-data",
+    ".kilo-runtime-data/gate-c-02r-opacity.txt",
+    ".kilo-runtime-data/kilo/session.json",
+  ];
 
   for (const agentName of ["stallvix-investigator", "stallvix-implementer"]) {
     const agent = config.agent[agentName];
+    for (const path of runtimePaths) {
+      assert.equal(
+        resolvePermission(agent.permission.read, path),
+        "deny",
+        `${agentName} read ${path}`,
+      );
+      assert.equal(
+        resolvePermission(agent.permission.glob, path),
+        "deny",
+        `${agentName} glob ${path}`,
+      );
+    }
     assert.equal(
-      resolvePermission(agent.permission.read, ".kilo-runtime-data/anything.json"),
-      "deny",
-      `${agentName} read runtime root`,
-    );
-    assert.equal(
-      resolvePermission(agent.permission.read, ".kilo-runtime-data/tool-output/x.txt"),
-      "deny",
-      `${agentName} read nested runtime output`,
-    );
-    assert.equal(
-      resolvePermission(agent.permission.glob, ".kilo-runtime-data/anything.json"),
-      "deny",
-      `${agentName} glob runtime root`,
+      resolvePermission(agent.permission.read, ".kilo-runtime-data-evil"),
+      "allow",
+      `${agentName} read must not deny sibling prefix`,
     );
   }
 
-  assert.equal(
-    resolvePermission(config.permission.read, ".kilo-runtime-data/anything.json"),
-    "deny",
-    "base read runtime root",
-  );
+  for (const path of runtimePaths) {
+    assert.equal(
+      resolvePermission(config.permission.read, path),
+      "deny",
+      `base read ${path}`,
+    );
+    assert.equal(
+      resolvePermission(config.permission.glob, path),
+      "deny",
+      `base glob ${path}`,
+    );
+  }
 
   const implementerEdit = config.agent["stallvix-implementer"].permission;
   for (const tool of ["edit", "write", "apply_patch"]) {
-    assert.equal(
-      resolvePermission(implementerEdit[tool], ".kilo-runtime-data/tool-output/x.txt"),
-      "deny",
-      `implementer ${tool} runtime root`,
-    );
+    for (const path of runtimePaths) {
+      assert.equal(
+        resolvePermission(implementerEdit[tool], path),
+        "deny",
+        `implementer ${tool} ${path}`,
+      );
+    }
   }
+});
+
+test("Gate C CORRECT_ONCE-2: Kilo 7.4.20 ** does not match the exact directory node", () => {
+  // Mirrors packages/opencode/src/util/wildcard.ts at tag v7.4.20:
+  // * → .*, so .kilo-runtime-data/** requires a slash after the name.
+  assert.equal(matchesKiloPattern(".kilo-runtime-data/**", ".kilo-runtime-data"), false);
+  assert.equal(matchesKiloPattern(".kilo-runtime-data/**", ".kilo-runtime-data/"), true);
+  assert.equal(
+    matchesKiloPattern(".kilo-runtime-data/**", ".kilo-runtime-data/gate-c-02r-opacity.txt"),
+    true,
+  );
+  assert.equal(
+    matchesKiloPattern(".kilo-runtime-data/**", ".kilo-runtime-data/kilo/session.json"),
+    true,
+  );
+  assert.equal(matchesKiloPattern(".kilo-runtime-data", ".kilo-runtime-data"), true);
+  assert.equal(
+    matchesKiloPattern(".kilo-runtime-data", ".kilo-runtime-data/gate-c-02r-opacity.txt"),
+    false,
+  );
+  assert.equal(matchesKiloPattern(".kilo-runtime-data", ".kilo-runtime-data-evil"), false);
+});
+
+test("Gate C CORRECT_ONCE-2: kilo_local_recall is classified, not silently denied", async () => {
+  const config = await readPackConfig();
+  for (const agentName of ["stallvix-investigator", "stallvix-implementer"]) {
+    const permission = config.agent[agentName].permission;
+    assert.equal(permission.recall, undefined, `${agentName} recall`);
+    assert.equal(permission.kilo_local_recall, undefined, `${agentName} kilo_local_recall`);
+  }
+  assert.equal(config.tools?.kilo_local_recall, undefined);
+  assert.equal(config.tools?.recall, undefined);
 });
 
 test("the opt-in implementer cannot search across denied descendants", async () => {
@@ -252,6 +301,7 @@ test("DS-01/P2: authority/evidence paths are explicit edit hard-denies", async (
     "docs/audit/SVX-AUDIT-01.md",
     ".kilo/kilo.jsonc",
     ".kilo/skills/stallvix-authority/SKILL.md",
+    ".kilo-runtime-data",
     ".kilo-runtime-data/kilo/session.json",
     "supabase/migrations/001.sql",
     "wrangler.toml",
@@ -405,6 +455,7 @@ const AUTHORITY_WRITE_PROBES = [
   "SPEC.md",
   "docs/agent-work/packets/SVX-ANY-01.md",
   "docs/audit/SVX-AUDIT-01.md",
+  ".kilo-runtime-data",
   ".kilo-runtime-data/kilo/session.json",
 ];
 
