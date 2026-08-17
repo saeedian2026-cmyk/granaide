@@ -45,6 +45,7 @@ async def run_scenario(
         instruction=GENERIC_INSTRUCTION,
         servers=["arena_surface"],
         model=chosen,
+        use_history=True,
     )
     async def _agent() -> None:
         return None
@@ -71,6 +72,7 @@ async def run_scenario(
                 turns_out.append(turn_fields(text, turn))
             history = _history_text(session)
             response = assemble_response("T3", model_text, read_traces(), turns=turns_out)
+            response["runtime"]["model"] = chosen
             response["runtime"]["sessionContinuity"] = {
                 "sameAgent": True,
                 "userTurns": history.count("turn ") and 3 or _user_message_count(session),
@@ -84,7 +86,9 @@ async def run_scenario(
             reply = await send(session, prompt, None, surface)
         else:
             reply = await session.send(prompt)
-        return assemble_response(scenario_id, str(reply), read_traces())
+        assembled = assemble_response(scenario_id, str(reply), read_traces())
+        assembled["runtime"]["model"] = chosen
+        return assembled
 
 
 def _user_message_count(session) -> int:

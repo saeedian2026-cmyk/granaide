@@ -44,6 +44,10 @@ def assemble_response(
     parsed["runtime"] = {
         "adapterId": "lab-01-fast-agent",
         "model": parsed.get("runtime", {}).get("model") if isinstance(parsed.get("runtime"), dict) else None,
+        "durationMs": "UNAVAILABLE",
+        "inputTokens": "UNAVAILABLE",
+        "outputTokens": "UNAVAILABLE",
+        "costUsd": "UNAVAILABLE",
     }
     if turns is not None:
         parsed["turns"] = turns
