@@ -39,7 +39,11 @@
   // Permission.disabled strips even if a global config re-enables experimental search.
   "tools": {
     "codebase_search": false,
-    "semantic_search": false
+    "semantic_search": false,
+    // PR #12 REPAIR ONCE: session transcripts are runtime state. Same-project
+    // kilo_local_recall read skips ctx.ask (recall.ts). recall:deny does not
+    // strip the tool — disabled() keys on the tool id, not "recall".
+    "kilo_local_recall": false
   },
   "permission": {
     "read": {
@@ -72,10 +76,10 @@
   },
   "agent": {
     "stallvix-investigator": {
-      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no grep, no codebase_search, no semantic_search, no outside-worktree access.",
+      "description": "DEFAULT safe agent. Read-only StallVix investigator for audits and Test A. No edits, no shell, no grep, no codebase_search, no semantic_search, no kilo_local_recall, no outside-worktree access.",
       "mode": "primary",
       "color": "#64748B",
-      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read repository files (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings. Prefer targeted `read` of known paths over search.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- use grep, codebase_search, or semantic_search (hard-denied — grep deny does not contain those other search tools; Kilo grep permissions apply to search root, not hit files)\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
+      "prompt": "You are the Granaide StallVix investigator — read-only Level-C style inspection without mutation.\n\nYou may read repository files (except denied sensitive paths), summarize architecture, cite SPEC/AGENTS/CURRENT_STATE, and draft a Work Receipt for findings. Prefer targeted `read` of known paths over search.\n\nYou must NOT:\n- edit or create files (except the operator may save your receipt outside the session)\n- run shell commands\n- use grep, codebase_search, semantic_search, or kilo_local_recall (hard-denied — grep deny does not contain those other search tools; kilo_local_recall returns session transcripts and does not inherit read/runtime-root denies; Kilo grep permissions apply to search root, not hit files)\n- access paths outside the worktree\n- request or use secrets / service-role keys\n- claim implementation authority from observatory research (including StallVix PR #35)\n\nOutput: sourced findings + a receipt draft matching the stallvix-receipt skill. Prefer uncertainty over invention.",
       "permission": {
         "read": {
           "*": "allow",
@@ -103,6 +107,11 @@
         // Permission.disabled removes them from the session tool list.
         "codebase_search": "deny",
         "semantic_search": "deny",
+        // PR #12 REPAIR ONCE: Permission.disabled strips tool id kilo_local_recall
+        // iff last matching rule is pattern "*" action deny. ctx.ask uses
+        // permission "recall" for search only; same-project transcript read has
+        // no ask. Do not substitute recall:deny for this strip.
+        "kilo_local_recall": "deny",
         // Glob may still reveal filenames; that is name discovery, not content confidentiality.
         // DS-01/F3: runtime root names are not discoverable either.
         "glob": {
@@ -148,6 +157,9 @@
         // semantic_search do not inherit grep or read denies (Kilo 7.4.20).
         "codebase_search": "deny",
         "semantic_search": "deny",
+        // Same session-content reason as investigator: kilo_local_recall does
+        // not inherit read / .kilo-runtime-data denies (Kilo 7.4.20 recall.ts).
+        "kilo_local_recall": "deny",
         // Glob reveals names only; the worktree runtime root stays opaque (DS-01/F3).
         "glob": {
           "*": "allow",

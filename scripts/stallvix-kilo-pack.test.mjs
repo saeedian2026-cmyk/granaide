@@ -78,6 +78,7 @@ test("the default StallVix agent is a primary read-only investigator", async () 
   assert.equal(investigator.permission.grep, "deny");
   assert.equal(investigator.permission.codebase_search, "deny");
   assert.equal(investigator.permission.semantic_search, "deny");
+  assert.equal(investigator.permission.kilo_local_recall, "deny");
   assert.equal(investigator.permission.external_directory, "deny");
   assert.equal(investigator.permission.task, "deny");
 });
@@ -193,15 +194,66 @@ test("Gate C CORRECT_ONCE-2: Kilo 7.4.20 ** does not match the exact directory n
   assert.equal(matchesKiloPattern(".kilo-runtime-data", ".kilo-runtime-data-evil"), false);
 });
 
-test("Gate C CORRECT_ONCE-2: kilo_local_recall is classified, not silently denied", async () => {
+function permissionDisablesTool(permission, tool) {
+  // Mirrors Kilo 7.4.20 Permission.disabled: edit/write/apply_patch map to "edit";
+  // every other tool id is its own permission key; strip iff last * rule is deny.
+  const key = ["edit", "write", "apply_patch"].includes(tool) ? "edit" : tool;
+  return permission[key] === "deny";
+}
+
+test("PR #12 REPAIR ONCE: kilo_local_recall is stripped; recall deny is not the control", async () => {
   const config = await readPackConfig();
+
+  assert.equal(config.tools.kilo_local_recall, false);
+
   for (const agentName of ["stallvix-investigator", "stallvix-implementer"]) {
     const permission = config.agent[agentName].permission;
-    assert.equal(permission.recall, undefined, `${agentName} recall`);
-    assert.equal(permission.kilo_local_recall, undefined, `${agentName} kilo_local_recall`);
+    assert.equal(permission.kilo_local_recall, "deny", `${agentName} kilo_local_recall`);
+    assert.equal(
+      permissionDisablesTool(permission, "kilo_local_recall"),
+      true,
+      `${agentName} Permission.disabled would strip kilo_local_recall`,
+    );
+    assert.ok(
+      Object.prototype.hasOwnProperty.call(permission, "kilo_local_recall"),
+      `${agentName} must name kilo_local_recall explicitly; read/grep deny is a different key`,
+    );
+    assert.equal(
+      permission.recall,
+      undefined,
+      `${agentName} must not pretend recall:deny strips the tool`,
+    );
   }
-  assert.equal(config.tools?.kilo_local_recall, undefined);
-  assert.equal(config.tools?.recall, undefined);
+
+  const investigator = {
+    ...config.agent["stallvix-investigator"].permission,
+  };
+  delete investigator.kilo_local_recall;
+  assert.equal(
+    permissionDisablesTool(investigator, "kilo_local_recall"),
+    false,
+    "removing kilo_local_recall must fail closed in this test",
+  );
+
+  investigator.kilo_local_recall = "allow";
+  assert.equal(
+    permissionDisablesTool(investigator, "kilo_local_recall"),
+    false,
+    "widening kilo_local_recall to allow must fail closed in this test",
+  );
+
+  investigator.kilo_local_recall = "ask";
+  assert.equal(
+    permissionDisablesTool(investigator, "kilo_local_recall"),
+    false,
+    "widening kilo_local_recall to ask must fail closed in this test",
+  );
+
+  assert.equal(
+    permissionDisablesTool({ recall: "deny" }, "kilo_local_recall"),
+    false,
+    "recall:deny does not match disabled() tool id kilo_local_recall",
+  );
 });
 
 test("the opt-in implementer cannot search across denied descendants", async () => {
@@ -211,6 +263,7 @@ test("the opt-in implementer cannot search across denied descendants", async () 
   assert.equal(implementer.permission.grep, "deny");
   assert.equal(implementer.permission.codebase_search, "deny");
   assert.equal(implementer.permission.semantic_search, "deny");
+  assert.equal(implementer.permission.kilo_local_recall, "deny");
   assert.equal(implementer.permission.external_directory, "deny");
   assert.equal(implementer.permission.task, "deny");
 });

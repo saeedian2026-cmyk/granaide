@@ -5,7 +5,7 @@
 - `capability_grant`: Granaide source only — pack policy/docs/tests/manifest/receipt. No StallVix consumer edit, no authenticated Kilo, no Gate C retry, no Gate D, no merge. PR #9 history not rewritten.
 - `branch`: `audit/svx-gra-ds-02-runtime-root-exact`
 - `baseline_sha`: `5e108970b114c00e6d2a0b2027c84a5726050fa2` (accepted search-repair source / Granaide PR #9)
-- `ending_sha`: this commit (created after this receipt; contains this receipt)
+- `ending_sha`: `c0cb92620bf7a110b4244540fdc8c95e53c33ce0` — **superseded classification of `kilo_local_recall`**. Exact-root deny stands. See `proof/DS-02-KILO-LOCAL-RECALL-2026-08-17.md`.
 - `pushed`: pending at write time
 - `pull_request`: draft source PR only; STOP before merge
 

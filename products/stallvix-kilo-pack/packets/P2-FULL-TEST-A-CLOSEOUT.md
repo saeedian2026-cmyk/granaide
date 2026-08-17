@@ -229,3 +229,7 @@ SEC-01 stays owner-closed and is not reopened by this packet.
 `.kilo-runtime-data/**` is not the directory node. A later Gate C narrow
 regression must C1-invoke `read` of the exact `.kilo-runtime-data` path after
 this source head is consumer-re-locked. Descendant file deny is not name-opacity.
+
+`kilo_local_recall` must be absent from the investigator tool inventory (stripped
+by `Permission.disabled` on tool id `kilo_local_recall`). `recall:deny` is not
+that strip. Same-project transcript read skips `ctx.ask`.
