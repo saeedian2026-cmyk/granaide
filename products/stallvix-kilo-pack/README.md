@@ -45,7 +45,7 @@ Source: [StallVix PR #35](https://github.com/saeedian2026-cmyk/StallVix/pull/35)
 
 ## Agents
 
-1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`codebase_search`/`semantic_search`/`task`/`external_directory` deny; sensitive-path denies on `read`.
+1. **`stallvix-investigator`** (primary, **default**) — read-only investigation for Test A and audits. `edit`/`bash`/`grep`/`codebase_search`/`semantic_search`/`kilo_local_recall`/`task`/`external_directory` deny; sensitive-path denies on `read`.
 2. **`stallvix-implementer`** (primary, opt-in) — constrained Level-C worker. Base write policy is catch-all `ask` with **no** unconditional `src/**` / `docs/**` allow; authority/evidence/runtime-data/migrations/env/deploy/push are hard-denied. Exact write paths come from the job packet. Shell is deny-by-default with five exact StallVix consumer verification commands gated by human approval.
 
 Safe default is investigator. Pick implementer only after Gate B containment PASS (activated + adversarial), not after stand-in Test A or activation attestation alone.
@@ -53,6 +53,10 @@ Safe default is investigator. Pick implementer only after Gate B containment PAS
 **Proof lesson (KILO-01R → CURSOR-01D):** `read` deny ≠ `grep` deny. Grep permission matches the **search root**, not hit files — path-scoped grep denies leaked the sentinel via a parent-dir search. Both agents now hard-deny `grep`.
 
 **Proof lesson (Gate C CORRECT_ONCE):** `grep` deny ≠ `codebase_search` deny ≠ `semantic_search` deny. Gate C runtime invoked `codebase_search` after grep was denied; the call was not permission-denied (it failed later on missing `@vscode/ripgrep-win32-x64`). Both agents now hard-deny `codebase_search` and `semantic_search` as their own permission keys.
+
+**Proof lesson (Gate C CORRECT_ONCE-2):** `.kilo-runtime-data/**` deny ≠ exact `.kilo-runtime-data` deny. Gate C retry listed child names by reading the directory node. Both the exact node and descendants are now denied on `read`/`glob` and implementer `edit`/`write`/`apply_patch`.
+
+**Proof lesson (PR #12 REPAIR ONCE):** filesystem `read` deny of `.kilo-runtime-data` ≠ `kilo_local_recall` deny. Same-project transcript read skips `ctx.ask`. `Permission.disabled` keys on tool id `kilo_local_recall`, not permission `"recall"`. Both agents now hard-deny `kilo_local_recall`.
 
 ## Non-goals
 
